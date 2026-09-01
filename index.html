@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>PIXEL DECK — 8-Bit Retro Music Station</title>
-  <meta name="description" content="Nostalgia Pixel Music Player with full-length streaming, 24/7 retro radios, global song search, and reactive 8-bit spectrum visualizer." />
+  <meta name="description" content="Nostalgia Pixel Music Player with full-length streaming, multi-provider search, 24/7 retro radios, recently played history, and reactive 8-bit visualizer." />
 
   <!-- Google Retro Pixel & High-Legibility Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -215,7 +215,7 @@
       border: 2px solid var(--border-dark);
       box-shadow: 2px 2px 0px var(--border-dark), inset 1px 1px 0px rgba(255,255,255,0.25);
       padding: 8px 10px;
-      min-height: 36px;
+      min-height: 38px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -650,6 +650,7 @@
       border: 2px solid var(--border-dark);
       color: var(--text-dim);
       cursor: pointer;
+      white-space: nowrap;
     }
     .nav-tab-item.active {
       background: var(--accent-s);
@@ -776,6 +777,7 @@
       object-fit: cover;
       display: block;
       border-radius: 2px;
+      flex-shrink: 0;
     }
 
     .row-main-info {
@@ -783,6 +785,7 @@
       flex-direction: column;
       gap: 2px;
       overflow: hidden;
+      min-width: 0;
     }
 
     .row-title-text {
@@ -817,12 +820,14 @@
       font-family: var(--font-vt);
       font-size: 17px;
       color: var(--text-dim);
+      white-space: nowrap;
     }
 
     .row-actions-group {
       display: flex;
       align-items: center;
       gap: 4px;
+      justify-content: flex-end;
     }
 
     /* Mobile Responsive Overrides */
@@ -882,6 +887,13 @@
       border-color: var(--accent-s);
     }
 
+    /* Load More Button Container */
+    .load-more-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 16px 8px;
+    }
+
     /* Toast */
     #pixel-toast-hud {
       position: fixed;
@@ -898,6 +910,7 @@
       opacity: 0;
       transition: transform 0.2s ease, opacity 0.2s ease;
       pointer-events: none;
+      max-width: 90%;
     }
     #pixel-toast-hud.show {
       transform: translateY(0);
@@ -907,7 +920,7 @@
 </head>
 <body data-theme="cyber">
 
-  <!-- CRT Scanlines -->
+  <!-- CRT Scanlines Overlay -->
   <div id="crt-overlay"></div>
 
   <!-- Full-Screen Pixel DAW Station -->
@@ -922,7 +935,7 @@
             <path d="M1 3h14v10H1V3zm2 2v6h10V5H3zm2 1h6v4H5V6zm1 1v2h1V7H6zm3 0v2h1V7H9z"/>
           </svg>
           <span>PIXEL DECK</span>
-          <span class="status-badge">FULL-LENGTH HI-FI</span>
+          <span class="status-badge">DIRECT 320K</span>
         </div>
       </div>
 
@@ -957,18 +970,18 @@
         <div class="crt-screen-box">
           <div class="now-playing-meta">
             <span>CH: 01 [STEREO HI-FI]</span>
-            <span id="sourceLabelBadge">ENGINE: DIRECT MP3 AUDIO</span>
+            <span id="sourceLabelBadge">ENGINE: NATIVE AUDIO STREAM</span>
             <span id="bitrateLabelBadge">320 KBPS</span>
           </div>
 
           <!-- Marquee Title -->
           <div class="track-marquee-wrap">
-            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — FULL LENGTH SONGS • CLICK ANY TRACK TO PLAY</div>
+            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — FULL LENGTH AUDIO • CLICK ANY TRACK TO PLAY</div>
           </div>
 
           <div class="track-sub-line">
             <span id="artistSubText">RETRO AUDIO DECK</span>
-            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">FULL-LENGTH MASTER AUDIO</span>
+            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">DIRECT MASTER AUDIO</span>
           </div>
 
           <!-- Cassette + 16-Band Equalizer -->
@@ -1102,10 +1115,11 @@
 
     </div>
 
-    <!-- Navigation Bar: Trending, Search, 24/7 Radio, Liked Hits, Local MP3 -->
+    <!-- Navigation Bar: Trending, Search, 24/7 Radio, Recently Played, Liked Hits, Local MP3 -->
     <nav class="deck-nav-bar">
       <button class="nav-tab-item active" data-tab="trending">⚡ TOP HITS</button>
       <button class="nav-tab-item" data-tab="search">🔍 SEARCH ALL SONGS</button>
+      <button class="nav-tab-item" data-tab="recent">🕒 RECENTLY PLAYED</button>
       <button class="nav-tab-item" data-tab="radio">📻 24/7 RETRO RADIO</button>
       <button class="nav-tab-item" data-tab="liked">❤️ LIKED SONGS</button>
       <button class="nav-tab-item" data-tab="local">📂 LOAD LOCAL MP3</button>
@@ -1114,16 +1128,18 @@
     <!-- Search Bar & Genre Filters -->
     <div id="searchBarSection" class="search-action-strip">
       <div class="search-input-group">
-        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ANY ARTIST OR SONG (e.g. Coldplay, Ariana Grande, Taylor Swift, Synthwave, Lofi)..." />
+        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ARTISTS & SONGS (e.g. Coldplay, Taylor Swift, Ariana Grande, Ed Sheeran, Arijit Singh, Synthwave)..." />
         <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 18px;">SEARCH</button>
       </div>
 
       <div class="genre-filter-chips">
         <span class="filter-chip active" data-query="Coldplay">🪐 COLDPLAY</span>
-        <span class="filter-chip" data-query="Ariana Grande">🌸 ARIANA GRANDE</span>
         <span class="filter-chip" data-query="Taylor Swift">✨ TAYLOR SWIFT</span>
+        <span class="filter-chip" data-query="Ariana Grande">🌸 ARIANA GRANDE</span>
+        <span class="filter-chip" data-query="Ed Sheeran">🎸 ED SHEERAN</span>
         <span class="filter-chip" data-query="Arijit Singh">🎤 ARIJIT SINGH</span>
         <span class="filter-chip" data-query="The Weeknd">🌃 THE WEEKND</span>
+        <span class="filter-chip" data-query="Hans Zimmer">🎻 HANS ZIMMER</span>
         <span class="filter-chip" data-query="Synthwave">🌅 SYNTHWAVE</span>
         <span class="filter-chip" data-query="Chiptune">👾 CHIPTUNE</span>
         <span class="filter-chip" data-query="Lofi">☕ LO-FI BEATS</span>
@@ -1133,7 +1149,8 @@
     <!-- View Mode Bar -->
     <div class="view-mode-bar">
       <span id="catalogStatusLine">DISPLAYING TRACKS</span>
-      <div style="display:flex; gap:6px;">
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button id="clearHistoryBtn" class="pixel-btn pixel-btn-sm" style="display:none;">CLEAR HISTORY</button>
         <button id="viewListModeBtn" class="pixel-btn pixel-btn-sm active">📋 TABLE</button>
         <button id="viewGridModeBtn" class="pixel-btn pixel-btn-sm">🎴 GRID</button>
       </div>
@@ -1143,6 +1160,9 @@
     <main id="mainTrackArea" class="tracks-container">
       <div id="trackListWrapper" class="tracks-table-view">
         <!-- Rendered track rows -->
+      </div>
+      <div id="loadMoreContainer" class="load-more-wrap" style="display:none;">
+        <button id="loadMoreBtn" class="pixel-btn pixel-btn-cyan" style="padding:10px 24px;">LOAD MORE TRACKS (+20)</button>
       </div>
     </main>
 
@@ -1155,133 +1175,448 @@
   <audio id="coreAudioPlayer" preload="auto"></audio>
 
   <!-- ==========================================================================
-       JAVASCRIPT AUDIO ENGINE, AUDIUS FULL-LENGTH STREAMING & REACTIVE DSP
+       MODULAR MUSIC ARCHITECTURE: PROVIDERS, STORE, RECENTLY PLAYED & DSP
        ========================================================================== -->
   <script>
     (function () {
       "use strict";
 
-      // 100% Full-Length 320kbps Master Starter Tracks (3 to 6 Minutes Long!)
-      const POPULAR_STARTER_HITS = [
-        {
-          id: "aud_clocks",
-          title: "Coldplay - Clocks (Full Length Master)",
-          artist: "Coldplay",
-          album: "A Rush of Blood to the Head",
-          duration: "05:22",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f5/93/8c/f5938c49-964c-31d1-4b33-78b634f71fb7/190295978075.jpg/300x300bb.jpg",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/Ja10V6Y/stream?app_name=PIXEL_DECK"
-        },
-        {
-          id: "radio_u80s",
-          title: "Underground 80s Non-Stop Live",
-          artist: "SomaFM Synth & Wave",
-          album: "24/7 Live Broadcast",
-          duration: "FULL LIVE",
-          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/u80s-128-mp3"
-        },
-        {
-          id: "aud_ariana_nasa",
-          title: "Ariana Grande - NASA (Full Studio Audio)",
-          artist: "Ariana Grande",
-          album: "thank u, next",
-          duration: "04:05",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/4a/5b/4b/4a5b4bc7-27b9-2917-8e68-360e22797fa9/24UMGIM26767.rgb.jpg/300x300bb.jpg",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/ePO7X/stream?app_name=PIXEL_DECK"
-        },
-        {
-          id: "aud_taylor_blank",
-          title: "Taylor Swift - Blank Space (Full Master)",
-          artist: "Taylor Swift",
-          album: "1989",
-          duration: "04:32",
-          thumb: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/5zZzMzM/stream?app_name=PIXEL_DECK"
-        },
-        {
-          id: "aud_synth_star",
-          title: "Star Hunter (Cinematic 80s Synthwave)",
-          artist: "Blythely",
-          album: "Synthwave Odyssey",
-          duration: "04:52",
-          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/93v00/stream?app_name=PIXEL_DECK"
-        },
-        {
-          id: "radio_vapor",
-          title: "Vaporwaves 24/7 Live Radio",
-          artist: "SomaFM Vaporwave",
-          album: "24/7 Live Broadcast",
-          duration: "FULL LIVE",
-          thumb: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/vaporwaves-128-mp3"
-        }
-      ];
+      const DEFAULT_ARTWORK = "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80";
 
-      // 24/7 Continuous Live Radio Stations
+      // 1. Curated 24/7 Live Radio Stations
       const RETRO_RADIO_STATIONS = [
         {
           id: "radio_u80s",
           title: "Underground 80s Live",
           artist: "SomaFM Synth & Wave",
           album: "24/7 Live Radio",
-          duration: "LIVE",
-          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/u80s-128-mp3"
+          duration: 0,
+          durationFormatted: "LIVE",
+          artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/u80s-128-mp3",
+          provider: "radio",
+          sourceType: "live"
         },
         {
           id: "radio_vapor",
           title: "Vaporwaves 24/7",
           artist: "SomaFM Vaporwave",
           album: "24/7 Live Radio",
-          duration: "LIVE",
-          thumb: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/vaporwaves-128-mp3"
+          duration: 0,
+          durationFormatted: "LIVE",
+          artwork: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/vaporwaves-128-mp3",
+          provider: "radio",
+          sourceType: "live"
         },
         {
           id: "radio_defcon",
           title: "DEF CON Chiptune Radio",
           artist: "Hacker Chiptune & Beats",
           album: "24/7 Live Radio",
-          duration: "LIVE",
-          thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/defcon-128-mp3"
+          duration: 0,
+          durationFormatted: "LIVE",
+          artwork: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/defcon-128-mp3",
+          provider: "radio",
+          sourceType: "live"
         },
         {
           id: "radio_groove",
           title: "Groove Salad Ambient",
           artist: "SomaFM Lo-Fi Ambient",
           album: "24/7 Live Radio",
-          duration: "LIVE",
-          thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/groovesalad-128-mp3"
+          duration: 0,
+          durationFormatted: "LIVE",
+          artwork: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/groovesalad-128-mp3",
+          provider: "radio",
+          sourceType: "live"
         }
       ];
 
-      // State
+      // Curated Starter Hits with Direct 320k MP3 Streams
+      const POPULAR_STARTER_HITS = [
+        {
+          id: "aud_clocks",
+          title: "Coldplay - Clocks (Full Length Master)",
+          artist: "Coldplay",
+          album: "A Rush of Blood to the Head",
+          duration: 322,
+          durationFormatted: "05:22",
+          artwork: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f5/93/8c/f5938c49-964c-31d1-4b33-78b634f71fb7/190295978075.jpg/300x300bb.jpg",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/Ja10V6Y/stream?app_name=PIXEL_DECK",
+          provider: "audius",
+          sourceType: "stream"
+        },
+        {
+          id: "radio_u80s",
+          title: "Underground 80s Non-Stop Live",
+          artist: "SomaFM Synth & Wave",
+          album: "24/7 Live Broadcast",
+          duration: 0,
+          durationFormatted: "FULL LIVE",
+          artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/u80s-128-mp3",
+          provider: "radio",
+          sourceType: "live"
+        },
+        {
+          id: "aud_ariana_nasa",
+          title: "Ariana Grande - NASA (Full Studio Audio)",
+          artist: "Ariana Grande",
+          album: "thank u, next",
+          duration: 245,
+          durationFormatted: "04:05",
+          artwork: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/4a/5b/4b/4a5b4bc7-27b9-2917-8e68-360e22797fa9/24UMGIM26767.rgb.jpg/300x300bb.jpg",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/ePO7X/stream?app_name=PIXEL_DECK",
+          provider: "audius",
+          sourceType: "stream"
+        },
+        {
+          id: "aud_taylor_blank",
+          title: "Taylor Swift - Blank Space (Full Master)",
+          artist: "Taylor Swift",
+          album: "1989",
+          duration: 272,
+          durationFormatted: "04:32",
+          artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/5zZzMzM/stream?app_name=PIXEL_DECK",
+          provider: "audius",
+          sourceType: "stream"
+        },
+        {
+          id: "aud_synth_star",
+          title: "Star Hunter (Cinematic 80s Synthwave)",
+          artist: "Blythely",
+          album: "Synthwave Odyssey",
+          duration: 292,
+          durationFormatted: "04:52",
+          artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/93v00/stream?app_name=PIXEL_DECK",
+          provider: "audius",
+          sourceType: "stream"
+        }
+      ];
+
+      function formatSecondsToTime(sec) {
+        if (isNaN(sec) || sec < 0) return "00:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+      }
+
+      // ==========================================
+      // 1. MODULAR MUSIC PROVIDER LAYER
+      // ==========================================
+      const MusicProvider = {
+        activeHost: "https://api.audius.co",
+        fallbackHosts: ["https://discoveryprovider.audius.co"],
+
+        async searchSongs(query, page = 0, limit = 20) {
+          if (!query || !query.trim()) return [];
+          const offset = page * limit;
+          const url = `${this.activeHost}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&offset=${offset}&limit=${limit}`;
+
+          try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("Search network error " + res.status);
+            const json = await res.json();
+            if (!json || !json.data) return [];
+
+            return json.data.map(item => ({
+              id: "aud_" + item.id,
+              title: item.title,
+              artist: item.user?.name || "Original Artist",
+              album: item.genre || "Single",
+              duration: item.duration || 210,
+              durationFormatted: formatSecondsToTime(item.duration || 210),
+              artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
+              streamUrl: `${this.activeHost}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
+              provider: "audius",
+              sourceType: "stream"
+            }));
+          } catch (err) {
+            console.warn("Primary host search failed, trying fallback:", err);
+            if (this.fallbackHosts.length > 0) {
+              const fallbackUrl = `${this.fallbackHosts[0]}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&offset=${offset}&limit=${limit}`;
+              const res2 = await fetch(fallbackUrl);
+              const json2 = await res2.json();
+              return (json2.data || []).map(item => ({
+                id: "aud_" + item.id,
+                title: item.title,
+                artist: item.user?.name || "Original Artist",
+                album: item.genre || "Single",
+                duration: item.duration || 210,
+                durationFormatted: formatSecondsToTime(item.duration || 210),
+                artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
+                streamUrl: `${this.fallbackHosts[0]}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
+                provider: "audius",
+                sourceType: "stream"
+              }));
+            }
+            return [];
+          }
+        },
+
+        async getTrending(limit = 20) {
+          try {
+            const res = await fetch(`${this.activeHost}/v1/tracks/trending?app_name=PIXEL_DECK&limit=${limit}`);
+            const json = await res.json();
+            return (json.data || []).map(item => ({
+              id: "aud_" + item.id,
+              title: item.title,
+              artist: item.user?.name || "Original Artist",
+              album: item.genre || "Trending",
+              duration: item.duration || 210,
+              durationFormatted: formatSecondsToTime(item.duration || 210),
+              artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
+              streamUrl: `${this.activeHost}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
+              provider: "audius",
+              sourceType: "stream"
+            }));
+          } catch (_) {
+            return POPULAR_STARTER_HITS;
+          }
+        },
+
+        getRadioStations() {
+          return RETRO_RADIO_STATIONS;
+        }
+      };
+
+      // ==========================================
+      // 2. RECENTLY PLAYED MANAGER (VERIFIED THRESHOLD)
+      // ==========================================
+      const RecentlyPlayedManager = {
+        STORAGE_KEY: "PIXEL_DECK_RECENTLY_PLAYED",
+
+        getHistory() {
+          try {
+            return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+          } catch (_) {
+            return [];
+          }
+        },
+
+        recordPlayback(song) {
+          if (!song || !song.id) return;
+          try {
+            let history = this.getHistory();
+            // Remove duplicate of this song
+            history = history.filter(item => item.id !== song.id);
+            // Prepend with timestamp
+            history.unshift({
+              ...song,
+              playedAt: Date.now()
+            });
+            // Cap at 50 tracks
+            if (history.length > 50) history = history.slice(0, 50);
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
+          } catch (_) {}
+        },
+
+        clearHistory() {
+          try {
+            localStorage.removeItem(this.STORAGE_KEY);
+          } catch (_) {}
+        }
+      };
+
+      // ==========================================
+      // 3. CENTRALIZED PLAYER STATE MACHINE
+      // ==========================================
+      const PlayerStore = {
+        audio: document.getElementById("coreAudioPlayer"),
+        currentSong: null,
+        isPlaying: false,
+        currentTime: 0,
+        duration: 0,
+        volume: 0.9,
+        queue: [...POPULAR_STARTER_HITS],
+        currentIndex: 0,
+        repeatMode: false,
+        shuffleMode: false,
+        loading: false,
+        error: null,
+        playRequestId: 0,
+        recentlyPlayedRecorded: false,
+
+        init() {
+          this.audio.volume = this.volume;
+          this.bindAudioEvents();
+        },
+
+        bindAudioEvents() {
+          this.audio.addEventListener("timeupdate", () => {
+            if (!this.audio.duration) return;
+            this.currentTime = this.audio.currentTime;
+            this.duration = this.audio.duration;
+            
+            // Check verified listening threshold (3 seconds continuous playback)
+            if (this.currentTime >= 3 && !this.recentlyPlayedRecorded && this.currentSong) {
+              this.recentlyPlayedRecorded = true;
+              RecentlyPlayedManager.recordPlayback(this.currentSong);
+            }
+
+            renderTimelineProgress(this.currentTime, this.duration);
+          });
+
+          this.audio.addEventListener("ended", () => {
+            if (this.repeatMode) {
+              this.audio.currentTime = 0;
+              this.audio.play();
+            } else {
+              this.playNext();
+            }
+          });
+
+          this.audio.addEventListener("playing", () => {
+            this.isPlaying = true;
+            this.loading = false;
+            updatePlayerHUD();
+          });
+
+          this.audio.addEventListener("pause", () => {
+            this.isPlaying = false;
+            updatePlayerHUD();
+          });
+
+          this.audio.addEventListener("error", (e) => {
+            console.warn("Audio element error:", e);
+            this.isPlaying = false;
+            this.loading = false;
+            this.error = "Playback error";
+            showToastHud("PLAYBACK UNAVAILABLE FOR THIS TRACK");
+            updatePlayerHUD();
+          });
+        },
+
+        async play(song, newQueue = null, index = null) {
+          if (!song || !song.streamUrl) return;
+
+          const reqId = ++this.playRequestId;
+          this.loading = true;
+          this.error = null;
+          this.currentSong = song;
+          this.recentlyPlayedRecorded = false;
+
+          if (newQueue) this.queue = newQueue;
+          if (index !== null) this.currentIndex = index;
+
+          this.audio.src = song.streamUrl;
+          this.audio.load();
+
+          try {
+            await this.audio.play();
+            if (reqId !== this.playRequestId) return; // Discard stale request
+            this.isPlaying = true;
+            this.loading = false;
+            showToastHud("PLAYING: " + song.title);
+            updatePlayerHUD();
+            renderQueuePanel();
+          } catch (err) {
+            if (reqId !== this.playRequestId) return;
+            console.warn("Audio play rejected:", err);
+            this.isPlaying = false;
+            this.loading = false;
+            this.error = err.message;
+            showToastHud("TAP PLAY TO START");
+            updatePlayerHUD();
+          }
+        },
+
+        togglePlay() {
+          trigger8BitClick(650);
+          if (!this.currentSong && this.queue.length > 0) {
+            this.play(this.queue[0], null, 0);
+            return;
+          }
+
+          if (this.audio.paused) {
+            this.audio.play().then(() => {
+              this.isPlaying = true;
+              updatePlayerHUD();
+            }).catch(e => console.warn(e));
+          } else {
+            this.audio.pause();
+            this.isPlaying = false;
+            updatePlayerHUD();
+          }
+        },
+
+        playNext() {
+          trigger8BitClick(750);
+          if (this.queue.length === 0) return;
+          if (this.shuffleMode) {
+            this.currentIndex = Math.floor(Math.random() * this.queue.length);
+          } else {
+            this.currentIndex = (this.currentIndex + 1) % this.queue.length;
+          }
+          this.play(this.queue[this.currentIndex], null, this.currentIndex);
+        },
+
+        playPrevious() {
+          trigger8BitClick(480);
+          if (this.queue.length === 0) return;
+          if (this.audio.currentTime > 3) {
+            this.audio.currentTime = 0;
+            return;
+          }
+          this.currentIndex = (this.currentIndex - 1 + this.queue.length) % this.queue.length;
+          this.play(this.queue[this.currentIndex], null, this.currentIndex);
+        },
+
+        seek(sec) {
+          if (!this.audio.duration) return;
+          this.audio.currentTime = Math.max(0, Math.min(this.audio.duration, sec));
+        },
+
+        setVolume(pct) {
+          this.volume = pct / 100;
+          this.audio.volume = this.volume;
+        },
+
+        addToQueue(song) {
+          this.queue.push(song);
+          renderQueuePanel();
+          showToastHud("ADDED TO PLAY QUEUE");
+        },
+
+        removeFromQueue(idx) {
+          this.queue.splice(idx, 1);
+          renderQueuePanel();
+        },
+
+        clearQueue() {
+          this.queue = this.currentSong ? [this.currentSong] : [];
+          this.currentIndex = 0;
+          renderQueuePanel();
+          showToastHud("QUEUE CLEARED");
+        }
+      };
+
+      // ==========================================
+      // UI STATE & DOM BINDINGS
+      // ==========================================
       let activeTab = "trending";
       let viewMode = "list";
-      let queue = [...POPULAR_STARTER_HITS];
-      let currentTrackIndex = 0;
-      let currentTrack = null;
-      let isPlaying = false;
-      let isShuffle = false;
-      let isRepeat = false;
       let likedTracks = [];
+      let currentSearchResults = [];
+      let currentSearchQuery = "";
+      let currentSearchPage = 0;
       let sfxEnabled = true;
       let crtEnabled = true;
 
       // Equalizer Spectrum levels (16 bands)
       const eqLevels = new Float32Array(16);
 
-      // Web Audio Context for SFX
       let sfxAudioCtx = null;
       let sleepTimerInterval = null;
       let sleepTimerEnd = 0;
+      let searchDebounceTimer = null;
 
       // DOM Elements
-      const audio = document.getElementById("coreAudioPlayer");
       const playPauseBtn = document.getElementById("playPauseBtn");
       const playBtnText = document.getElementById("playBtnText");
       const playIconSvg = document.getElementById("playIconSvg");
@@ -1319,6 +1654,9 @@
       const viewListModeBtn = document.getElementById("viewListModeBtn");
       const viewGridModeBtn = document.getElementById("viewGridModeBtn");
       const catalogStatusLine = document.getElementById("catalogStatusLine");
+      const loadMoreContainer = document.getElementById("loadMoreContainer");
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+      const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
       // ==========================================
       // INITIALIZATION
@@ -1327,13 +1665,13 @@
         loadSavedPreferences();
         createSpectrumColumns(16);
         startClock();
+        PlayerStore.init();
         bindUserInteractions();
         renderQueuePanel();
         loopSpectrumVisualization();
         renderTrackList(POPULAR_STARTER_HITS);
       }
 
-      // Synthesized 8-Bit SFX
       function trigger8BitClick(freq = 520, dur = 0.04) {
         if (!sfxEnabled) return;
         try {
@@ -1384,14 +1722,11 @@
         }
       }
 
-      // ==========================================
-      // REACTIVE DANCING SPECTRUM VISUALIZER
-      // ==========================================
       function loopSpectrumVisualization() {
         function drawFrame() {
           requestAnimationFrame(drawFrame);
 
-          if (!isPlaying || audio.paused) {
+          if (!PlayerStore.isPlaying) {
             for (let i = 0; i < 16; i++) {
               eqLevels[i] = Math.max(0, eqLevels[i] - 0.4);
               updateColumnBlocks(i, Math.round(eqLevels[i]));
@@ -1402,14 +1737,14 @@
           const t = performance.now() / 1000;
           const beatPulse = Math.sin(t * 8) * 0.5 + 0.5;
           const subBeatPulse = Math.cos(t * 4) * 0.5 + 0.5;
-          const vol = audio.volume || 0.9;
+          const vol = PlayerStore.volume || 0.9;
 
           for (let i = 0; i < 16; i++) {
             const harmonic = Math.sin(t * (3.5 + i * 0.75) + i * 0.6) * 0.5 + 0.5;
             let target = (harmonic * 5.5 + beatPulse * 3.0 + subBeatPulse * 1.5) * vol;
             
-            if (i < 4) target = target * 1.15 + (Math.random() * 2.0); // Bass emphasis
-            else if (i > 11) target = target * 0.85 + (Math.random() * 2.2); // Treble flutter
+            if (i < 4) target = target * 1.15 + (Math.random() * 2.0);
+            else if (i > 11) target = target * 0.85 + (Math.random() * 2.2);
             else target += (Math.random() * 1.4);
 
             target = Math.min(10, Math.max(1, target));
@@ -1420,146 +1755,86 @@
         drawFrame();
       }
 
-      // ==========================================
-      // DIRECT NATIVE AUDIO PLAYBACK (100% SOUND OUTPUT)
-      // ==========================================
-      async function playTrack(track, index = null) {
-        if (!track || !track.streamUrl) return;
-
-        currentTrack = track;
-        if (index !== null) currentTrackIndex = index;
-
-        audio.src = track.streamUrl;
-        audio.volume = volumeSliderInput.value / 100;
-        audio.load();
-        
-        try {
-          await audio.play();
-          isPlaying = true;
-          updatePlayerHUD();
-          showToastHud("PLAYING: " + track.title);
-          liveStatusMsg.textContent = "PLAYING FULL SONG";
-        } catch (err) {
-          console.warn("Audio play error:", err);
-          liveStatusMsg.textContent = "TAP PLAY TO START";
-        }
-
-        updatePlayerHUD();
-        renderQueuePanel();
-      }
-
-      function togglePlay() {
-        trigger8BitClick(650);
-        if (!currentTrack && queue.length > 0) {
-          playTrack(queue[0], 0);
-          return;
-        }
-
-        if (audio.paused) {
-          audio.play().then(() => {
-            isPlaying = true;
-            updatePlayerHUD();
-            liveStatusMsg.textContent = "PLAYING FULL SONG";
-          }).catch(e => console.warn(e));
-        } else {
-          audio.pause();
-          isPlaying = false;
-          updatePlayerHUD();
-          liveStatusMsg.textContent = "PAUSED";
-        }
-      }
-
-      function playNext() {
-        trigger8BitClick(750);
-        if (queue.length === 0) return;
-        if (isShuffle) {
-          currentTrackIndex = Math.floor(Math.random() * queue.length);
-        } else {
-          currentTrackIndex = (currentTrackIndex + 1) % queue.length;
-        }
-        playTrack(queue[currentTrackIndex], currentTrackIndex);
-      }
-
-      function playPrevious() {
-        trigger8BitClick(480);
-        if (queue.length === 0) return;
-        if (audio.currentTime > 3) {
-          audio.currentTime = 0;
-          return;
-        }
-        currentTrackIndex = (currentTrackIndex - 1 + queue.length) % queue.length;
-        playTrack(queue[currentTrackIndex], currentTrackIndex);
+      function renderTimelineProgress(cur, dur) {
+        if (!dur || isNaN(dur)) return;
+        const pct = (cur / dur) * 100;
+        scrubberFillBar.style.width = Math.min(100, Math.max(0, pct)) + "%";
+        currentTimeDisplay.textContent = formatSecondsToTime(cur);
+        totalTimeDisplay.textContent = formatSecondsToTime(dur);
       }
 
       function updatePlayerHUD() {
-        if (!currentTrack) return;
-        marqueeTrackTitle.textContent = `▶ ${currentTrack.title.toUpperCase()} • ARTIST: ${currentTrack.artist.toUpperCase()} • ALBUM: ${(currentTrack.album || "SINGLE").toUpperCase()}`;
-        artistSubText.textContent = currentTrack.artist.toUpperCase();
-        genreBadgeText.textContent = (currentTrack.album || "FULL-LENGTH AUDIO").toUpperCase();
+        const song = PlayerStore.currentSong;
+        if (!song) return;
+
+        marqueeTrackTitle.textContent = `▶ ${song.title.toUpperCase()} • ARTIST: ${song.artist.toUpperCase()} • ALBUM: ${(song.album || "SINGLE").toUpperCase()}`;
+        artistSubText.textContent = song.artist.toUpperCase();
+        genreBadgeText.textContent = (song.album || "FULL-LENGTH AUDIO").toUpperCase();
         
-        sourceLabelBadge.textContent = currentTrack.streamUrl && currentTrack.streamUrl.includes("soma") 
-          ? "SOURCE: 24/7 RETRO LIVE STREAM" 
-          : "SOURCE: FULL-LENGTH MASTER AUDIO (320K)";
+        sourceLabelBadge.textContent = song.sourceType === "live" 
+          ? "SOURCE: 24/7 RETRO LIVE BROADCAST" 
+          : "SOURCE: DIRECT 320K MASTER AUDIO";
 
-        playBtnText.textContent = isPlaying ? "PAUSE" : "PLAY";
-        playIconSvg.innerHTML = isPlaying ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' : '<path d="M3 2l11 6-11 6V2z"/>';
+        liveStatusMsg.textContent = PlayerStore.isPlaying ? "PLAYING AUDIO" : (PlayerStore.loading ? "LOADING..." : "PAUSED");
 
-        cassetteTapeElement.classList.toggle("tape-playing", isPlaying);
+        playBtnText.textContent = PlayerStore.isPlaying ? "PAUSE" : "PLAY";
+        playIconSvg.innerHTML = PlayerStore.isPlaying ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' : '<path d="M3 2l11 6-11 6V2z"/>';
 
-        const isLiked = likedTracks.some(t => t.id === currentTrack.id);
+        cassetteTapeElement.classList.toggle("tape-playing", PlayerStore.isPlaying);
+
+        const isLiked = likedTracks.some(t => t.id === song.id);
         likeActiveBtn.style.color = isLiked ? "var(--accent-p)" : "var(--text-main)";
 
         document.querySelectorAll(".track-row-item, .grid-card-item").forEach(el => {
-          el.classList.toggle("playing", el.dataset.id === currentTrack.id);
+          el.classList.toggle("playing", el.dataset.id === song.id);
         });
       }
 
       // ==========================================
-      // REAL-TIME AUDIUS FULL-LENGTH SONG SEARCH
+      // SEARCH & PAGINATION CONTROLLER
       // ==========================================
-      async function searchGlobalMusic(query) {
+      async function performSearch(query, isNew = true) {
         if (!query || !query.trim()) return;
         trigger8BitClick(800);
-        liveStatusMsg.textContent = "SEARCHING FULL SONGS...";
-        catalogStatusLine.textContent = `SEARCHING FOR "${query.toUpperCase()}"...`;
-        renderLoadingPlaceholders();
+
+        if (isNew) {
+          currentSearchQuery = query.trim();
+          currentSearchPage = 0;
+          currentSearchResults = [];
+          renderLoadingPlaceholders();
+          loadMoreContainer.style.display = "none";
+        }
+
+        catalogStatusLine.textContent = `SEARCHING FOR "${currentSearchQuery.toUpperCase()}" (PAGE ${currentSearchPage + 1})...`;
+        liveStatusMsg.textContent = "SEARCHING...";
 
         try {
-          const res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&limit=30`);
-          const json = await res.json();
-          let results = [];
+          const songs = await MusicProvider.searchSongs(currentSearchQuery, currentSearchPage, 20);
 
-          if (json && json.data && json.data.length > 0) {
-            results = json.data.map(item => {
-              const artwork = item.artwork?.["480x480"] || item.artwork?.["150x150"] || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80";
-              return {
-                id: "aud_" + item.id,
-                title: item.title,
-                artist: item.user?.name || "Original Artist",
-                album: item.genre || "Single",
-                duration: formatSecondsToTime(item.duration || 210),
-                thumb: artwork,
-                streamUrl: `https://discoveryprovider.audius.co/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`
-              };
-            });
+          if (isNew) {
+            currentSearchResults = songs;
+          } else {
+            currentSearchResults = [...currentSearchResults, ...songs];
           }
 
-          if (results.length > 0) {
-            catalogStatusLine.textContent = `FOUND ${results.length} FULL-LENGTH TRACKS FOR "${query.toUpperCase()}"`;
+          if (currentSearchResults.length > 0) {
+            catalogStatusLine.textContent = `FOUND ${currentSearchResults.length} TRACKS FOR "${currentSearchQuery.toUpperCase()}"`;
             liveStatusMsg.textContent = "RESULTS READY";
-            renderTrackList(results);
+            renderTrackList(currentSearchResults);
+            // Show load more if returned 20 tracks
+            loadMoreContainer.style.display = songs.length >= 20 ? "flex" : "none";
           } else {
             trackListWrapper.innerHTML = `
               <div style="padding:24px; text-align:center; color:var(--text-dim);">
-                NO SONGS FOUND FOR "${query.toUpperCase()}". TRY SEARCHING ANOTHER ARTIST OR TRACK.
+                NO SONGS FOUND FOR "${currentSearchQuery.toUpperCase()}". TRY SEARCHING ANOTHER ARTIST OR TRACK.
               </div>
             `;
             catalogStatusLine.textContent = `0 RESULTS FOUND`;
+            loadMoreContainer.style.display = "none";
           }
-        } catch (e) {
-          console.warn("Search failed, loading fallback popular hits:", e);
-          catalogStatusLine.textContent = `POPULAR FULL-LENGTH HITS`;
-          renderTrackList(POPULAR_STARTER_HITS);
+        } catch (err) {
+          console.warn("Search error:", err);
+          catalogStatusLine.textContent = `ERROR SEARCHING TRACKS`;
         }
       }
 
@@ -1589,17 +1864,17 @@
             const row = document.createElement("div");
             row.className = "track-row-item";
             row.dataset.id = track.id;
-            if (currentTrack && currentTrack.id === track.id) row.classList.add("playing");
+            if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) row.classList.add("playing");
 
             row.innerHTML = `
               <div class="row-index">${idx + 1}</div>
-              <img src="${track.thumb}" class="row-art-thumb" alt="${track.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80'" />
+              <img src="${track.artwork}" class="row-art-thumb" alt="${track.title}" loading="lazy" onerror="this.src='${DEFAULT_ARTWORK}'" />
               <div class="row-main-info">
                 <span class="row-title-text" title="${track.title}">${track.title}</span>
                 <span class="row-artist-text">${track.artist}</span>
               </div>
               <div class="row-album-text">${track.album || "Single"}</div>
-              <div class="row-duration-text">${track.duration || "03:30"}</div>
+              <div class="row-duration-text">${track.durationFormatted || "03:30"}</div>
               <div class="row-actions-group">
                 <button class="pixel-btn pixel-btn-sm btn-like-row" title="Like">♥</button>
                 <button class="pixel-btn pixel-btn-sm btn-queue-row" title="Add to Queue">+</button>
@@ -1609,8 +1884,8 @@
             row.addEventListener("click", (e) => {
               if (e.target.closest(".btn-like-row") || e.target.closest(".btn-queue-row")) return;
               trigger8BitClick(600);
-              queue = [track, ...queue.filter(t => t.id !== track.id)];
-              playTrack(track, 0);
+              const newQueue = [track, ...PlayerStore.queue.filter(t => t.id !== track.id)];
+              PlayerStore.play(track, newQueue, 0);
             });
 
             row.querySelector(".btn-like-row").addEventListener("click", (e) => {
@@ -1620,7 +1895,7 @@
 
             row.querySelector(".btn-queue-row").addEventListener("click", (e) => {
               e.stopPropagation();
-              addToQueue(track);
+              PlayerStore.addToQueue(track);
             });
 
             trackListWrapper.appendChild(row);
@@ -1628,14 +1903,14 @@
             const card = document.createElement("div");
             card.className = "grid-card-item";
             card.dataset.id = track.id;
-            if (currentTrack && currentTrack.id === track.id) card.classList.add("playing");
+            if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) card.classList.add("playing");
 
             card.innerHTML = `
-              <img src="${track.thumb}" style="width:100%; height:110px; object-fit:cover; border:1px solid var(--border-dark);" alt="${track.title}" />
+              <img src="${track.artwork}" style="width:100%; height:110px; object-fit:cover; border:1px solid var(--border-dark);" alt="${track.title}" onerror="this.src='${DEFAULT_ARTWORK}'" />
               <div style="font-size:12px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${track.title}</div>
               <div style="font-size:11px; color:var(--text-artist); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${track.artist}</div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-                <span style="font-size:8px; color:var(--text-dim);">${track.duration || "03:30"}</span>
+                <span style="font-size:8px; color:var(--text-dim);">${track.durationFormatted || "03:30"}</span>
                 <div style="display:flex; gap:2px;">
                   <button class="pixel-btn pixel-btn-sm btn-like-row">♥</button>
                   <button class="pixel-btn pixel-btn-sm btn-queue-row">+</button>
@@ -1646,8 +1921,8 @@
             card.addEventListener("click", (e) => {
               if (e.target.closest(".btn-like-row") || e.target.closest(".btn-queue-row")) return;
               trigger8BitClick(600);
-              queue = [track, ...queue.filter(t => t.id !== track.id)];
-              playTrack(track, 0);
+              const newQueue = [track, ...PlayerStore.queue.filter(t => t.id !== track.id)];
+              PlayerStore.play(track, newQueue, 0);
             });
 
             card.querySelector(".btn-like-row").addEventListener("click", (e) => {
@@ -1657,7 +1932,7 @@
 
             card.querySelector(".btn-queue-row").addEventListener("click", (e) => {
               e.stopPropagation();
-              addToQueue(track);
+              PlayerStore.addToQueue(track);
             });
 
             trackListWrapper.appendChild(card);
@@ -1669,12 +1944,14 @@
         trackListWrapper.innerHTML = "";
         trackListWrapper.className = "tracks-table-view";
         catalogStatusLine.textContent = "LIVE 24/7 BROADCAST STATIONS";
+        loadMoreContainer.style.display = "none";
+        clearHistoryBtn.style.display = "none";
 
         RETRO_RADIO_STATIONS.forEach(station => {
           const row = document.createElement("div");
           row.className = "radio-station-card";
           row.innerHTML = `
-            <img src="${station.thumb}" style="width:48px; height:48px; border:1px solid var(--border-dark); object-fit:cover;" alt="${station.title}" />
+            <img src="${station.artwork}" style="width:48px; height:48px; border:1px solid var(--border-dark); object-fit:cover;" alt="${station.title}" />
             <div style="flex:1;">
               <div style="font-size:14px; font-weight:bold; color:var(--text-bright);">${station.title}</div>
               <div style="font-size:12px; color:var(--text-artist);">${station.artist}</div>
@@ -1685,14 +1962,33 @@
 
           row.addEventListener("click", () => {
             trigger8BitClick(700);
-            playTrack(station);
+            PlayerStore.play(station);
           });
 
           trackListWrapper.appendChild(row);
         });
       }
 
+      function renderRecentlyPlayedTab() {
+        const history = RecentlyPlayedManager.getHistory();
+        catalogStatusLine.textContent = `RECENTLY PLAYED (${history.length} TRACKS)`;
+        loadMoreContainer.style.display = "none";
+        clearHistoryBtn.style.display = history.length > 0 ? "inline-flex" : "none";
+
+        if (history.length === 0) {
+          trackListWrapper.innerHTML = `
+            <div style="padding:32px 16px; text-align:center; color:var(--text-dim);">
+              NO RECENTLY PLAYED TRACKS YET. PLAY SONGS TO BUILD YOUR HISTORY.
+            </div>
+          `;
+        } else {
+          renderTrackList(history);
+        }
+      }
+
       function renderLocalFilesTab() {
+        loadMoreContainer.style.display = "none";
+        clearHistoryBtn.style.display = "none";
         trackListWrapper.innerHTML = `
           <div style="border:2px dashed var(--accent-s); background:rgba(0,229,255,0.06); padding:32px 16px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
             <svg class="pixel-icon-svg" style="width:32px; height:32px;" viewBox="0 0 16 16"><path d="M1 3h14v10H1V3zm2 2v6h10V5H3z"/></svg>
@@ -1721,14 +2017,17 @@
             title: file.name.replace(/\.[^/.]+$/, ""),
             artist: "LOCAL AUDIO",
             album: "PC STORAGE",
-            duration: "FULL",
-            thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
-            streamUrl: url
+            duration: 0,
+            durationFormatted: "LOCAL",
+            artwork: DEFAULT_ARTWORK,
+            streamUrl: url,
+            provider: "local",
+            sourceType: "file"
           });
         }
         if (loaded.length > 0) {
-          queue = [...loaded, ...queue];
-          playTrack(loaded[0], 0);
+          PlayerStore.queue = [...loaded, ...PlayerStore.queue];
+          PlayerStore.play(loaded[0], null, 0);
           showToastHud(`LOADED ${loaded.length} LOCAL SONGS`);
         }
       }
@@ -1751,27 +2050,17 @@
         }
       }
 
-      // ==========================================
-      // QUEUE & FAVORITES
-      // ==========================================
-      function addToQueue(track) {
-        trigger8BitClick(540);
-        queue.push(track);
-        renderQueuePanel();
-        showToastHud("ADDED TO PLAY QUEUE");
-      }
-
       function renderQueuePanel() {
         queueRowsContainer.innerHTML = "";
-        if (queue.length === 0) {
+        if (PlayerStore.queue.length === 0) {
           queueRowsContainer.innerHTML = `<div style="padding:8px; font-size:8px; color:var(--text-dim);">QUEUE IS EMPTY.</div>`;
           return;
         }
 
-        queue.forEach((track, idx) => {
+        PlayerStore.queue.forEach((track, idx) => {
           const row = document.createElement("div");
           row.className = "queue-row";
-          if (currentTrack && currentTrack.id === track.id) row.classList.add("active");
+          if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) row.classList.add("active");
 
           row.innerHTML = `
             <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
@@ -1782,13 +2071,12 @@
 
           row.addEventListener("click", (e) => {
             if (e.target.classList.contains("btn-del-q")) return;
-            playTrack(track, idx);
+            PlayerStore.play(track, null, idx);
           });
 
           row.querySelector(".btn-del-q").addEventListener("click", (e) => {
             e.stopPropagation();
-            queue.splice(idx, 1);
-            renderQueuePanel();
+            PlayerStore.removeFromQueue(idx);
           });
 
           queueRowsContainer.appendChild(row);
@@ -1809,81 +2097,55 @@
         if (activeTab === "liked") renderTrackList(likedTracks);
       }
 
-      function formatSecondsToTime(sec) {
-        if (isNaN(sec) || sec < 0) return "00:00";
-        const m = Math.floor(sec / 60);
-        const s = Math.floor(sec % 60);
-        return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-      }
-
-      // Sync Native Audio Progress
-      audio.addEventListener("timeupdate", () => {
-        if (!audio.duration) return;
-        const pct = (audio.currentTime / audio.duration) * 100;
-        scrubberFillBar.style.width = pct + "%";
-        currentTimeDisplay.textContent = formatSecondsToTime(audio.currentTime);
-        totalTimeDisplay.textContent = formatSecondsToTime(audio.duration);
-      });
-
-      audio.addEventListener("ended", () => {
-        if (isRepeat) {
-          audio.currentTime = 0;
-          audio.play();
-        } else {
-          playNext();
-        }
-      });
-
-      scrubberTrackWrap.addEventListener("click", (e) => {
-        if (!audio.duration) return;
-        const rect = scrubberTrackWrap.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const pct = clickX / rect.width;
-        audio.currentTime = pct * audio.duration;
-      });
-
       // ==========================================
       // USER INTERACTIONS & EVENT BINDINGS
       // ==========================================
       function bindUserInteractions() {
-        playPauseBtn.addEventListener("click", togglePlay);
-        nextBtn.addEventListener("click", playNext);
-        prevBtn.addEventListener("click", playPrevious);
+        playPauseBtn.addEventListener("click", () => PlayerStore.togglePlay());
+        nextBtn.addEventListener("click", () => PlayerStore.playNext());
+        prevBtn.addEventListener("click", () => PlayerStore.playPrevious());
 
         rwdBtn.addEventListener("click", () => {
           trigger8BitClick(420);
-          audio.currentTime = Math.max(0, audio.currentTime - 10);
+          PlayerStore.seek(PlayerStore.currentTime - 10);
         });
 
         fwdBtn.addEventListener("click", () => {
           trigger8BitClick(580);
-          audio.currentTime = Math.min(audio.duration || 9999, audio.currentTime + 10);
+          PlayerStore.seek(PlayerStore.currentTime + 10);
         });
 
         shuffleBtn.addEventListener("click", () => {
-          isShuffle = !isShuffle;
-          shuffleBtn.classList.toggle("active", isShuffle);
-          showToastHud(isShuffle ? "SHUFFLE: ON" : "SHUFFLE: OFF");
+          PlayerStore.shuffleMode = !PlayerStore.shuffleMode;
+          shuffleBtn.classList.toggle("active", PlayerStore.shuffleMode);
+          showToastHud(PlayerStore.shuffleMode ? "SHUFFLE: ON" : "SHUFFLE: OFF");
         });
 
         repeatBtn.addEventListener("click", () => {
-          isRepeat = !isRepeat;
-          repeatBtn.classList.toggle("active", isRepeat);
-          showToastHud(isRepeat ? "REPEAT: ON" : "REPEAT: OFF");
+          PlayerStore.repeatMode = !PlayerStore.repeatMode;
+          repeatBtn.classList.toggle("active", PlayerStore.repeatMode);
+          showToastHud(PlayerStore.repeatMode ? "REPEAT: ON" : "REPEAT: OFF");
         });
 
         volumeSliderInput.addEventListener("input", (e) => {
-          audio.volume = e.target.value / 100;
+          PlayerStore.setVolume(parseInt(e.target.value, 10));
         });
 
         likeActiveBtn.addEventListener("click", () => {
-          if (currentTrack) toggleLike(currentTrack);
+          if (PlayerStore.currentSong) toggleLike(PlayerStore.currentSong);
         });
 
         clearQueueActionBtn.addEventListener("click", () => {
-          queue = currentTrack ? [currentTrack] : [];
-          renderQueuePanel();
-          showToastHud("QUEUE CLEARED");
+          PlayerStore.clearQueue();
+        });
+
+        // Scrubber Seeking
+        scrubberTrackWrap.addEventListener("click", (e) => {
+          if (!PlayerStore.duration) return;
+          const rect = scrubberTrackWrap.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const pct = Math.max(0, Math.min(1, clickX / rect.width));
+          PlayerStore.seek(pct * PlayerStore.duration);
         });
 
         // Quick Radio Buttons
@@ -1892,15 +2154,37 @@
             const station = RETRO_RADIO_STATIONS.find(s => s.id === btn.dataset.id);
             if (station) {
               trigger8BitClick(700);
-              playTrack(station);
+              PlayerStore.play(station);
             }
           });
         });
 
-        // Search Trigger
-        executeSearchBtn.addEventListener("click", () => searchGlobalMusic(globalSongSearchInput.value));
+        // Search Trigger & Debounce
+        executeSearchBtn.addEventListener("click", () => performSearch(globalSongSearchInput.value, true));
         globalSongSearchInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") searchGlobalMusic(globalSongSearchInput.value);
+          if (e.key === "Enter") performSearch(globalSongSearchInput.value, true);
+        });
+        globalSongSearchInput.addEventListener("input", (e) => {
+          clearTimeout(searchDebounceTimer);
+          searchDebounceTimer = setTimeout(() => {
+            if (e.target.value.trim().length >= 3) {
+              performSearch(e.target.value, true);
+            }
+          }, 400);
+        });
+
+        // Load More Pagination Trigger
+        loadMoreBtn.addEventListener("click", () => {
+          currentSearchPage++;
+          performSearch(currentSearchQuery, false);
+        });
+
+        // Clear History Trigger
+        clearHistoryBtn.addEventListener("click", () => {
+          trigger8BitClick(440);
+          RecentlyPlayedManager.clearHistory();
+          renderRecentlyPlayedTab();
+          showToastHud("RECENT HISTORY CLEARED");
         });
 
         // Preset Filter Chips
@@ -1909,7 +2193,8 @@
             trigger8BitClick(500);
             document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
             chip.classList.add("active");
-            searchGlobalMusic(chip.dataset.query);
+            globalSongSearchInput.value = chip.dataset.query;
+            performSearch(chip.dataset.query, true);
           });
         });
 
@@ -1922,14 +2207,29 @@
             activeTab = tab.dataset.tab;
 
             searchBarSection.style.display = (activeTab === "trending" || activeTab === "search") ? "flex" : "none";
+            clearHistoryBtn.style.display = "none";
+            loadMoreContainer.style.display = "none";
 
-            if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
-            else if (activeTab === "search") searchGlobalMusic(globalSongSearchInput.value || "Coldplay");
-            else if (activeTab === "radio") renderRadioTab();
-            else if (activeTab === "liked") {
-              catalogStatusLine.textContent = "YOUR LIKED HITS";
+            if (activeTab === "trending") {
+              catalogStatusLine.textContent = "TOP CURATED HITS";
+              renderTrackList(POPULAR_STARTER_HITS);
+            } else if (activeTab === "search") {
+              if (currentSearchResults.length > 0) {
+                catalogStatusLine.textContent = `FOUND ${currentSearchResults.length} TRACKS FOR "${currentSearchQuery.toUpperCase()}"`;
+                renderTrackList(currentSearchResults);
+              } else {
+                performSearch(globalSongSearchInput.value || "Coldplay", true);
+              }
+            } else if (activeTab === "recent") {
+              renderRecentlyPlayedTab();
+            } else if (activeTab === "radio") {
+              renderRadioTab();
+            } else if (activeTab === "liked") {
+              catalogStatusLine.textContent = `YOUR LIKED HITS (${likedTracks.length} TRACKS)`;
               renderTrackList(likedTracks);
-            } else if (activeTab === "local") renderLocalFilesTab();
+            } else if (activeTab === "local") {
+              renderLocalFilesTab();
+            }
           });
         });
 
@@ -1938,20 +2238,14 @@
           viewMode = "list";
           viewListModeBtn.classList.add("active");
           viewGridModeBtn.classList.remove("active");
-          if (activeTab === "liked") renderTrackList(likedTracks);
-          else if (activeTab === "radio") renderRadioTab();
-          else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
-          else searchGlobalMusic(globalSongSearchInput.value || "Coldplay");
+          refreshActiveTabView();
         });
 
         viewGridModeBtn.addEventListener("click", () => {
           viewMode = "grid";
           viewGridModeBtn.classList.add("active");
           viewListModeBtn.classList.remove("active");
-          if (activeTab === "liked") renderTrackList(likedTracks);
-          else if (activeTab === "radio") renderRadioTab();
-          else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
-          else searchGlobalMusic(globalSongSearchInput.value || "Coldplay");
+          refreshActiveTabView();
         });
 
         // Theme Switcher
@@ -1982,6 +2276,14 @@
         });
       }
 
+      function refreshActiveTabView() {
+        if (activeTab === "recent") renderRecentlyPlayedTab();
+        else if (activeTab === "liked") renderTrackList(likedTracks);
+        else if (activeTab === "radio") renderRadioTab();
+        else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
+        else if (activeTab === "search") renderTrackList(currentSearchResults);
+      }
+
       function configureSleepTimer(min) {
         clearInterval(sleepTimerInterval);
         if (min === 0) {
@@ -1997,8 +2299,8 @@
           const rem = Math.max(0, Math.floor((sleepTimerEnd - Date.now()) / 1000));
           if (rem <= 0) {
             clearInterval(sleepTimerInterval);
-            audio.pause();
-            isPlaying = false;
+            PlayerStore.audio.pause();
+            PlayerStore.isPlaying = false;
             updatePlayerHUD();
             sleepTimerReadout.textContent = "OFF";
             showToastHud("SLEEP TIMER: PAUSED");
