@@ -1133,15 +1133,16 @@
       </div>
 
       <div class="genre-filter-chips">
-        <span class="filter-chip active" data-query="Coldplay">🪐 COLDPLAY</span>
+        <span class="filter-chip active" data-query="Hukum Anirudh">⚡ TAMIL HITS (Anirudh)</span>
+        <span class="filter-chip" data-query="Samajavaragamana">🔥 TELUGU HITS (Sid Sriram)</span>
+        <span class="filter-chip" data-query="Arijit Singh">🇮🇳 HINDI HITS (Arijit Singh)</span>
+        <span class="filter-chip" data-query="AR Rahman">🎶 AR RAHMAN</span>
         <span class="filter-chip" data-query="Taylor Swift">✨ TAYLOR SWIFT</span>
-        <span class="filter-chip" data-query="Ariana Grande">🌸 ARIANA GRANDE</span>
-        <span class="filter-chip" data-query="Ed Sheeran">🎸 ED SHEERAN</span>
-        <span class="filter-chip" data-query="Arijit Singh">🎤 ARIJIT SINGH</span>
+        <span class="filter-chip" data-query="Coldplay">🪐 COLDPLAY</span>
         <span class="filter-chip" data-query="The Weeknd">🌃 THE WEEKND</span>
+        <span class="filter-chip" data-query="Ed Sheeran">🎸 ED SHEERAN</span>
         <span class="filter-chip" data-query="Hans Zimmer">🎻 HANS ZIMMER</span>
         <span class="filter-chip" data-query="Synthwave">🌅 SYNTHWAVE</span>
-        <span class="filter-chip" data-query="Chiptune">👾 CHIPTUNE</span>
         <span class="filter-chip" data-query="Lofi">☕ LO-FI BEATS</span>
       </div>
     </div>
@@ -1235,18 +1236,66 @@
         }
       ];
 
-      // Curated Starter Hits with Direct 320k MP3 Streams
+      // Curated Universal Global Starter Hits (Indian, Hollywood & Retro Radios)
       const POPULAR_STARTER_HITS = [
         {
-          id: "aud_clocks",
-          title: "Coldplay - Clocks (Full Length Master)",
+          id: "saavn_hukum",
+          title: "Hukum - Thalaivar Alappara",
+          artist: "Anirudh Ravichander, Super Subu",
+          album: "Jailer (Tamil)",
+          duration: 207,
+          durationFormatted: "03:27",
+          artwork: "https://c.saavncdn.com/187/Jailer-Tamil-2023-20230728083838-500x500.jpg",
+          streamUrl: "https://aac.saavncdn.com/187/0c4d0aee91a3ac81d4b645ec448a2960_320.mp4",
+          provider: "jiosaavn",
+          sourceType: "stream"
+        },
+        {
+          id: "saavn_kesariya",
+          title: "Kesariya",
+          artist: "Pritam, Arijit Singh, Amitabh Bhattacharya",
+          album: "Brahmastra (Hindi)",
+          duration: 268,
+          durationFormatted: "04:28",
+          artwork: "https://c.saavncdn.com/871/Kesariya-From-Brahmastra-Hindi-2022-20220717092820-500x500.jpg",
+          streamUrl: "https://aac.saavncdn.com/871/c2febd353f3a076a406fa37510f31f9f_320.mp4",
+          provider: "jiosaavn",
+          sourceType: "stream"
+        },
+        {
+          id: "saavn_samaja",
+          title: "Samajavaragamana",
+          artist: "Sid Sriram, S.S. Thaman",
+          album: "Ala Vaikunthapurramuloo (Telugu)",
+          duration: 219,
+          durationFormatted: "03:39",
+          artwork: "https://c.saavncdn.com/517/Samajavaragamana-Telugu-2019-20190928014524-500x500.jpg",
+          streamUrl: "https://aac.saavncdn.com/517/339d76dce4db4f43f4721eec2d8f03ef_320.mp4",
+          provider: "jiosaavn",
+          sourceType: "stream"
+        },
+        {
+          id: "saavn_cruel",
+          title: "Cruel Summer",
+          artist: "Taylor Swift",
+          album: "Lover (Hollywood)",
+          duration: 178,
+          durationFormatted: "02:58",
+          artwork: "https://c.saavncdn.com/228/Lover-English-2019-20190823055848-500x500.jpg",
+          streamUrl: "https://aac.saavncdn.com/228/a4c61b868434d166db4171d7ff4292f2_320.mp4",
+          provider: "jiosaavn",
+          sourceType: "stream"
+        },
+        {
+          id: "saavn_yellow",
+          title: "Yellow",
           artist: "Coldplay",
-          album: "A Rush of Blood to the Head",
-          duration: 322,
-          durationFormatted: "05:22",
-          artwork: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f5/93/8c/f5938c49-964c-31d1-4b33-78b634f71fb7/190295978075.jpg/300x300bb.jpg",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/Ja10V6Y/stream?app_name=PIXEL_DECK",
-          provider: "audius",
+          album: "Parachutes (Hollywood)",
+          duration: 266,
+          durationFormatted: "04:26",
+          artwork: "https://c.saavncdn.com/254/Yellow-English-2000-500x500.jpg",
+          streamUrl: "https://aac.saavncdn.com/254/6ebc38a6a7ea892f3a27cd66c71529d6_320.mp4",
+          provider: "jiosaavn",
           sourceType: "stream"
         },
         {
@@ -1260,42 +1309,6 @@
           streamUrl: "https://ice1.somafm.com/u80s-128-mp3",
           provider: "radio",
           sourceType: "live"
-        },
-        {
-          id: "aud_ariana_nasa",
-          title: "Ariana Grande - NASA (Full Studio Audio)",
-          artist: "Ariana Grande",
-          album: "thank u, next",
-          duration: 245,
-          durationFormatted: "04:05",
-          artwork: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/4a/5b/4b/4a5b4bc7-27b9-2917-8e68-360e22797fa9/24UMGIM26767.rgb.jpg/300x300bb.jpg",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/ePO7X/stream?app_name=PIXEL_DECK",
-          provider: "audius",
-          sourceType: "stream"
-        },
-        {
-          id: "aud_taylor_blank",
-          title: "Taylor Swift - Blank Space (Full Master)",
-          artist: "Taylor Swift",
-          album: "1989",
-          duration: 272,
-          durationFormatted: "04:32",
-          artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/5zZzMzM/stream?app_name=PIXEL_DECK",
-          provider: "audius",
-          sourceType: "stream"
-        },
-        {
-          id: "aud_synth_star",
-          title: "Star Hunter (Cinematic 80s Synthwave)",
-          artist: "Blythely",
-          album: "Synthwave Odyssey",
-          duration: 292,
-          durationFormatted: "04:52",
-          artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/93v00/stream?app_name=PIXEL_DECK",
-          provider: "audius",
-          sourceType: "stream"
         }
       ];
 
@@ -1307,77 +1320,67 @@
       }
 
       // ==========================================
-      // 1. MODULAR MUSIC PROVIDER LAYER
+      // 1. MODULAR UNIVERSAL MUSIC PROVIDER LAYER (INDIAN & HOLLYWOOD)
       // ==========================================
       const MusicProvider = {
-        activeHost: "https://api.audius.co",
-        fallbackHosts: ["https://discoveryprovider.audius.co"],
+        apiEndpoint: "/api/search",
+        audiusHost: "https://api.audius.co",
 
         async searchSongs(query, page = 0, limit = 20) {
           if (!query || !query.trim()) return [];
-          const offset = page * limit;
-          const url = `${this.activeHost}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&offset=${offset}&limit=${limit}`;
+          const saavnPage = page + 1;
 
+          // 1. Primary: Query High-Quality Universal Catalog (Indian & Hollywood)
           try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error("Search network error " + res.status);
-            const json = await res.json();
-            if (!json || !json.data) return [];
-
-            return json.data.map(item => ({
-              id: "aud_" + item.id,
-              title: item.title,
-              artist: item.user?.name || "Original Artist",
-              album: item.genre || "Single",
-              duration: item.duration || 210,
-              durationFormatted: formatSecondsToTime(item.duration || 210),
-              artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
-              streamUrl: `${this.activeHost}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
-              provider: "audius",
-              sourceType: "stream"
-            }));
-          } catch (err) {
-            console.warn("Primary host search failed, trying fallback:", err);
-            if (this.fallbackHosts.length > 0) {
-              const fallbackUrl = `${this.fallbackHosts[0]}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&offset=${offset}&limit=${limit}`;
-              const res2 = await fetch(fallbackUrl);
-              const json2 = await res2.json();
-              return (json2.data || []).map(item => ({
-                id: "aud_" + item.id,
-                title: item.title,
-                artist: item.user?.name || "Original Artist",
-                album: item.genre || "Single",
-                duration: item.duration || 210,
-                durationFormatted: formatSecondsToTime(item.duration || 210),
-                artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
-                streamUrl: `${this.fallbackHosts[0]}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
-                provider: "audius",
-                sourceType: "stream"
-              }));
+            const res = await fetch(`${this.apiEndpoint}?query=${encodeURIComponent(query)}&page=${saavnPage}&limit=${limit}`);
+            if (res.ok) {
+              const json = await res.json();
+              if (json && json.results && json.results.length > 0) {
+                return json.results;
+              }
             }
-            return [];
+          } catch (err) {
+            console.warn("Primary search endpoint failed, trying Audius fallback:", err);
           }
+
+          // 2. Fallback: Audius Open Music Provider
+          try {
+            const offset = page * limit;
+            const url = `${this.audiusHost}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&offset=${offset}&limit=${limit}`;
+            const res = await fetch(url);
+            if (res.ok) {
+              const json = await res.json();
+              if (json && json.data && json.data.length > 0) {
+                return json.data.map(item => ({
+                  id: "aud_" + item.id,
+                  title: item.title,
+                  artist: item.user?.name || "Original Artist",
+                  album: item.genre || "Single",
+                  duration: item.duration || 210,
+                  durationFormatted: formatSecondsToTime(item.duration || 210),
+                  artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
+                  streamUrl: `${this.audiusHost}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
+                  provider: "audius",
+                  sourceType: "stream"
+                }));
+              }
+            }
+          } catch (e) {
+            console.warn("Audius fallback also failed:", e);
+          }
+
+          return [];
         },
 
         async getTrending(limit = 20) {
           try {
-            const res = await fetch(`${this.activeHost}/v1/tracks/trending?app_name=PIXEL_DECK&limit=${limit}`);
-            const json = await res.json();
-            return (json.data || []).map(item => ({
-              id: "aud_" + item.id,
-              title: item.title,
-              artist: item.user?.name || "Original Artist",
-              album: item.genre || "Trending",
-              duration: item.duration || 210,
-              durationFormatted: formatSecondsToTime(item.duration || 210),
-              artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
-              streamUrl: `${this.activeHost}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
-              provider: "audius",
-              sourceType: "stream"
-            }));
-          } catch (_) {
-            return POPULAR_STARTER_HITS;
-          }
+            const res = await fetch(`${this.apiEndpoint}?query=Trending%20Hits&limit=${limit}`);
+            if (res.ok) {
+              const json = await res.json();
+              if (json && json.results && json.results.length > 0) return json.results;
+            }
+          } catch (_) {}
+          return POPULAR_STARTER_HITS;
         },
 
         getRadioStations() {
