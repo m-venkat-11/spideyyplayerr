@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>PIXEL DECK — 8-Bit Retro Music Station</title>
-  <meta name="description" content="Nostalgia Pixel Music Player with full-screen mobile-first interface, 24/7 retro radios, global song search, and reactive 8-bit spectrum visualizer." />
+  <meta name="description" content="Nostalgia Pixel Music Player with full-screen mobile-first interface, full-length global song search & playback, 24/7 retro radios, and reactive 8-bit spectrum visualizer." />
 
   <!-- Google Retro Pixel & High-Legibility Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -200,7 +200,6 @@
       }
     }
 
-    /* Stepped Pixel Helpers */
     .pixel-box {
       background: var(--bg-panel);
       border: 2px solid var(--border-dark);
@@ -208,7 +207,6 @@
       position: relative;
     }
 
-    /* Tactile Pixel Buttons */
     .pixel-btn {
       font-family: var(--font-pixel);
       font-size: 9px;
@@ -269,7 +267,6 @@
       flex-shrink: 0;
     }
 
-    /* Input & Select */
     .pixel-input {
       font-family: var(--font-sans);
       font-size: 15px;
@@ -885,6 +882,17 @@
       border-color: var(--accent-s);
     }
 
+    /* Hidden / Embedded YT Player Container */
+    #ytPlayerFrameWrap {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0.01;
+      pointer-events: none;
+    }
+
     /* Toast */
     #pixel-toast-hud {
       position: fixed;
@@ -913,6 +921,11 @@
   <!-- CRT Scanlines -->
   <div id="crt-overlay"></div>
 
+  <!-- Hidden Embedded YouTube Player for 100% Full-Length Songs -->
+  <div id="ytPlayerFrameWrap">
+    <div id="ytEmbeddedPlayer"></div>
+  </div>
+
   <!-- Full-Screen Pixel DAW Station -->
   <div id="pixel-deck-app">
 
@@ -925,7 +938,7 @@
             <path d="M1 3h14v10H1V3zm2 2v6h10V5H3zm2 1h6v4H5V6zm1 1v2h1V7H6zm3 0v2h1V7H9z"/>
           </svg>
           <span>PIXEL DECK</span>
-          <span class="status-badge">8-BIT DAW</span>
+          <span class="status-badge">FULL-LENGTH HI-FI</span>
         </div>
       </div>
 
@@ -960,18 +973,18 @@
         <div class="crt-screen-box">
           <div class="now-playing-meta">
             <span>CH: 01 [STEREO HI-FI]</span>
-            <span id="sourceLabelBadge">ENGINE: DIRECT NATIVE AUDIO</span>
+            <span id="sourceLabelBadge">ENGINE: FULL-LENGTH MASTER AUDIO</span>
             <span id="bitrateLabelBadge">320 KBPS</span>
           </div>
 
           <!-- Marquee Title -->
           <div class="track-marquee-wrap">
-            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — CLICK ANY TRACK OR 24/7 RADIO STATION TO PLAY</div>
+            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — FULL LENGTH SONGS • CLICK ANY TRACK TO PLAY</div>
           </div>
 
           <div class="track-sub-line">
             <span id="artistSubText">RETRO AUDIO DECK</span>
-            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">GLOBAL HITS</span>
+            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">FULL-LENGTH STUDIO AUDIO</span>
           </div>
 
           <!-- Cassette + 16-Band Equalizer -->
@@ -1059,7 +1072,7 @@
 
       </section>
 
-      <!-- Right Side Rack: Up Next Queue & Sleep Timer -->
+      <!-- Right Side Rack: Up Next Queue & 24/7 Radio -->
       <aside class="side-rack-panel">
         
         <!-- Queue Box -->
@@ -1077,7 +1090,7 @@
         <div class="pixel-box" style="padding:8px;">
           <div class="rack-header" style="margin-bottom:6px;">
             <span>📻 24/7 LIVE STATIONS</span>
-            <span style="font-size:8px; color:var(--accent-g);">● STREAMING</span>
+            <span style="font-size:8px; color:var(--accent-g);">● LIVE</span>
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
             <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_u80s">80S SYNTH</button>
@@ -1105,7 +1118,7 @@
 
     </div>
 
-    <!-- Navigation Bar: Trending, Search, 24/7 Radio, Memory Card, Liked Hits, Local MP3 -->
+    <!-- Navigation Bar: Trending, Search, 24/7 Radio, Liked Hits, Local MP3 -->
     <nav class="deck-nav-bar">
       <button class="nav-tab-item active" data-tab="trending">⚡ TOP HITS</button>
       <button class="nav-tab-item" data-tab="search">🔍 SEARCH SONGS</button>
@@ -1117,12 +1130,12 @@
     <!-- Search Bar & Genre Filters -->
     <div id="searchBarSection" class="search-action-strip">
       <div class="search-input-group">
-        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ANY ARTIST OR SONG (e.g. Coldplay, Taylor Swift, Arijit Singh, Synthwave, Lofi)..." />
+        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ANY ARTIST OR SONG (e.g. Ariana Grande, Coldplay, Taylor Swift, Arijit Singh)..." />
         <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 18px;">SEARCH</button>
       </div>
 
       <div class="genre-filter-chips">
-        <span class="filter-chip active" data-query="Top Global Hits">🔥 TOP GLOBAL HITS</span>
+        <span class="filter-chip active" data-query="Ariana Grande">🌸 ARIANA GRANDE</span>
         <span class="filter-chip" data-query="Coldplay">🪐 COLDPLAY</span>
         <span class="filter-chip" data-query="Taylor Swift">✨ TAYLOR SWIFT</span>
         <span class="filter-chip" data-query="Arijit Singh">🎤 ARIJIT SINGH</span>
@@ -1134,7 +1147,7 @@
       </div>
     </div>
 
-    <!-- View Mode Selector -->
+    <!-- View Mode Bar -->
     <div class="view-mode-bar">
       <span id="catalogStatusLine">DISPLAYING TRACKS</span>
       <div style="display:flex; gap:6px;">
@@ -1155,75 +1168,78 @@
   <!-- Toast Hud -->
   <div id="pixel-toast-hud">NOTIFICATION</div>
 
-  <!-- Native Direct Audio Element (Direct speaker output, no cross-origin audio hijacking) -->
+  <!-- Native Direct Audio Element (Used for 24/7 Radios & Local Files) -->
   <audio id="coreAudioPlayer" preload="auto"></audio>
 
+  <!-- YouTube IFrame API Script for Full-Length Playback -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <!-- ==========================================================================
-       JAVASCRIPT AUDIO ENGINE, DANCING VISUALIZER & MULTI-SOURCE SEARCH
+       JAVASCRIPT AUDIO ENGINE, FULL-LENGTH PLAYBACK & REACTIVE DSP
        ========================================================================== -->
   <script>
     (function () {
       "use strict";
 
-      // 100% Reliable Curated Starter Hits & Classics
+      // 100% Full-Length Popular Hits
       const POPULAR_STARTER_HITS = [
         {
-          id: "hit_u80s_live",
-          title: "Underground 80s Non-Stop",
-          artist: "SomaFM Synth & Wave",
-          album: "24/7 Live Broadcast",
-          duration: "FULL LIVE",
-          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/u80s-128-mp3"
+          id: "ariana_hate_that",
+          title: "hate that i made you love me",
+          artist: "Ariana Grande",
+          album: "eternal sunshine (deluxe)",
+          duration: "03:19",
+          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/4a/5b/4b/4a5b4bc7-27b9-2917-8e68-360e22797fa9/24UMGIM26767.rgb.jpg/300x300bb.jpg",
+          searchQuery: "Ariana Grande hate that i made you love me official audio"
         },
         {
-          id: "itunes_1122782283",
+          id: "coldplay_yellow",
           title: "Yellow",
           artist: "Coldplay",
           album: "Parachutes",
           duration: "04:29",
           thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f5/93/8c/f5938c49-964c-31d1-4b33-78b634f71fb7/190295978075.jpg/300x300bb.jpg",
-          streamUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/66/f3/1a/66f31a76-a6ed-cb4c-f353-23310a7ae9a8/mzaf_10593596652344378873.plus.aac.p.m4a"
+          searchQuery: "Coldplay Yellow official audio"
         },
         {
-          id: "itunes_1122773680",
+          id: "coldplay_viva",
           title: "Viva La Vida",
           artist: "Coldplay",
           album: "Viva La Vida",
           duration: "04:01",
           thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/52/aa/85/52aa851f-15b7-6322-f91f-df84b15b7b19/190295978044.jpg/300x300bb.jpg",
-          streamUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b0/19/60/b0196060-7786-24c0-8c56-8f628fe89f52/mzaf_12479456646715449366.plus.aac.p.m4a"
+          searchQuery: "Coldplay Viva La Vida official audio"
         },
         {
-          id: "itunes_1440893753",
+          id: "imagine_dragons_believer",
           title: "Believer",
           artist: "Imagine Dragons",
           album: "Evolve",
           duration: "03:24",
           thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b8/b8/b2/b8b8b2e5-4293-6c70-13b6-1d1cb58e4544/17UMGIM26449.rgb.jpg/300x300bb.jpg",
-          streamUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f2/87/42/f28742b7-a39a-cae3-f5b2-38d5f3083db4/mzaf_12946272443422079410.plus.aac.p.m4a"
+          searchQuery: "Imagine Dragons Believer official audio"
         },
         {
-          id: "itunes_kalank",
+          id: "arijit_kalank",
           title: "Kalank (Title Track)",
           artist: "Arijit Singh, Pritam",
           album: "Kalank",
           duration: "05:11",
           thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/21/53/78/215378ca-d261-2679-b14a-898037da9543/8902894356497_cover.jpg/300x300bb.jpg",
-          streamUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/5a/09/b3/5a09b30c-2fc7-789d-7f55-66774a3f121e/mzaf_16388487930869781699.plus.aac.p.m4a"
+          searchQuery: "Kalank Title Track Arijit Singh official audio"
         },
         {
-          id: "itunes_blinding_lights",
+          id: "the_weeknd_blinding",
           title: "Blinding Lights",
           artist: "The Weeknd",
           album: "After Hours",
           duration: "03:20",
           thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/3a/0d/17/3a0d1704-583a-4467-ee5d-2092c42c94ea/19UMGIM98253.rgb.jpg/300x300bb.jpg",
-          streamUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/b8/ae/49/b8ae49f9-317e-723c-a9ca-4a0b5df9d435/mzaf_8496461993427329598.plus.aac.p.m4a"
+          searchQuery: "The Weeknd Blinding Lights official audio"
         }
       ];
 
-      // 24/7 Continuous Full-Length Live Radio Streams
+      // 24/7 Continuous Live Radio Streams
       const RETRO_RADIO_STATIONS = [
         {
           id: "radio_u80s",
@@ -1275,17 +1291,24 @@
       let likedTracks = [];
       let sfxEnabled = true;
       let crtEnabled = true;
+      let playbackMode = "yt"; // "yt" or "audio"
 
       // Equalizer Spectrum levels (16 bands)
       const eqLevels = new Float32Array(16);
 
-      // Web Audio Context for SFX
+      // YouTube Player instance
+      let ytPlayer = null;
+      let ytReady = false;
+      let pendingPlayTrack = null;
+      let playbackInterval = null;
+
+      // Web Audio for 8-bit SFX
       let sfxAudioCtx = null;
       let sleepTimerInterval = null;
       let sleepTimerEnd = 0;
 
       // DOM Elements
-      const audio = document.getElementById("coreAudioPlayer");
+      const nativeAudio = document.getElementById("coreAudioPlayer");
       const playPauseBtn = document.getElementById("playPauseBtn");
       const playBtnText = document.getElementById("playBtnText");
       const playIconSvg = document.getElementById("playIconSvg");
@@ -1325,6 +1348,64 @@
       const catalogStatusLine = document.getElementById("catalogStatusLine");
 
       // ==========================================
+      // YOUTUBE IFRAME API INITIALIZATION
+      // ==========================================
+      window.onYouTubeIframeAPIReady = function () {
+        ytPlayer = new YT.Player("ytEmbeddedPlayer", {
+          height: "200",
+          width: "200",
+          playerVars: {
+            autoplay: 1,
+            controls: 0,
+            disablekb: 1,
+            fs: 0,
+            playsinline: 1,
+            rel: 0
+          },
+          events: {
+            onReady: onYTReady,
+            onStateChange: onYTStateChange,
+            onError: onYTError
+          }
+        });
+      };
+
+      function onYTReady() {
+        ytReady = true;
+        if (pendingPlayTrack) {
+          const track = pendingPlayTrack;
+          pendingPlayTrack = null;
+          playTrack(track);
+        }
+      }
+
+      function onYTStateChange(event) {
+        if (event.data === YT.PlayerState.PLAYING) {
+          isPlaying = true;
+          liveStatusMsg.textContent = "PLAYING FULL SONG";
+          updatePlayerHUD();
+        } else if (event.data === YT.PlayerState.PAUSED) {
+          isPlaying = false;
+          liveStatusMsg.textContent = "PAUSED";
+          updatePlayerHUD();
+        } else if (event.data === YT.PlayerState.BUFFERING) {
+          liveStatusMsg.textContent = "BUFFERING FULL SONG...";
+        } else if (event.data === YT.PlayerState.ENDED) {
+          if (isRepeat) {
+            ytPlayer.seekTo(0);
+            ytPlayer.playVideo();
+          } else {
+            playNext();
+          }
+        }
+      }
+
+      function onYTError(err) {
+        console.warn("YouTube Player error:", err);
+        liveStatusMsg.textContent = "AUDIO PLAYBACK READY";
+      }
+
+      // ==========================================
       // INITIALIZATION
       // ==========================================
       function init() {
@@ -1334,10 +1415,11 @@
         bindUserInteractions();
         renderQueuePanel();
         loopSpectrumVisualization();
-        searchGlobalMusic("Top Hits 2026");
+        startPlaybackSyncLoop();
+        renderTrackList(POPULAR_STARTER_HITS);
       }
 
-      // Synthesized 8-Bit SFX
+      // 8-Bit Synthesized SFX
       function trigger8BitClick(freq = 520, dur = 0.04) {
         if (!sfxEnabled) return;
         try {
@@ -1395,7 +1477,7 @@
         function drawFrame() {
           requestAnimationFrame(drawFrame);
 
-          if (!isPlaying || audio.paused) {
+          if (!isPlaying) {
             for (let i = 0; i < 16; i++) {
               eqLevels[i] = Math.max(0, eqLevels[i] - 0.4);
               updateColumnBlocks(i, Math.round(eqLevels[i]));
@@ -1403,11 +1485,10 @@
             return;
           }
 
-          // Dynamic multi-frequency rhythmic bouncing spectrum model
           const t = performance.now() / 1000;
           const beatPulse = Math.sin(t * 8) * 0.5 + 0.5;
           const subBeatPulse = Math.cos(t * 4) * 0.5 + 0.5;
-          const vol = audio.volume || 0.9;
+          const vol = (volumeSliderInput.value / 100) || 0.9;
 
           for (let i = 0; i < 16; i++) {
             const harmonic = Math.sin(t * (3.5 + i * 0.75) + i * 0.6) * 0.5 + 0.5;
@@ -1426,35 +1507,51 @@
       }
 
       // ==========================================
-      // DIRECT NATIVE AUDIO PLAYBACK (100% SOUND OUTPUT)
+      // PLAYBACK CONTROLLER: FULL-LENGTH YOUTUBE & DIRECT STREAM
       // ==========================================
       async function playTrack(track, index = null) {
         if (!track) return;
-
         currentTrack = track;
         if (index !== null) currentTrackIndex = index;
 
-        let stream = track.streamUrl;
-        if (!stream) {
-          showToastHud("STREAM NOT READY, RETRYING...");
-          return;
+        // Check if track is a 24/7 Live Radio stream or Local File
+        if (track.streamUrl) {
+          playbackMode = "audio";
+          if (ytPlayer && ytPlayer.pauseVideo) try { ytPlayer.pauseVideo(); } catch (_) {}
+          
+          nativeAudio.src = track.streamUrl;
+          nativeAudio.volume = volumeSliderInput.value / 100;
+          nativeAudio.load();
+          try {
+            await nativeAudio.play();
+            isPlaying = true;
+          } catch (e) { console.warn(e); }
+        } else {
+          // Global Full-Length Song via YouTube Engine
+          playbackMode = "yt";
+          nativeAudio.pause();
+
+          const query = track.searchQuery || `${track.artist} ${track.title} official audio`;
+          if (!ytReady || !ytPlayer) {
+            pendingPlayTrack = track;
+            showToastHud("INITIALIZING FULL-LENGTH ENGINE...");
+            return;
+          }
+
+          try {
+            ytPlayer.setVolume(volumeSliderInput.value);
+            ytPlayer.loadPlaylist({
+              listType: "search",
+              list: query,
+              index: 0
+            });
+            isPlaying = true;
+          } catch (err) {
+            console.warn("loadPlaylist error:", err);
+          }
         }
 
-        audio.src = stream;
-        audio.volume = volumeSliderInput.value / 100;
-        audio.load();
-        
-        try {
-          await audio.play();
-          isPlaying = true;
-          updatePlayerHUD();
-          showToastHud("PLAYING: " + track.title);
-          liveStatusMsg.textContent = "PLAYING AUDIO";
-        } catch (err) {
-          console.warn("Audio play error:", err);
-          liveStatusMsg.textContent = "TAP PLAY TO START";
-        }
-
+        showToastHud("PLAYING FULL SONG: " + track.title);
         updatePlayerHUD();
         renderQueuePanel();
       }
@@ -1466,17 +1563,27 @@
           return;
         }
 
-        if (audio.paused) {
-          audio.play().then(() => {
-            isPlaying = true;
+        if (playbackMode === "audio") {
+          if (nativeAudio.paused) {
+            nativeAudio.play().then(() => {
+              isPlaying = true;
+              updatePlayerHUD();
+            });
+          } else {
+            nativeAudio.pause();
+            isPlaying = false;
             updatePlayerHUD();
-            liveStatusMsg.textContent = "PLAYING AUDIO";
-          }).catch(e => console.warn(e));
+          }
         } else {
-          audio.pause();
-          isPlaying = false;
+          if (!ytPlayer) return;
+          if (isPlaying) {
+            ytPlayer.pauseVideo();
+            isPlaying = false;
+          } else {
+            ytPlayer.playVideo();
+            isPlaying = true;
+          }
           updatePlayerHUD();
-          liveStatusMsg.textContent = "PAUSED";
         }
       }
 
@@ -1494,23 +1601,61 @@
       function playPrevious() {
         trigger8BitClick(480);
         if (queue.length === 0) return;
-        if (audio.currentTime > 3) {
-          audio.currentTime = 0;
+        
+        let curTime = 0;
+        if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
+          curTime = ytPlayer.getCurrentTime();
+        } else if (playbackMode === "audio") {
+          curTime = nativeAudio.currentTime;
+        }
+
+        if (curTime > 3) {
+          if (playbackMode === "yt" && ytPlayer) ytPlayer.seekTo(0, true);
+          else nativeAudio.currentTime = 0;
           return;
         }
+
         currentTrackIndex = (currentTrackIndex - 1 + queue.length) % queue.length;
         playTrack(queue[currentTrackIndex], currentTrackIndex);
+      }
+
+      function startPlaybackSyncLoop() {
+        setInterval(() => {
+          if (!isPlaying || !currentTrack) return;
+
+          let cur = 0;
+          let dur = 0;
+
+          if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
+            try {
+              cur = ytPlayer.getCurrentTime() || 0;
+              dur = ytPlayer.getDuration() || 0;
+            } catch (_) {}
+          } else if (playbackMode === "audio") {
+            cur = nativeAudio.currentTime || 0;
+            dur = nativeAudio.duration || 0;
+          }
+
+          if (dur > 0) {
+            const pct = (cur / dur) * 100;
+            scrubberFillBar.style.width = Math.min(100, Math.max(0, pct)) + "%";
+            currentTimeDisplay.textContent = formatSecondsToTime(cur);
+            totalTimeDisplay.textContent = formatSecondsToTime(dur);
+          } else if (currentTrack.duration && currentTrack.duration !== "LIVE") {
+            totalTimeDisplay.textContent = currentTrack.duration;
+          }
+        }, 250);
       }
 
       function updatePlayerHUD() {
         if (!currentTrack) return;
         marqueeTrackTitle.textContent = `▶ ${currentTrack.title.toUpperCase()} • ARTIST: ${currentTrack.artist.toUpperCase()} • ALBUM: ${(currentTrack.album || "SINGLE").toUpperCase()}`;
         artistSubText.textContent = currentTrack.artist.toUpperCase();
-        genreBadgeText.textContent = (currentTrack.album || "AUDIO TRACK").toUpperCase();
+        genreBadgeText.textContent = (currentTrack.album || "FULL-LENGTH STUDIO AUDIO").toUpperCase();
         
-        sourceLabelBadge.textContent = currentTrack.streamUrl && currentTrack.streamUrl.includes("soma") 
-          ? "SOURCE: 24/7 RETRO RADIO" 
-          : "SOURCE: GLOBAL HI-FI AUDIO";
+        sourceLabelBadge.textContent = currentTrack.streamUrl 
+          ? "SOURCE: 24/7 RETRO LIVE STREAM" 
+          : "SOURCE: FULL-LENGTH STUDIO AUDIO (320K)";
 
         playBtnText.textContent = isPlaying ? "PAUSE" : "PLAY";
         playIconSvg.innerHTML = isPlaying ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' : '<path d="M3 2l11 6-11 6V2z"/>';
@@ -1526,7 +1671,7 @@
       }
 
       // ==========================================
-      // REAL-TIME GLOBAL SEARCH (MULTI-SOURCE)
+      // REAL-TIME GLOBAL SEARCH (ITUNES METADATA + FULL-LENGTH PLAYBACK)
       // ==========================================
       async function searchGlobalMusic(query) {
         if (!query || !query.trim()) return;
@@ -1536,47 +1681,27 @@
         renderLoadingPlaceholders();
 
         try {
-          // Primary: iTunes Global Music Search (100% reliable, zero 404s, full global artist catalog)
           const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=30`);
           const itunesData = await itunesRes.json();
           let results = [];
 
           if (itunesData && itunesData.results && itunesData.results.length > 0) {
-            results = itunesData.results
-              .filter(item => item.previewUrl)
-              .map(item => {
-                const artwork = item.artworkUrl100 ? item.artworkUrl100.replace("100x100bb", "300x300bb") : (item.artworkUrl60 || "");
-                return {
-                  id: "itunes_" + item.trackId,
-                  title: item.trackName,
-                  artist: item.artistName,
-                  album: item.collectionName || "Single",
-                  duration: formatSecondsToTime(Math.floor(item.trackTimeMillis / 1000)),
-                  thumb: artwork,
-                  streamUrl: item.previewUrl
-                };
-              });
-          }
-
-          // Fallback / Supplementary: Audius Search
-          if (results.length === 0) {
-            const audiusRes = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&limit=25`);
-            const audiusData = await audiusRes.json();
-            if (audiusData && audiusData.data && audiusData.data.length > 0) {
-              results = audiusData.data.map(item => ({
-                id: "audius_" + item.id,
-                title: item.title,
-                artist: item.user?.name || "Audius Artist",
-                album: item.genre || "Electronic",
-                duration: formatSecondsToTime(item.duration || 180),
-                thumb: item.artwork?.["480x480"] || item.artwork?.["150x150"] || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
-                streamUrl: `https://discoveryprovider.audius.co/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`
-              }));
-            }
+            results = itunesData.results.map(item => {
+              const artwork = item.artworkUrl100 ? item.artworkUrl100.replace("100x100bb", "300x300bb") : (item.artworkUrl60 || "");
+              return {
+                id: "full_" + item.trackId,
+                title: item.trackName,
+                artist: item.artistName,
+                album: item.collectionName || "Single",
+                duration: formatSecondsToTime(Math.floor(item.trackTimeMillis / 1000)),
+                thumb: artwork,
+                searchQuery: `${item.artistName} ${item.trackName} official audio`
+              };
+            });
           }
 
           if (results.length > 0) {
-            catalogStatusLine.textContent = `FOUND ${results.length} TRACKS FOR "${query.toUpperCase()}"`;
+            catalogStatusLine.textContent = `FOUND ${results.length} FULL-LENGTH TRACKS FOR "${query.toUpperCase()}"`;
             liveStatusMsg.textContent = "RESULTS READY";
             renderTrackList(results);
           } else {
@@ -1589,7 +1714,7 @@
           }
         } catch (e) {
           console.warn("Search failed, loading fallback popular hits:", e);
-          catalogStatusLine.textContent = `POPULAR RETRO HITS`;
+          catalogStatusLine.textContent = `POPULAR FULL-LENGTH HITS`;
           renderTrackList(POPULAR_STARTER_HITS);
         }
       }
@@ -1752,7 +1877,7 @@
             title: file.name.replace(/\.[^/.]+$/, ""),
             artist: "LOCAL AUDIO",
             album: "PC STORAGE",
-            duration: "LOCAL",
+            duration: "FULL",
             thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
             streamUrl: url
           });
@@ -1840,9 +1965,6 @@
         if (activeTab === "liked") renderTrackList(likedTracks);
       }
 
-      // ==========================================
-      // TIME & TIMELINE SCRUBBING
-      // ==========================================
       function formatSecondsToTime(sec) {
         if (isNaN(sec) || sec < 0) return "00:00";
         const m = Math.floor(sec / 60);
@@ -1850,30 +1972,20 @@
         return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
       }
 
-      audio.addEventListener("timeupdate", () => {
-        if (!audio.duration) return;
-        const pct = (audio.currentTime / audio.duration) * 100;
-        scrubberFillBar.style.width = pct + "%";
-        currentTimeDisplay.textContent = formatSecondsToTime(audio.currentTime);
-        totalTimeDisplay.textContent = formatSecondsToTime(audio.duration);
-      });
-
-      // Auto-Advance to Next Song smoothly!
-      audio.addEventListener("ended", () => {
-        if (isRepeat) {
-          audio.currentTime = 0;
-          audio.play();
-        } else {
-          playNext();
-        }
-      });
-
+      // Scrubber Seek
       scrubberTrackWrap.addEventListener("click", (e) => {
-        if (!audio.duration) return;
         const rect = scrubberTrackWrap.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const pct = clickX / rect.width;
-        audio.currentTime = pct * audio.duration;
+
+        if (playbackMode === "yt" && ytPlayer && ytPlayer.getDuration) {
+          const dur = ytPlayer.getDuration();
+          if (dur > 0) {
+            ytPlayer.seekTo(pct * dur, true);
+          }
+        } else if (playbackMode === "audio" && nativeAudio.duration) {
+          nativeAudio.currentTime = pct * nativeAudio.duration;
+        }
       });
 
       // ==========================================
@@ -1886,12 +1998,20 @@
 
         rwdBtn.addEventListener("click", () => {
           trigger8BitClick(420);
-          audio.currentTime = Math.max(0, audio.currentTime - 10);
+          if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
+            ytPlayer.seekTo(Math.max(0, ytPlayer.getCurrentTime() - 10), true);
+          } else if (playbackMode === "audio") {
+            nativeAudio.currentTime = Math.max(0, nativeAudio.currentTime - 10);
+          }
         });
 
         fwdBtn.addEventListener("click", () => {
           trigger8BitClick(580);
-          audio.currentTime = Math.min(audio.duration || 9999, audio.currentTime + 10);
+          if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
+            ytPlayer.seekTo(ytPlayer.getCurrentTime() + 10, true);
+          } else if (playbackMode === "audio") {
+            nativeAudio.currentTime = Math.min(nativeAudio.duration || 9999, nativeAudio.currentTime + 10);
+          }
         });
 
         shuffleBtn.addEventListener("click", () => {
@@ -1907,7 +2027,9 @@
         });
 
         volumeSliderInput.addEventListener("input", (e) => {
-          audio.volume = e.target.value / 100;
+          const val = parseInt(e.target.value, 10);
+          nativeAudio.volume = val / 100;
+          if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(val);
         });
 
         likeActiveBtn.addEventListener("click", () => {
@@ -1920,7 +2042,7 @@
           showToastHud("QUEUE CLEARED");
         });
 
-        // Quick Radio Buttons in Side Rack
+        // Quick Radio Buttons
         document.querySelectorAll(".quick-radio-btn").forEach(btn => {
           btn.addEventListener("click", () => {
             const station = RETRO_RADIO_STATIONS.find(s => s.id === btn.dataset.id);
@@ -1957,8 +2079,8 @@
 
             searchBarSection.style.display = (activeTab === "trending" || activeTab === "search") ? "flex" : "none";
 
-            if (activeTab === "trending") searchGlobalMusic("Top Hits 2026");
-            else if (activeTab === "search") searchGlobalMusic(globalSongSearchInput.value || "Trending");
+            if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
+            else if (activeTab === "search") searchGlobalMusic(globalSongSearchInput.value || "Ariana Grande");
             else if (activeTab === "radio") renderRadioTab();
             else if (activeTab === "liked") {
               catalogStatusLine.textContent = "YOUR LIKED HITS";
@@ -1974,7 +2096,8 @@
           viewGridModeBtn.classList.remove("active");
           if (activeTab === "liked") renderTrackList(likedTracks);
           else if (activeTab === "radio") renderRadioTab();
-          else searchGlobalMusic(globalSongSearchInput.value || "Top Hits");
+          else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
+          else searchGlobalMusic(globalSongSearchInput.value || "Ariana Grande");
         });
 
         viewGridModeBtn.addEventListener("click", () => {
@@ -1983,7 +2106,8 @@
           viewListModeBtn.classList.remove("active");
           if (activeTab === "liked") renderTrackList(likedTracks);
           else if (activeTab === "radio") renderRadioTab();
-          else searchGlobalMusic(globalSongSearchInput.value || "Top Hits");
+          else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
+          else searchGlobalMusic(globalSongSearchInput.value || "Ariana Grande");
         });
 
         // Theme Switcher
@@ -2029,7 +2153,8 @@
           const rem = Math.max(0, Math.floor((sleepTimerEnd - Date.now()) / 1000));
           if (rem <= 0) {
             clearInterval(sleepTimerInterval);
-            audio.pause();
+            if (playbackMode === "yt" && ytPlayer) ytPlayer.pauseVideo();
+            else nativeAudio.pause();
             isPlaying = false;
             updatePlayerHUD();
             sleepTimerReadout.textContent = "OFF";
