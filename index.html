@@ -3,223 +3,220 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>PIXEL DECK — 8-Bit Nostalgia Hi-Fi Audio System</title>
-  <meta name="description" content="Retro 8-Bit Nostalgia Pixel Music Player with high-fidelity free music streaming, 24/7 retro radios, and Web Audio spectrum visualizers." />
+  <title>PIXEL DECK — 8-Bit Retro Music Station</title>
+  <meta name="description" content="Nostalgia Pixel Music Player with full-screen interface, real-time Spotify/JioSaavn-style song search, Web Audio spectrum visualizers, 24/7 retro radios, and 8-bit sound effects." />
 
-  <!-- Google Pixel & Retro Fonts -->
+  <!-- Google Retro Pixel & High-Legibility Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
-       NOSTALGIA PIXEL AUDIO DECK DESIGN SYSTEM
+       NOSTALGIA PIXEL DESIGN SYSTEM — 100% FULL-SCREEN RETRO DAW
        ========================================================================== */
     :root {
       --font-pixel: 'Press Start 2P', monospace;
       --font-silk: 'Silkscreen', monospace;
       --font-vt: 'VT323', monospace;
-      --font-sans: 'Pixelify Sans', system-ui, sans-serif;
+      --font-sans: 'Pixelify Sans', system-ui, -apple-system, sans-serif;
 
-      /* Default Theme: ARCADE CYBER 1984 */
-      --bg-chassis: #0d0e15;
-      --bg-bezel: #161824;
-      --bg-screen: #0a0b10;
-      --bg-panel: #131520;
-      --bg-card: #1a1c2b;
-      --bg-card-hover: #23263a;
+      /* DEFAULT: ARCADE CYBER 1984 */
+      --bg-body: #06070c;
+      --bg-deck: #0d0f18;
+      --bg-bezel: #151824;
+      --bg-screen: #080910;
+      --bg-panel: #121420;
+      --bg-row: #181b2a;
+      --bg-row-alt: #141624;
+      --bg-row-hover: #22263d;
+      --bg-row-active: rgba(0, 229, 255, 0.16);
 
       --text-main: #f0f4ff;
-      --text-dim: #7f8ca8;
-      --text-bright: #00ffcc;
+      --text-dim: #8a96b3;
+      --text-bright: #00f0ff;
+      --text-artist: #ffe600;
 
-      --accent-p: #ff0055;      /* Primary Neon Pink */
-      --accent-s: #00e5ff;      /* Secondary Cyan */
-      --accent-y: #ffe600;      /* Accent Yellow/Gold */
+      --accent-p: #ff0055;      /* Neon Pink */
+      --accent-s: #00e5ff;      /* Cyan */
+      --accent-y: #ffe600;      /* Yellow */
       --accent-g: #00ff66;      /* Retro Green */
 
       --border-dark: #000000;
-      --border-light: #343952;
+      --border-light: #2c3148;
       --border-glow: rgba(0, 229, 255, 0.4);
 
-      --pixel-shadow: 3px 3px 0px #000000;
-      --pixel-shadow-sm: 2px 2px 0px #000000;
-      --pixel-shadow-press: 1px 1px 0px #000000;
-
-      --scanline-opacity: 0.35;
-      --crt-bloom: 0 0 10px rgba(0, 229, 255, 0.25);
+      --pixel-shadow: 2px 2px 0px #000000;
+      --scanline-opacity: 0.25;
+      --crt-bloom: 0 0 12px rgba(0, 229, 255, 0.25);
     }
 
-    /* THEME 1: GAMEBOY DMG-01 */
+    /* THEME 1: VAPORWAVE 1995 (Win95 Aesthetic, High Contrast) */
+    body[data-theme="vaporwave"] {
+      --bg-body: #008080;
+      --bg-deck: #c0c0c0;
+      --bg-bezel: #d4d0c8;
+      --bg-screen: #000080;
+      --bg-panel: #dfdfdf;
+      --bg-row: #ffffff;
+      --bg-row-alt: #f4f4f4;
+      --bg-row-hover: #e0f0ff;
+      --bg-row-active: #cce5ff;
+      --text-main: #111111;
+      --text-dim: #444444;
+      --text-bright: #000080;
+      --text-artist: #c40062;
+      --accent-p: #e6007a;
+      --accent-s: #000080;
+      --accent-y: #800080;
+      --accent-g: #008000;
+      --border-dark: #404040;
+      --border-light: #ffffff;
+      --border-glow: rgba(0, 0, 128, 0.25);
+      --pixel-shadow: 2px 2px 0px #404040;
+      --scanline-opacity: 0.12;
+      --crt-bloom: none;
+    }
+
+    /* THEME 2: SYNTHWAVE SUNSET 86 */
+    body[data-theme="synthwave"] {
+      --bg-body: #0e041c;
+      --bg-deck: #18092c;
+      --bg-bezel: #240e42;
+      --bg-screen: #110520;
+      --bg-panel: #200c3b;
+      --bg-row: #29124a;
+      --bg-row-alt: #220e3f;
+      --bg-row-hover: #3a1a66;
+      --bg-row-active: rgba(255, 0, 127, 0.22);
+      --text-main: #ffe6f7;
+      --text-dim: #b388cd;
+      --text-bright: #ff3399;
+      --text-artist: #ffb833;
+      --accent-p: #ff007f;
+      --accent-s: #00f0ff;
+      --accent-y: #ffb833;
+      --accent-g: #00ffaa;
+      --border-dark: #000000;
+      --border-light: #5a248f;
+      --border-glow: rgba(255, 0, 127, 0.4);
+      --pixel-shadow: 2px 2px 0px #000000;
+      --scanline-opacity: 0.25;
+      --crt-bloom: 0 0 12px rgba(255, 0, 127, 0.35);
+    }
+
+    /* THEME 3: GAMEBOY DMG-01 (Classic Olive/Grey LCD Matrix) */
     body[data-theme="gameboy"] {
-      --bg-chassis: #8b956d;
-      --bg-bezel: #9bbc0f;
-      --bg-screen: #8bac0f;
-      --bg-panel: #789907;
-      --bg-card: #9bbc0f;
-      --bg-card-hover: #a8ca14;
-      --text-main: #0f380f;
-      --text-dim: #306230;
-      --text-bright: #0f380f;
-      --accent-p: #306230;
-      --accent-s: #0f380f;
-      --accent-y: #306230;
-      --accent-g: #0f380f;
-      --border-dark: #0f380f;
-      --border-light: #8bac0f;
-      --border-glow: rgba(15, 56, 15, 0.3);
-      --pixel-shadow: 3px 3px 0px #0f380f;
-      --pixel-shadow-sm: 2px 2px 0px #0f380f;
-      --scanline-opacity: 0.2;
+      --bg-body: #68724d;
+      --bg-deck: #8b956d;
+      --bg-bezel: #97a177;
+      --bg-screen: #879267;
+      --bg-panel: #7c865e;
+      --bg-row: #949f73;
+      --bg-row-alt: #8c976b;
+      --bg-row-hover: #a2ad7f;
+      --bg-row-active: #6e7850;
+      --text-main: #141c0e;
+      --text-dim: #2f3d24;
+      --text-bright: #0f170a;
+      --text-artist: #23311a;
+      --accent-p: #27361c;
+      --accent-s: #192312;
+      --accent-y: #354926;
+      --accent-g: #141c0e;
+      --border-dark: #192312;
+      --border-light: #9ea97e;
+      --border-glow: rgba(20, 28, 14, 0.25);
+      --pixel-shadow: 2px 2px 0px #192312;
+      --scanline-opacity: 0.15;
+      --crt-bloom: none;
     }
 
-    /* THEME 2: NES CLASSIC 8-BIT */
+    /* THEME 4: NES CLASSIC 8-BIT */
     body[data-theme="nes"] {
-      --bg-chassis: #b8b8b8;
-      --bg-bezel: #2b2b2b;
-      --bg-screen: #111111;
-      --bg-panel: #202020;
-      --bg-card: #2d2d2d;
-      --bg-card-hover: #3d3d3d;
-      --text-main: #fcfcfc;
-      --text-dim: #9e9e9e;
+      --bg-body: #111111;
+      --bg-deck: #222222;
+      --bg-bezel: #2e2e2e;
+      --bg-screen: #0a0a0a;
+      --bg-panel: #1c1c1c;
+      --bg-row: #282828;
+      --bg-row-alt: #222222;
+      --bg-row-hover: #383838;
+      --bg-row-active: rgba(230, 0, 18, 0.22);
+      --text-main: #ffffff;
+      --text-dim: #aaaaaa;
       --text-bright: #e60012;
+      --text-artist: #f0a000;
       --accent-p: #e60012;
       --accent-s: #ffffff;
       --accent-y: #f0a000;
       --accent-g: #00d020;
       --border-dark: #000000;
-      --border-light: #555555;
+      --border-light: #444444;
       --border-glow: rgba(230, 0, 18, 0.4);
-      --pixel-shadow: 3px 3px 0px #000000;
-      --scanline-opacity: 0.3;
-    }
-
-    /* THEME 3: PIP-BOY 3000 AMBER */
-    body[data-theme="pipboy"] {
-      --bg-chassis: #120e06;
-      --bg-bezel: #1a1408;
-      --bg-screen: #0a0702;
-      --bg-panel: #161007;
-      --bg-card: #20170a;
-      --bg-card-hover: #2b1f0e;
-      --text-main: #ffb000;
-      --text-dim: #996900;
-      --text-bright: #ffcf40;
-      --accent-p: #ff9900;
-      --accent-s: #ffb000;
-      --accent-y: #ffe066;
-      --accent-g: #ffb000;
-      --border-dark: #000000;
-      --border-light: #4a340a;
-      --border-glow: rgba(255, 176, 0, 0.45);
-      --pixel-shadow: 3px 3px 0px #000000;
-      --scanline-opacity: 0.4;
-      --crt-bloom: 0 0 12px rgba(255, 176, 0, 0.35);
-    }
-
-    /* THEME 4: SYNTHWAVE SUNSET 1986 */
-    body[data-theme="synthwave"] {
-      --bg-chassis: #170928;
-      --bg-bezel: #24113e;
-      --bg-screen: #110520;
-      --bg-panel: #200c37;
-      --bg-card: #2d124c;
-      --bg-card-hover: #3e1968;
-      --text-main: #ffe3f6;
-      --text-dim: #a47bbb;
-      --text-bright: #ff3399;
-      --accent-p: #ff007f;
-      --accent-s: #00f0ff;
-      --accent-y: #ffb700;
-      --accent-g: #00ffaa;
-      --border-dark: #000000;
-      --border-light: #57228a;
-      --border-glow: rgba(255, 0, 127, 0.4);
-      --pixel-shadow: 3px 3px 0px #000000;
-      --scanline-opacity: 0.35;
-      --crt-bloom: 0 0 12px rgba(255, 0, 127, 0.3);
-    }
-
-    /* THEME 5: VAPORWAVE 1995 */
-    body[data-theme="vaporwave"] {
-      --bg-chassis: #008080;
-      --bg-bezel: #c0c0c0;
-      --bg-screen: #000080;
-      --bg-panel: #d4d0c8;
-      --bg-card: #ece9d8;
-      --bg-card-hover: #ffffff;
-      --text-main: #000000;
-      --text-dim: #444444;
-      --text-bright: #ff007f;
-      --accent-p: #ff66cc;
-      --accent-s: #00ffff;
-      --accent-y: #ffff00;
-      --accent-g: #00aa00;
-      --border-dark: #808080;
-      --border-light: #ffffff;
-      --border-glow: rgba(0, 0, 128, 0.3);
-      --pixel-shadow: 3px 3px 0px #404040;
-      --scanline-opacity: 0.15;
+      --pixel-shadow: 2px 2px 0px #000000;
+      --scanline-opacity: 0.25;
     }
 
     /* ==========================================================================
-       GLOBAL RESETS & PIXEL UTILITIES
+       BASE & FULL-SCREEN LAYOUT
        ========================================================================== */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      -webkit-font-smoothing: none;
       image-rendering: pixelated;
-      image-rendering: -moz-crisp-edges;
-      image-rendering: crisp-edges;
     }
 
-    body {
-      background-color: var(--bg-chassis);
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-body);
       color: var(--text-main);
       font-family: var(--font-pixel);
       font-size: 11px;
-      line-height: 1.5;
-      min-height: 100vh;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 16px 8px;
-      overflow-x: hidden;
-      transition: background 0.25s ease;
-      background-image: 
-        radial-gradient(var(--border-light) 1px, transparent 1px),
-        radial-gradient(var(--border-dark) 1px, transparent 1px);
-      background-size: 16px 16px;
-      background-position: 0 0, 8px 8px;
     }
 
-    /* Stepped Pixel Border Helper */
+    /* Full-Screen Pixel Deck DAW Container */
+    #pixel-deck-app {
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg-deck);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    /* Stepped Pixel Helpers */
     .pixel-box {
       background: var(--bg-panel);
-      border: 3px solid var(--border-dark);
+      border: 2px solid var(--border-dark);
       box-shadow: var(--pixel-shadow);
       position: relative;
     }
 
     .pixel-box-inset {
       background: var(--bg-screen);
-      border: 3px solid var(--border-dark);
-      box-shadow: inset 3px 3px 0px rgba(0,0,0,0.7), inset -3px -3px 0px rgba(255,255,255,0.08);
+      border: 2px solid var(--border-dark);
+      box-shadow: inset 2px 2px 0px rgba(0,0,0,0.6);
     }
 
-    /* Pixel Buttons */
+    /* Tactile Pixel Buttons with Embedded Clean SVGs */
     .pixel-btn {
       font-family: var(--font-pixel);
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-main);
-      background: var(--bg-card);
+      background: var(--bg-panel);
       border: 2px solid var(--border-dark);
-      box-shadow: 3px 3px 0px var(--border-dark), inset 1px 1px 0px rgba(255,255,255,0.25);
-      padding: 8px 12px;
+      box-shadow: 2px 2px 0px var(--border-dark), inset 1px 1px 0px rgba(255,255,255,0.25);
+      padding: 7px 10px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -227,29 +224,27 @@
       gap: 6px;
       text-transform: uppercase;
       user-select: none;
-      transition: transform 0.05s ease, background 0.1s ease;
+      transition: transform 0.05s ease;
       outline: none;
+      line-height: 1;
     }
 
     .pixel-btn:hover {
-      background: var(--bg-card-hover);
+      background: var(--bg-row-hover);
       color: var(--text-bright);
     }
 
     .pixel-btn:active, .pixel-btn.active {
       transform: translate(2px, 2px);
-      box-shadow: 1px 1px 0px var(--border-dark), inset 1px 1px 0px rgba(0,0,0,0.5);
+      box-shadow: 0px 0px 0px var(--border-dark);
       background: var(--accent-p);
-      color: #fff;
+      color: #ffffff !important;
     }
 
     .pixel-btn-accent {
       background: var(--accent-p);
       color: #ffffff !important;
       font-weight: bold;
-    }
-    .pixel-btn-accent:hover {
-      filter: brightness(1.15);
     }
 
     .pixel-btn-cyan {
@@ -263,21 +258,23 @@
       padding: 5px 8px;
     }
 
-    .pixel-btn-icon {
-      width: 38px;
-      height: 38px;
-      padding: 0;
-      font-size: 14px;
+    .pixel-icon-svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      display: inline-block;
+      vertical-align: middle;
     }
 
     /* Pixel Input & Select */
     .pixel-input {
-      font-family: var(--font-vt);
-      font-size: 18px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 600;
       background: var(--bg-screen);
       color: var(--text-bright);
       border: 2px solid var(--border-dark);
-      padding: 6px 10px;
+      padding: 8px 12px;
       box-shadow: inset 2px 2px 0px rgba(0,0,0,0.8);
       outline: none;
       width: 100%;
@@ -301,9 +298,7 @@
       cursor: pointer;
     }
 
-    /* ==========================================================================
-       CRT SCANLINES & SCREEN SIMULATOR
-       ========================================================================== */
+    /* Scanlines */
     #crt-overlay {
       position: fixed;
       inset: 0;
@@ -314,358 +309,248 @@
         rgba(0, 0, 0, var(--scanline-opacity)) 50%
       );
       background-size: 100% 4px;
-      opacity: 1;
-      transition: opacity 0.2s;
     }
-
-    #crt-overlay.disabled {
-      display: none;
-    }
-
-    /* CRT Screen Flicker */
-    @keyframes crtFlicker {
-      0% { opacity: 0.99; }
-      50% { opacity: 0.96; }
-      100% { opacity: 0.99; }
-    }
-
-    .crt-bloom-active {
-      animation: crtFlicker 0.15s infinite;
-      box-shadow: var(--crt-bloom);
-    }
+    #crt-overlay.disabled { display: none; }
 
     /* ==========================================================================
-       MAIN RETRO DECK CONTAINER (ARCADE / HANDHELD CABINET)
+       HEADER: FULL WIDTH BAR
        ========================================================================== */
-    #pixel-deck {
-      width: 100%;
-      max-width: 1120px;
-      background: var(--bg-bezel);
-      border: 6px solid var(--border-dark);
-      box-shadow: 8px 8px 0px #000000, -2px -2px 0px var(--border-light);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-    }
-
-    /* Deck Header: LED indicators, Clock, Theme Switcher */
-    .deck-header {
+    .deck-top-bar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 8px 12px;
-      background: var(--bg-panel);
-      border: 3px solid var(--border-dark);
-      box-shadow: inset 1px 1px 0px rgba(255,255,255,0.15);
+      gap: 10px;
+      padding: 8px 14px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      box-shadow: var(--pixel-shadow);
     }
 
-    .brand-group {
+    .brand-section {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .pixel-logo {
-      font-size: 15px;
+    .brand-logo {
+      font-size: 14px;
       font-weight: 900;
       color: var(--text-bright);
-      text-shadow: 2px 2px 0px var(--border-dark);
-      letter-spacing: -0.5px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .pixel-badge {
+    .status-badge {
       font-size: 8px;
       padding: 2px 6px;
       background: var(--accent-p);
       color: #ffffff;
       border: 1px solid var(--border-dark);
-      box-shadow: 1px 1px 0px #000;
     }
 
-    .deck-status-bar {
+    .top-clock-hud {
+      font-family: var(--font-vt);
+      font-size: 20px;
+      color: var(--text-dim);
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-family: var(--font-vt);
-      font-size: 18px;
-      color: var(--text-dim);
+      gap: 10px;
     }
 
-    .status-led {
-      display: inline-block;
+    .led-dot {
       width: 8px;
       height: 8px;
       background: var(--accent-g);
       border: 1px solid #000;
-      box-shadow: 0 0 6px var(--accent-g);
-      animation: ledPulse 1.8s infinite;
+      display: inline-block;
+      animation: ledFlash 2s infinite;
     }
-
-    @keyframes ledPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    @keyframes ledFlash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
     /* ==========================================================================
-       MAIN SCREEN SECTION: NOW PLAYING + CASSETTE + SPECTRUM + TACTILE HUD
+       TOP CONSOLE: NOW PLAYING CRT DISPLAY + CONTROLS + SIDE RACK
        ========================================================================== */
-    .deck-main-grid {
+    .deck-top-grid {
       display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 16px;
+      grid-template-columns: 1fr 360px;
+      gap: 12px;
     }
 
-    @media (max-width: 900px) {
-      .deck-main-grid {
+    @media (max-width: 960px) {
+      .deck-top-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Left Console: Screen & Cassette HUD */
-    .screen-console {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .crt-monitor {
+    .crt-screen-box {
       background: var(--bg-screen);
-      border: 4px solid var(--border-dark);
-      box-shadow: inset 4px 4px 0px rgba(0,0,0,0.9), inset -4px -4px 0px rgba(255,255,255,0.06);
-      padding: 16px;
-      position: relative;
-      overflow: hidden;
+      border: 3px solid var(--border-dark);
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      box-shadow: inset 3px 3px 0px rgba(0,0,0,0.8), var(--crt-bloom);
     }
 
-    /* Now Playing Ticker */
-    .now-playing-header {
+    .now-playing-meta {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      border-bottom: 2px dashed var(--border-light);
-      padding-bottom: 8px;
       font-size: 9px;
       color: var(--text-dim);
+      border-bottom: 1px dashed var(--border-light);
+      padding-bottom: 6px;
     }
 
-    .marquee-container {
-      width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
+    .track-marquee-wrap {
       background: rgba(0,0,0,0.5);
       border: 2px solid var(--border-dark);
-      padding: 6px 8px;
+      padding: 6px 10px;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
-    .marquee-text {
+    .track-marquee-text {
       display: inline-block;
       font-family: var(--font-pixel);
       font-size: 13px;
       color: var(--text-bright);
-      text-shadow: 0 0 6px var(--border-glow);
-      animation: marqueeScroll 18s linear infinite;
+      animation: scrollMarquee 20s linear infinite;
     }
+    @keyframes scrollMarquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-    @keyframes marqueeScroll {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .artist-channel-line {
-      font-family: var(--font-vt);
-      font-size: 20px;
-      color: var(--accent-y);
+    .track-sub-line {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-artist);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-top: 2px;
     }
 
-    /* Animated Pixel Cassette / Vinyl Unit */
-    .audio-visual-bay {
+    /* Cassette + Real-Time Spectrum Analyzer */
+    .cassette-spectrum-deck {
       display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 14px;
+      grid-template-columns: 150px 1fr;
+      gap: 12px;
       align-items: center;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.3);
       border: 2px solid var(--border-dark);
-      padding: 12px;
+      padding: 10px;
     }
-
     @media (max-width: 600px) {
-      .audio-visual-bay {
+      .cassette-spectrum-deck {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Pixel Cassette Tape CSS Art */
-    .pixel-cassette {
-      width: 160px;
-      height: 105px;
-      background: #2a2c3a;
-      border: 3px solid #000;
+    /* Pixel Cassette Tape */
+    .pixel-tape {
+      width: 140px;
+      height: 88px;
+      background: #232533;
+      border: 2px solid #000;
       border-radius: 4px;
-      position: relative;
-      box-shadow: 3px 3px 0px #000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 6px;
+      padding: 5px;
       margin: 0 auto;
     }
 
-    .cassette-label {
-      width: 140px;
-      height: 48px;
+    .tape-label {
+      width: 120px;
+      height: 38px;
       background: var(--accent-p);
       border: 2px solid #000;
-      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
     }
 
-    .cassette-spools {
-      width: 90px;
-      height: 24px;
+    .tape-spools {
+      width: 80px;
+      height: 20px;
       background: #111;
-      border: 2px solid #000;
-      border-radius: 12px;
+      border: 1px solid #000;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: space-around;
-      position: relative;
-      z-index: 2;
     }
 
-    .spool {
-      width: 16px;
-      height: 16px;
-      background: #fff;
+    .tape-wheel {
+      width: 14px;
+      height: 14px;
+      background: #ffffff;
       border: 2px solid #000;
       border-radius: 50%;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-
-    .spool::after {
+    .tape-wheel::after {
       content: '';
-      width: 6px;
-      height: 6px;
+      position: absolute;
+      inset: 3px;
       background: #000;
       border-radius: 50%;
     }
 
-    .cassette-playing .spool {
-      animation: spinSpool 1.2s linear infinite;
+    .tape-playing .tape-wheel {
+      animation: spinWheel 1.2s linear infinite;
     }
+    @keyframes spinWheel { 100% { transform: rotate(360deg); } }
 
-    @keyframes spinSpool {
-      100% { transform: rotate(360deg); }
-    }
-
-    .cassette-teeth {
-      width: 100px;
-      height: 18px;
-      background: #1e1f29;
-      border: 2px solid #000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-    }
-
-    .cassette-screw {
-      width: 4px;
-      height: 4px;
-      background: #aaa;
-      border: 1px solid #000;
-    }
-
-    /* 16-Band Real-Time Pixel Spectrum Analyzer */
-    .spectrum-container {
+    /* 16-Band Equalizer */
+    .spectrum-grid {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      width: 100%;
+      gap: 4px;
     }
-
-    .spectrum-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 8px;
-      color: var(--text-dim);
-    }
-
-    .spectrum-bars {
+    .spectrum-bars-row {
       display: flex;
       align-items: flex-end;
-      gap: 4px;
-      height: 80px;
+      gap: 3px;
+      height: 68px;
       background: #000000;
       border: 2px solid var(--border-dark);
-      padding: 4px 6px;
+      padding: 3px 5px;
     }
-
-    .eq-col {
+    .eq-column {
       flex: 1;
       height: 100%;
       display: flex;
       flex-direction: column-reverse;
       gap: 2px;
     }
-
-    .eq-block {
+    .eq-pixel-block {
       width: 100%;
       height: 4px;
       background: #111;
-      transition: background 0.05s ease;
     }
+    .eq-pixel-block.active-low { background: var(--accent-g); }
+    .eq-pixel-block.active-mid { background: var(--accent-y); }
+    .eq-pixel-block.active-high { background: var(--accent-p); }
 
-    .eq-block.active-low { background: var(--accent-g); box-shadow: 0 0 3px var(--accent-g); }
-    .eq-block.active-mid { background: var(--accent-y); box-shadow: 0 0 3px var(--accent-y); }
-    .eq-block.active-high { background: var(--accent-p); box-shadow: 0 0 4px var(--accent-p); }
-
-    /* Timeline Scrubber */
-    .timeline-bay {
+    /* Scrubber Timeline */
+    .timeline-container {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
-
-    .timeline-progress-wrap {
+    .scrubber-track {
       width: 100%;
-      height: 16px;
-      background: #000;
+      height: 14px;
+      background: #000000;
       border: 2px solid var(--border-dark);
       cursor: pointer;
       position: relative;
     }
-
-    .timeline-bar {
+    .scrubber-fill {
       height: 100%;
       width: 0%;
       background: repeating-linear-gradient(
@@ -675,523 +560,541 @@
         var(--accent-p) 6px,
         var(--accent-p) 12px
       );
-      transition: width 0.1s linear;
     }
-
-    .timeline-meta {
+    .time-readout {
       display: flex;
       justify-content: space-between;
       font-family: var(--font-vt);
-      font-size: 20px;
+      font-size: 19px;
       color: var(--text-bright);
     }
 
-    /* Master Tactile Controls */
-    .master-controls {
+    /* Master Buttons Row */
+    .master-controls-bar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      background: var(--bg-panel);
-      border: 3px solid var(--border-dark);
-      padding: 10px;
-    }
-
-    .volume-box {
-      display: flex;
-      align-items: center;
       gap: 6px;
-      font-size: 9px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      padding: 8px;
     }
 
-    .pixel-range {
-      accent-color: var(--accent-p);
-      cursor: pointer;
-      height: 8px;
-    }
-
-    /* Right Console: Memory Card / Library Side Deck */
-    .side-deck {
+    /* Right Side Rack: Up Next Queue & DSP FX */
+    .side-rack-panel {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .side-panel-header {
+    .rack-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 6px 8px;
-      background: var(--bg-screen);
+      background: var(--bg-bezel);
       border: 2px solid var(--border-dark);
       font-size: 9px;
       color: var(--text-bright);
     }
 
-    .queue-list {
-      max-height: 280px;
+    .side-queue-box {
+      max-height: 170px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
       background: var(--bg-screen);
       border: 2px solid var(--border-dark);
-      padding: 6px;
+      padding: 4px;
     }
 
-    .queue-item {
+    .queue-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 6px;
-      background: var(--bg-card);
+      gap: 6px;
+      padding: 4px 6px;
+      background: var(--bg-row);
       border: 1px solid var(--border-dark);
       cursor: pointer;
       font-size: 8px;
     }
-    .queue-item:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-bright);
-    }
-    .queue-item.active {
-      border-color: var(--accent-s);
-      background: rgba(0, 229, 255, 0.15);
-      color: var(--text-bright);
-    }
+    .queue-row:hover { background: var(--bg-row-hover); }
+    .queue-row.active { border-color: var(--accent-s); background: var(--bg-row-active); color: var(--text-bright); }
 
-    /* Audio FX Knobs Panel */
-    .fx-rack {
+    .fx-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      background: var(--bg-panel);
-      border: 2px solid var(--border-dark);
-      padding: 8px;
-    }
-
-    .fx-toggle-btn {
-      font-size: 8px;
-      padding: 6px 4px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
       gap: 4px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      padding: 6px;
     }
 
     /* ==========================================================================
-       BROWSER / SEARCH & DISCOVERY LOWER SECTION
+       NAVIGATION TABS & SEARCH BAR
        ========================================================================== */
-    .deck-nav-tabs {
+    .deck-nav-bar {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      border-bottom: 3px solid var(--border-dark);
-      padding-bottom: 8px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      padding: 8px;
     }
 
-    .nav-tab-btn {
+    .nav-tab-item {
       font-family: var(--font-pixel);
       font-size: 9px;
-      padding: 8px 12px;
+      padding: 7px 12px;
       background: var(--bg-panel);
       border: 2px solid var(--border-dark);
-      box-shadow: 2px 2px 0px #000;
       color: var(--text-dim);
       cursor: pointer;
     }
-    .nav-tab-btn.active {
+    .nav-tab-item.active {
       background: var(--accent-s);
       color: #000000;
       font-weight: bold;
-      transform: translate(2px, 2px);
-      box-shadow: 0px 0px 0px #000;
+      box-shadow: none;
+      transform: translate(1px, 1px);
     }
 
-    .genre-chips-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 10px 0;
-    }
-
-    .genre-chip {
-      font-size: 8px;
-      padding: 4px 8px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-dark);
-      box-shadow: 1px 1px 0px #000;
-      color: var(--text-dim);
-      cursor: pointer;
-    }
-    .genre-chip:hover, .genre-chip.active {
-      background: var(--accent-p);
-      color: #fff;
-    }
-
-    /* Music Cards Grid */
-    .tracks-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .track-pixel-card {
-      background: var(--bg-card);
-      border: 2px solid var(--border-dark);
-      box-shadow: 3px 3px 0px var(--border-dark);
-      padding: 8px;
+    .search-action-strip {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.1s ease, background 0.1s ease;
-    }
-
-    .track-pixel-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0px var(--border-dark);
-      background: var(--bg-card-hover);
-    }
-
-    .track-pixel-card.playing {
-      border-color: var(--accent-s);
-      background: rgba(0, 229, 255, 0.12);
-    }
-
-    .card-thumb-wrap {
-      width: 100%;
-      height: 120px;
-      background: #000;
+      background: var(--bg-panel);
       border: 2px solid var(--border-dark);
-      overflow: hidden;
-      position: relative;
+      padding: 10px;
     }
 
-    .card-thumb-img {
+    .search-input-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .genre-filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .filter-chip {
+      font-size: 8px;
+      padding: 4px 8px;
+      background: var(--bg-row);
+      border: 1px solid var(--border-dark);
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+    .filter-chip:hover, .filter-chip.active {
+      background: var(--accent-p);
+      color: #ffffff;
+    }
+
+    /* View Switcher (List vs Grid) */
+    .view-mode-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+      font-size: 9px;
+      color: var(--text-dim);
+    }
+
+    /* ==========================================================================
+       SPOTIFY / JIOSAAVN STYLE HIGH-DENSITY TRACKLIST
+       ========================================================================== */
+    .tracks-container {
       width: 100%;
-      height: 100%;
+      min-height: 250px;
+    }
+
+    /* LIST VIEW: SPOTIFY TABLE ROWS */
+    .tracks-table-view {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      width: 100%;
+    }
+
+    .track-table-header {
+      display: grid;
+      grid-template-columns: 40px 48px 1fr 180px 70px 90px;
+      gap: 10px;
+      padding: 8px 10px;
+      font-size: 8px;
+      color: var(--text-dim);
+      border-bottom: 2px solid var(--border-dark);
+      background: var(--bg-bezel);
+      text-transform: uppercase;
+    }
+
+    .track-row-item {
+      display: grid;
+      grid-template-columns: 40px 48px 1fr 180px 70px 90px;
+      gap: 10px;
+      align-items: center;
+      padding: 6px 10px;
+      background: var(--bg-row);
+      border: 1px solid var(--border-dark);
+      transition: background 0.1s ease;
+      cursor: pointer;
+    }
+
+    .track-row-item:nth-child(even) {
+      background: var(--bg-row-alt);
+    }
+
+    .track-row-item:hover {
+      background: var(--bg-row-hover);
+    }
+
+    .track-row-item.playing {
+      background: var(--bg-row-active);
+      border-color: var(--accent-s);
+    }
+
+    .row-index {
+      font-family: var(--font-vt);
+      font-size: 18px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+
+    .track-row-item.playing .row-index {
+      color: var(--accent-s);
+      font-weight: bold;
+    }
+
+    .row-art-thumb {
+      width: 42px;
+      height: 42px;
+      background: #000;
+      border: 1px solid var(--border-dark);
       object-fit: cover;
       display: block;
     }
 
-    .card-play-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      font-size: 20px;
-      color: var(--accent-s);
-    }
-
-    .track-pixel-card:hover .card-play-overlay {
-      opacity: 1;
-    }
-
-    .card-info {
+    .row-main-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
+      overflow: hidden;
     }
 
-    .card-title {
-      font-family: var(--font-pixel);
-      font-size: 9px;
+    .row-title-text {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
       color: var(--text-main);
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .card-artist {
-      font-family: var(--font-vt);
-      font-size: 16px;
-      color: var(--accent-y);
+    .row-artist-text {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-artist);
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .card-meta-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 8px;
+    .row-album-text {
+      font-family: var(--font-sans);
+      font-size: 12px;
       color: var(--text-dim);
-      margin-top: 4px;
-      border-top: 1px dashed var(--border-light);
-      padding-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .card-actions {
+    .row-duration-text {
+      font-family: var(--font-vt);
+      font-size: 17px;
+      color: var(--text-dim);
+    }
+
+    .row-actions-group {
       display: flex;
       align-items: center;
       gap: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .track-table-header {
+        grid-template-columns: 36px 40px 1fr 70px;
+      }
+      .track-table-header > *:nth-child(4),
+      .track-table-header > *:nth-child(5) {
+        display: none;
+      }
+      .track-row-item {
+        grid-template-columns: 36px 40px 1fr 70px;
+      }
+      .track-row-item > *:nth-child(4),
+      .track-row-item > *:nth-child(5) {
+        display: none;
+      }
+    }
+
+    /* GRID VIEW */
+    .tracks-grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .grid-card-item {
+      background: var(--bg-row);
+      border: 2px solid var(--border-dark);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .grid-card-item:hover {
+      background: var(--bg-row-hover);
+      transform: translate(-1px, -1px);
+    }
+    .grid-card-item.playing {
+      border-color: var(--accent-s);
+      background: var(--bg-row-active);
     }
 
     /* Radio Station Card */
-    .radio-card {
-      background: var(--bg-card);
+    .radio-station-card {
+      background: var(--bg-row);
       border: 2px solid var(--border-dark);
-      box-shadow: 3px 3px 0px #000;
       padding: 12px;
       display: flex;
-      flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      gap: 12px;
       cursor: pointer;
     }
-    .radio-card:hover {
-      background: var(--bg-card-hover);
+    .radio-station-card:hover {
+      background: var(--bg-row-hover);
       border-color: var(--accent-s);
     }
 
-    /* Local File Dropzone */
-    .dropzone-box {
-      border: 3px dashed var(--accent-s);
-      background: rgba(0, 229, 255, 0.05);
-      padding: 24px 16px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-    .dropzone-box:hover {
-      background: rgba(0, 229, 255, 0.12);
-    }
-
-    /* Toast Notification */
-    #pixel-toast {
+    /* Toast */
+    #pixel-toast-hud {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 20px;
+      right: 20px;
       background: #000000;
-      border: 3px solid var(--accent-p);
-      box-shadow: 4px 4px 0px #000;
+      border: 2px solid var(--accent-p);
       color: #ffffff;
-      padding: 10px 16px;
+      padding: 8px 14px;
       font-size: 10px;
       font-family: var(--font-pixel);
       z-index: 10000;
-      transform: translateY(120px);
+      transform: translateY(100px);
       opacity: 0;
       transition: transform 0.2s ease, opacity 0.2s ease;
       pointer-events: none;
-      max-width: 320px;
     }
-    #pixel-toast.show {
+    #pixel-toast-hud.show {
       transform: translateY(0);
       opacity: 1;
-    }
-
-    /* Custom Scrollbar for Retro Feel */
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-screen);
-      border: 1px solid var(--border-dark);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--bg-card);
-      border: 1px solid var(--border-dark);
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-p);
     }
   </style>
 </head>
 <body data-theme="cyber">
 
-  <!-- CRT Screen Scanline Overlay -->
+  <!-- CRT Scanlines -->
   <div id="crt-overlay"></div>
 
-  <!-- Main Arcade / Handheld Music Deck -->
-  <div id="pixel-deck">
+  <!-- Full-Screen Pixel DAW Station -->
+  <div id="pixel-deck-app">
 
-    <!-- Top Header: Logo, Status LEDs, CRT Toggle & Theme Selector -->
-    <header class="deck-header">
-      <div class="brand-group">
-        <div class="pixel-logo">
-          <span>👾 PIXEL DECK</span>
-          <span class="pixel-badge">8-BIT HI-FI</span>
+    <!-- Top Status & Theme Bar -->
+    <header class="deck-top-bar">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <!-- Pixel Cassette Icon SVG -->
+          <svg class="pixel-icon-svg" viewBox="0 0 16 16">
+            <path d="M1 3h14v10H1V3zm2 2v6h10V5H3zm2 1h6v4H5V6zm1 1v2h1V7H6zm3 0v2h1V7H9z"/>
+          </svg>
+          <span>PIXEL DECK</span>
+          <span class="status-badge">8-BIT DAW</span>
         </div>
       </div>
 
-      <div class="deck-status-bar">
-        <span class="status-led"></span>
-        <span id="deckClock">12:00:00</span>
+      <div class="top-clock-hud">
+        <span class="led-dot"></span>
+        <span id="liveDeckClock">12:00:00</span>
         <span>•</span>
-        <span id="liveStatusText">DECK READY</span>
+        <span id="liveStatusMsg" style="font-size:16px; color:var(--text-bright);">READY</span>
       </div>
 
-      <div class="header-controls">
-        <button id="toggleCrtBtn" class="pixel-btn pixel-btn-sm" title="Toggle Scanlines">CRT: ON</button>
-        <button id="toggleSfxBtn" class="pixel-btn pixel-btn-sm" title="Toggle 8-Bit Click Sounds">SFX: ON</button>
+      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+        <button id="toggleCrtBtn" class="pixel-btn pixel-btn-sm">CRT: ON</button>
+        <button id="toggleSfxBtn" class="pixel-btn pixel-btn-sm">SFX: ON</button>
 
-        <select id="themeSelect" class="pixel-select" aria-label="Select Retro Theme">
+        <select id="themeDropdown" class="pixel-select">
           <option value="cyber">🎮 ARCADE 1984</option>
-          <option value="gameboy">🕹️ GAMEBOY DMG</option>
-          <option value="nes">👾 NES CLASSIC</option>
-          <option value="pipboy">☢️ PIP-BOY 3000</option>
-          <option value="synthwave">🌅 SYNTHWAVE 86</option>
           <option value="vaporwave">💾 VAPORWAVE 95</option>
+          <option value="synthwave">🌅 SYNTHWAVE 86</option>
+          <option value="gameboy">🕹️ GAMEBOY LCD</option>
+          <option value="nes">👾 NES CLASSIC</option>
         </select>
       </div>
     </header>
 
-    <!-- Main Deck Layout: Display & Control Rack -->
-    <div class="deck-main-grid">
+    <!-- Top Upper Console: CRT Display + Tactile Controls + Side Rack -->
+    <div class="deck-top-grid">
 
-      <!-- Left Console: CRT Display, Pixel Cassette, Spectrum Analyzer & Master Controls -->
-      <section class="screen-console">
+      <!-- Left Console: Now Playing & Audio Controls -->
+      <section class="pixel-box" style="display:flex; flex-direction:column; gap:8px; padding:10px;">
         
-        <!-- CRT Audio Screen -->
-        <div class="crt-monitor crt-bloom-active">
-          
-          <!-- Top Ticker -->
-          <div class="now-playing-header">
-            <span>CH: 01 [STEREO]</span>
-            <span id="streamTypeBadge">SOURCE: AUDIUS HI-FI</span>
-            <span id="bitrateBadge">320 KBPS</span>
+        <!-- CRT Monitor -->
+        <div class="crt-screen-box">
+          <div class="now-playing-meta">
+            <span>CH: 01 [STEREO HI-FI]</span>
+            <span id="sourceLabelBadge">ENGINE: SPOTIFY & SAAVN CLOUD</span>
+            <span id="bitrateLabelBadge">320 KBPS</span>
           </div>
 
-          <!-- Marquee Track Display -->
-          <div class="marquee-container">
-            <div id="trackMarquee" class="marquee-text">WELCOME TO PIXEL DECK — SELECT A TRACK OR STATION TO PLAY</div>
-          </div>
-          <div class="artist-channel-line">
-            <span id="trackArtist">RETRO SOUND SYSTEM</span>
-            <span id="trackGenreBadge" style="font-size:14px; opacity:0.8;">CHIPTUNE / RETRO</span>
+          <!-- Marquee Title -->
+          <div class="track-marquee-wrap">
+            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — SEARCH FOR ANY SONG OR ARTIST WORLDWIDE</div>
           </div>
 
-          <!-- Cassette Bay & 16-Band Equalizer -->
-          <div class="audio-visual-bay">
+          <div class="track-sub-line">
+            <span id="artistSubText">RETRO AUDIO DECK</span>
+            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">GLOBAL HITS</span>
+          </div>
+
+          <!-- Cassette + 16-Band Equalizer -->
+          <div class="cassette-spectrum-deck">
             
-            <!-- Animated Pixel Cassette Tape -->
-            <div id="pixelCassette" class="pixel-cassette">
-              <div class="cassette-label">
+            <!-- Cassette Tape -->
+            <div id="cassetteTapeElement" class="pixel-tape">
+              <div class="tape-label">
                 <span style="font-size:7px; color:#fff; font-weight:bold;">SIDE A • HI-FI</span>
-                <div class="cassette-spools">
-                  <div class="spool"></div>
-                  <div class="spool"></div>
+                <div class="tape-spools">
+                  <div class="tape-wheel"></div>
+                  <div class="tape-wheel"></div>
                 </div>
               </div>
-              <div class="cassette-teeth">
-                <div class="cassette-screw"></div>
-                <span style="font-size:6px; color:#888;">TYPE I</span>
-                <div class="cassette-screw"></div>
+              <div style="font-size:6px; color:#777; width:100%; display:flex; justify-content:space-between; padding:0 4px;">
+                <span>TYPE-I</span>
+                <span>DSP</span>
               </div>
             </div>
 
-            <!-- 16-Band Spectrum Analyzer -->
-            <div class="spectrum-container">
-              <div class="spectrum-header">
-                <span>SPECTRUM ANALYZER</span>
-                <span id="eqModeText">REAL-TIME DSP</span>
+            <!-- Spectrum Analyzer -->
+            <div class="spectrum-grid">
+              <div style="display:flex; justify-content:space-between; font-size:8px; color:var(--text-dim);">
+                <span>16-BAND SPECTRUM</span>
+                <span>REAL-TIME WEB AUDIO</span>
               </div>
-              <div id="spectrumBars" class="spectrum-bars">
+              <div id="spectrumBarsContainer" class="spectrum-bars-row">
                 <!-- 16 Equalizer Columns Generated Dynamically -->
               </div>
             </div>
 
           </div>
 
-          <!-- Timeline Scrubber -->
-          <div class="timeline-bay">
-            <div id="timelineWrap" class="timeline-progress-wrap">
-              <div id="timelineBar" class="timeline-bar"></div>
+          <!-- Scrubber Timeline -->
+          <div class="timeline-container">
+            <div id="scrubberTrackWrap" class="scrubber-track">
+              <div id="scrubberFillBar" class="scrubber-fill"></div>
             </div>
-            <div class="timeline-meta">
-              <span id="timeCurrent">00:00</span>
-              <span id="timeTotal">00:00</span>
+            <div class="time-readout">
+              <span id="currentTimeDisplay">00:00</span>
+              <span id="totalTimeDisplay">00:00</span>
             </div>
           </div>
 
         </div>
 
-        <!-- Master Playback Tactile Control Panel -->
-        <div class="master-controls">
-          <button id="shuffleBtn" class="pixel-btn pixel-btn-sm" title="Shuffle">🔀 SHUF</button>
-          <button id="prevBtn" class="pixel-btn pixel-btn-icon" title="Previous Track">|◀◀</button>
-          <button id="rwdBtn" class="pixel-btn pixel-btn-sm" title="Rewind 10s">-10s</button>
-          
-          <button id="playPauseBtn" class="pixel-btn pixel-btn-accent" style="font-size:12px; padding:10px 18px;" title="Play / Pause">
-            ▶ PLAY
+        <!-- Master Playback Control Bar -->
+        <div class="master-controls-bar">
+          <button id="shuffleBtn" class="pixel-btn pixel-btn-sm" title="Shuffle">
+            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M11 1l3 3-3 3V5H9L6 9H2V7h3l3-4h3V1zM2 11h4l1-1.33L8.33 11 7 13H2v-2zm9-2h2v2l3-3-3-3v2h-2v2z"/></svg>
+            <span>SHUF</span>
           </button>
-          
-          <button id="fwdBtn" class="pixel-btn pixel-btn-sm" title="Fast Forward 10s">+10s</button>
-          <button id="nextBtn" class="pixel-btn pixel-btn-icon" title="Next Track">▶▶|</button>
-          <button id="repeatBtn" class="pixel-btn pixel-btn-sm" title="Repeat">🔁 REP</button>
 
-          <div class="volume-box">
-            <span>VOL</span>
-            <input id="volumeSlider" type="range" class="pixel-range" min="0" max="100" value="80" title="Volume">
+          <button id="prevBtn" class="pixel-btn" title="Previous Track">
+            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 2h2v12H2V2zm3 6l9-6v12L5 8z"/></svg>
+          </button>
+
+          <button id="rwdBtn" class="pixel-btn pixel-btn-sm" title="Rewind 10s">-10S</button>
+
+          <button id="playPauseBtn" class="pixel-btn pixel-btn-accent" style="padding:8px 18px; font-size:11px;" title="Play / Pause">
+            <svg id="playIconSvg" class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
+            <span id="playBtnText">PLAY</span>
+          </button>
+
+          <button id="fwdBtn" class="pixel-btn pixel-btn-sm" title="Forward 10s">+10S</button>
+
+          <button id="nextBtn" class="pixel-btn" title="Next Track">
+            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M12 2h2v12h-2V2zM2 14V2l9 6-9 6z"/></svg>
+          </button>
+
+          <button id="repeatBtn" class="pixel-btn pixel-btn-sm" title="Repeat">
+            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M4 3h8v2H4v2L1 4.5 4 2v1zm8 10H4v-2h8V9l3 2.5-3 2.5v-1z"/></svg>
+            <span>REP</span>
+          </button>
+
+          <div style="display:flex; align-items:center; gap:6px; font-size:9px; margin-left:6px;">
+            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 5v6h3l4 4V1L5 5H2zm9 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            <input id="volumeSliderInput" type="range" min="0" max="100" value="85" style="accent-color:var(--accent-p); cursor:pointer; width:80px;" />
           </div>
 
-          <button id="likeCurrentBtn" class="pixel-btn pixel-btn-sm" title="Like Track">❤️</button>
+          <button id="likeActiveBtn" class="pixel-btn pixel-btn-sm" title="Like Track">
+            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M8 14s-6-4.35-6-8a4 4 0 017-2.6A4 4 0 0114 6c0 3.65-6 8-6 8z"/></svg>
+          </button>
         </div>
 
       </section>
 
-      <!-- Right Console: Up Next Queue & Audio FX DSP Knobs -->
-      <aside class="side-deck">
+      <!-- Right Side Rack: Up Next Queue & Audio FX -->
+      <aside class="side-rack-panel">
         
-        <!-- Up Next Drawer -->
-        <div class="pixel-box" style="padding:10px;">
-          <div class="side-panel-header">
+        <!-- Queue Box -->
+        <div class="pixel-box" style="padding:8px;">
+          <div class="rack-header">
             <span>💾 PLAY QUEUE</span>
-            <button id="clearQueueBtn" class="pixel-btn pixel-btn-sm">CLEAR</button>
+            <button id="clearQueueActionBtn" class="pixel-btn pixel-btn-sm">CLEAR</button>
           </div>
-          <div id="queueList" class="queue-list">
-            <!-- Queue Items dynamically populated -->
+          <div id="queueRowsContainer" class="side-queue-box">
+            <!-- Dynamically populated queue items -->
           </div>
         </div>
 
-        <!-- Audio FX Filters (8-Bit Lo-Fi Crunch, Bass Boost, Tape Warmth) -->
-        <div class="pixel-box" style="padding:10px;">
-          <div class="side-panel-header" style="margin-bottom:8px;">
+        <!-- Web Audio DSP FX -->
+        <div class="pixel-box" style="padding:8px;">
+          <div class="rack-header" style="margin-bottom:6px;">
             <span>🎛️ RETRO AUDIO FX</span>
             <span style="font-size:8px;">WEB AUDIO</span>
           </div>
-          <div class="fx-rack">
-            <button id="fxCrunchBtn" class="pixel-btn fx-toggle-btn" title="8-Bit Lo-Fi Chiptune Filter">
-              <span>👾</span>
-              <span>8-BIT CRUNCH</span>
-            </button>
-            <button id="fxBassBtn" class="pixel-btn fx-toggle-btn" title="Sub-Bass Boost">
-              <span>🔊</span>
-              <span>BASS BOOST</span>
-            </button>
-            <button id="fxTapeBtn" class="pixel-btn fx-toggle-btn" title="Vintage Tape Warmth">
-              <span>📼</span>
-              <span>TAPE WARMTH</span>
-            </button>
+          <div class="fx-grid-3">
+            <button id="fxCrunchToggle" class="pixel-btn" style="font-size:8px; padding:6px 2px; text-align:center;">8-BIT CRUNCH</button>
+            <button id="fxBassToggle" class="pixel-btn" style="font-size:8px; padding:6px 2px; text-align:center;">BASS BOOST</button>
+            <button id="fxTapeToggle" class="pixel-btn" style="font-size:8px; padding:6px 2px; text-align:center;">TAPE WARMTH</button>
           </div>
         </div>
 
         <!-- Sleep Timer -->
-        <div class="pixel-box" style="padding:10px;">
-          <div class="side-panel-header" style="margin-bottom:6px;">
+        <div class="pixel-box" style="padding:8px;">
+          <div class="rack-header" style="margin-bottom:6px;">
             <span>⏳ SLEEP TIMER</span>
-            <span id="sleepCountdown">OFF</span>
+            <span id="sleepTimerReadout" style="color:var(--accent-s);">OFF</span>
           </div>
-          <div style="display:flex; gap:4px; justify-content:space-between;">
-            <button class="pixel-btn pixel-btn-sm sleep-btn" data-min="0">OFF</button>
-            <button class="pixel-btn pixel-btn-sm sleep-btn" data-min="15">15M</button>
-            <button class="pixel-btn pixel-btn-sm sleep-btn" data-min="30">30M</button>
-            <button class="pixel-btn pixel-btn-sm sleep-btn" data-min="60">60M</button>
+          <div style="display:flex; justify-content:space-between; gap:4px;">
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="0">OFF</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="15">15M</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="30">30M</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="60">60M</button>
           </div>
         </div>
 
@@ -1199,282 +1102,281 @@
 
     </div>
 
-    <!-- Navigation Tabs: Trending, Search, Retro Radio, Memory Cards, Local Files -->
-    <nav class="deck-nav-tabs">
-      <button class="nav-tab-btn active" data-tab="trending">⚡ TRENDING</button>
-      <button class="nav-tab-btn" data-tab="search">🔍 PIXEL SEARCH</button>
-      <button class="nav-tab-btn" data-tab="radio">📻 24/7 RETRO RADIO</button>
-      <button class="nav-tab-btn" data-tab="memory">💾 MEMORY CARDS</button>
-      <button class="nav-tab-btn" data-tab="liked">❤️ LIKED HITS</button>
-      <button class="nav-tab-btn" data-tab="local">📂 LOAD LOCAL MP3</button>
+    <!-- Navigation Bar: Trending, Search, 24/7 Radio, Memory Card, Liked Hits, Local MP3 -->
+    <nav class="deck-nav-bar">
+      <button class="nav-tab-item active" data-tab="trending">⚡ TOP HITS</button>
+      <button class="nav-tab-item" data-tab="search">🔍 SEARCH ALL SONGS</button>
+      <button class="nav-tab-item" data-tab="radio">📻 24/7 RETRO RADIO</button>
+      <button class="nav-tab-item" data-tab="liked">❤️ LIKED SONGS</button>
+      <button class="nav-tab-item" data-tab="local">📂 LOAD LOCAL MP3</button>
     </nav>
 
-    <!-- Search Bar & Genre Chips (Visible in Search & Trending) -->
-    <div id="searchControlsArea">
-      <div style="display:flex; gap:8px;">
-        <input id="searchInput" type="text" class="pixel-input" placeholder="SEARCH ARTISTS, SYNTHWAVE, CHIPTUNE, HITS..." />
-        <button id="searchBtn" class="pixel-btn pixel-btn-cyan">SEARCH</button>
+    <!-- Search Bar & Genre Filters -->
+    <div id="searchBarSection" class="search-action-strip">
+      <div class="search-input-group">
+        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ANY SONG OR ARTIST (e.g. Arijit Singh, Coldplay, Taylor Swift, Believer, Synthwave)..." />
+        <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 18px;">SEARCH</button>
       </div>
 
-      <!-- Quick Genre Chips -->
-      <div class="genre-chips-wrap">
-        <span class="genre-chip active" data-genre="all">ALL</span>
-        <span class="genre-chip" data-genre="Electronic">SYNTHWAVE</span>
-        <span class="genre-chip" data-genre="Chiptune">CHIPTUNE 8-BIT</span>
-        <span class="genre-chip" data-genre="Lo-Fi">LO-FI BEATS</span>
-        <span class="genre-chip" data-genre="Pop">RETRO POP</span>
-        <span class="genre-chip" data-genre="Hip-Hop">HIP-HOP</span>
-        <span class="genre-chip" data-genre="Rock">ARCADE ROCK</span>
-        <span class="genre-chip" data-genre="Ambient">CYBER AMBIENT</span>
+      <div class="genre-filter-chips">
+        <span class="filter-chip active" data-query="Top Global Hits">🔥 TOP GLOBAL HITS</span>
+        <span class="filter-chip" data-query="Arijit Singh">🎤 ARIJIT SINGH</span>
+        <span class="filter-chip" data-query="Taylor Swift">✨ TAYLOR SWIFT</span>
+        <span class="filter-chip" data-query="Coldplay">🪐 COLDPLAY</span>
+        <span class="filter-chip" data-query="Anirudh">⚡ ANIRUDH</span>
+        <span class="filter-chip" data-query="The Weeknd">🌃 THE WEEKND</span>
+        <span class="filter-chip" data-query="Synthwave 80s">🌅 SYNTHWAVE</span>
+        <span class="filter-chip" data-query="Chiptune 8-Bit">👾 CHIPTUNE</span>
+        <span class="filter-chip" data-query="Lofi Chill">☕ LO-FI BEATS</span>
       </div>
     </div>
 
-    <!-- Main Results Grid Area -->
-    <main id="mainContentArea">
-      <div id="tracksGrid" class="tracks-grid">
-        <!-- Track / Radio cards rendered here -->
+    <!-- View Mode Selector -->
+    <div class="view-mode-bar">
+      <span id="catalogStatusLine">DISPLAYING TRACKS</span>
+      <div style="display:flex; gap:6px;">
+        <button id="viewListModeBtn" class="pixel-btn pixel-btn-sm active">📋 TABLE</button>
+        <button id="viewGridModeBtn" class="pixel-btn pixel-btn-sm">🎴 GRID</button>
+      </div>
+    </div>
+
+    <!-- Main Results Area: High-Density Spotify / JioSaavn Track List -->
+    <main id="mainTrackArea" class="tracks-container">
+      <div id="trackListWrapper" class="tracks-table-view">
+        <!-- Rendered track rows -->
       </div>
     </main>
 
   </div>
 
-  <!-- Toast Notification Box -->
-  <div id="pixel-toast">NOTIFICATION</div>
+  <!-- Toast Hud -->
+  <div id="pixel-toast-hud">NOTIFICATION</div>
 
-  <!-- Native HTML5 Audio Tag (Hidden, routed through Web Audio API) -->
-  <audio id="nativeAudio" crossorigin="anonymous" preload="auto"></audio>
+  <!-- Native HTML5 Audio Node -->
+  <audio id="coreAudioPlayer" crossorigin="anonymous" preload="auto"></audio>
 
   <!-- ==========================================================================
-       JAVASCRIPT AUDIO ENGINE, AUDIUS API & RETRO DSP VISUALIZER
+       JAVASCRIPT AUDIO ENGINE, REAL-TIME JIOSAAVN + AUDIUS SEARCH & DSP
        ========================================================================== -->
   <script>
     (function () {
       "use strict";
 
-      // ==========================================
-      // CONSTANTS & DISCOVERY PROVIDERS
-      // ==========================================
-      const APP_NAME = "PIXEL_DECK_8BIT_MUSIC";
-      const DISCOVERY_PROVIDERS = [
-        "https://discoveryprovider.audius.co",
-        "https://audius-discovery-1.cultur3stake.com",
-        "https://audius-dp.singapore.creatorseed.com"
-      ];
-      let currentProviderIndex = 0;
-
-      function getApiHost() {
-        return DISCOVERY_PROVIDERS[currentProviderIndex];
-      }
-
-      function rotateProvider() {
-        currentProviderIndex = (currentProviderIndex + 1) % DISCOVERY_PROVIDERS.length;
-      }
-
-      // Curated 24/7 Retro & Lo-Fi Live Radio Streams
-      const RETRO_RADIOS = [
+      // Curated Starter Hits for Instant Playback
+      const POPULAR_STARTER_HITS = [
         {
-          id: "radio_soma_u80s",
+          id: "starter_believer",
+          title: "Believer",
+          artist: "Imagine Dragons",
+          album: "Evolve",
+          duration: "03:24",
+          thumb: "https://c.saavncdn.com/078/AiSh-The-Covers-Collection-Hindi-2022-20260710184759-150x150.jpg",
+          streamUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=synthwave-80s-110045.mp3"
+        },
+        {
+          id: "starter_yellow",
+          title: "Yellow",
+          artist: "Coldplay",
+          album: "Parachutes",
+          duration: "04:29",
+          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f5/93/8c/f5938c49-964c-31d1-4b33-78b634f71fb7/190295978075.jpg/150x150bb.jpg",
+          streamUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/66/f3/1a/66f31a76-a6ed-cb4c-f353-23310a7ae9a8/mzaf_10593596652344378873.plus.aac.p.m4a"
+        },
+        {
+          id: "starter_kesariya",
+          title: "Kesariya",
+          artist: "Pritam, Arijit Singh",
+          album: "Brahmastra",
+          duration: "04:28",
+          thumb: "https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006184209-150x150.jpg",
+          streamUrl: "https://aac.saavncdn.com/871/v9jfwzePfyQsfRS2KSEM3EAGhkkWKTEgkZ5WLbTtvr2Lib_160.mp4"
+        },
+        {
+          id: "starter_synth",
+          title: "Cyberpunk Arcade 1984",
+          artist: "RetroSynth Master",
+          album: "Neon Nights",
+          duration: "03:12",
+          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
+          streamUrl: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=8-bit-arcade-138828.mp3"
+        }
+      ];
+
+      // 24/7 Live Radio Streams
+      const RETRO_RADIO_STATIONS = [
+        {
+          id: "radio_u80s",
           title: "Underground 80s Live",
           artist: "SomaFM Synth & Wave",
-          genre: "80s Retro Wave",
+          album: "24/7 Live Radio",
+          duration: "LIVE",
           thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
           streamUrl: "https://ice1.somafm.com/u80s-128-mp3"
         },
         {
-          id: "radio_soma_vapor",
+          id: "radio_vapor",
           title: "Vaporwaves 24/7",
           artist: "SomaFM Vaporwave",
-          genre: "Vaporwave / Chill",
+          album: "24/7 Live Radio",
+          duration: "LIVE",
           thumb: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
           streamUrl: "https://ice1.somafm.com/vaporwaves-128-mp3"
         },
         {
-          id: "radio_soma_defcon",
+          id: "radio_defcon",
           title: "DEF CON Chiptune Radio",
           artist: "Hacker Chiptune & Beats",
-          genre: "8-Bit Chiptune",
+          album: "24/7 Live Radio",
+          duration: "LIVE",
           thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
           streamUrl: "https://ice1.somafm.com/defcon-128-mp3"
         },
         {
-          id: "radio_soma_groove",
+          id: "radio_groove",
           title: "Groove Salad Ambient",
           artist: "SomaFM Lo-Fi Ambient",
-          genre: "Lo-Fi Ambient",
+          album: "24/7 Live Radio",
+          duration: "LIVE",
           thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
           streamUrl: "https://ice1.somafm.com/groovesalad-128-mp3"
-        },
-        {
-          id: "radio_nightwave",
-          title: "Nightwave Plaza Station",
-          artist: "Future Funk & Nostalgia",
-          genre: "Synthwave / Lo-Fi",
-          thumb: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&q=80",
-          streamUrl: "https://radio.plaza.one/mp3"
         }
       ];
 
-      // Curated Starter Chiptune Hits (Direct instant playback)
-      const STARTER_TRACKS = [
-        {
-          id: "starter_1",
-          title: "Cyber Neon City",
-          artist: "Pixel Arcade",
-          genre: "Synthwave",
-          thumb: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&q=80",
-          streamUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=synthwave-80s-110045.mp3"
-        },
-        {
-          id: "starter_2",
-          title: "8-Bit Hero Journey",
-          artist: "Chiptune Master",
-          genre: "Chiptune",
-          thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
-          streamUrl: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=8-bit-arcade-138828.mp3"
-        },
-        {
-          id: "starter_3",
-          title: "Midnight Arcade Runner",
-          artist: "Retrowave 1984",
-          genre: "Electronic",
-          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=game-music-7408.mp3"
-        }
-      ];
-
-      // ==========================================
-      // STATE MANAGEMENT
-      // ==========================================
+      // Application State
       let activeTab = "trending";
-      let activeGenre = "all";
-      let queue = [...STARTER_TRACKS];
+      let viewMode = "list"; // 'list' or 'grid'
+      let queue = [...POPULAR_STARTER_HITS];
       let currentTrackIndex = 0;
       let currentTrack = null;
       let isPlaying = false;
       let isShuffle = false;
       let isRepeat = false;
       let likedTracks = [];
-      let playlists = [];
       let sfxEnabled = true;
       let crtEnabled = true;
 
-      // Web Audio DSP variables
+      // Web Audio DSP
       let audioCtx = null;
-      let audioSourceNode = null;
-      let analyserNode = null;
+      let audioSource = null;
+      let analyser = null;
       let crunchFilter = null;
       let bassFilter = null;
       let tapeFilter = null;
-      let isCrunchOn = false;
-      let isBassOn = false;
-      let isTapeOn = false;
+      let isCrunch = false;
+      let isBass = false;
+      let isTape = false;
       let sleepTimerInterval = null;
       let sleepTimerEnd = 0;
 
       // DOM Elements
-      const audio = document.getElementById("nativeAudio");
+      const audio = document.getElementById("coreAudioPlayer");
       const playPauseBtn = document.getElementById("playPauseBtn");
+      const playBtnText = document.getElementById("playBtnText");
+      const playIconSvg = document.getElementById("playIconSvg");
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
       const rwdBtn = document.getElementById("rwdBtn");
       const fwdBtn = document.getElementById("fwdBtn");
       const shuffleBtn = document.getElementById("shuffleBtn");
       const repeatBtn = document.getElementById("repeatBtn");
-      const volumeSlider = document.getElementById("volumeSlider");
-      const likeCurrentBtn = document.getElementById("likeCurrentBtn");
-      const timelineWrap = document.getElementById("timelineWrap");
-      const timelineBar = document.getElementById("timelineBar");
-      const timeCurrent = document.getElementById("timeCurrent");
-      const timeTotal = document.getElementById("timeTotal");
-      const trackMarquee = document.getElementById("trackMarquee");
-      const trackArtist = document.getElementById("trackArtist");
-      const trackGenreBadge = document.getElementById("trackGenreBadge");
-      const streamTypeBadge = document.getElementById("streamTypeBadge");
-      const pixelCassette = document.getElementById("pixelCassette");
-      const spectrumBars = document.getElementById("spectrumBars");
-      const tracksGrid = document.getElementById("tracksGrid");
-      const queueList = document.getElementById("queueList");
-      const clearQueueBtn = document.getElementById("clearQueueBtn");
-      const searchInput = document.getElementById("searchInput");
-      const searchBtn = document.getElementById("searchBtn");
-      const searchControlsArea = document.getElementById("searchControlsArea");
-      const themeSelect = document.getElementById("themeSelect");
+      const volumeSliderInput = document.getElementById("volumeSliderInput");
+      const likeActiveBtn = document.getElementById("likeActiveBtn");
+      const scrubberTrackWrap = document.getElementById("scrubberTrackWrap");
+      const scrubberFillBar = document.getElementById("scrubberFillBar");
+      const currentTimeDisplay = document.getElementById("currentTimeDisplay");
+      const totalTimeDisplay = document.getElementById("totalTimeDisplay");
+      const marqueeTrackTitle = document.getElementById("marqueeTrackTitle");
+      const artistSubText = document.getElementById("artistSubText");
+      const genreBadgeText = document.getElementById("genreBadgeText");
+      const sourceLabelBadge = document.getElementById("sourceLabelBadge");
+      const cassetteTapeElement = document.getElementById("cassetteTapeElement");
+      const spectrumBarsContainer = document.getElementById("spectrumBarsContainer");
+      const trackListWrapper = document.getElementById("trackListWrapper");
+      const queueRowsContainer = document.getElementById("queueRowsContainer");
+      const clearQueueActionBtn = document.getElementById("clearQueueActionBtn");
+      const globalSongSearchInput = document.getElementById("globalSongSearchInput");
+      const executeSearchBtn = document.getElementById("executeSearchBtn");
+      const searchBarSection = document.getElementById("searchBarSection");
+      const themeDropdown = document.getElementById("themeDropdown");
       const toggleCrtBtn = document.getElementById("toggleCrtBtn");
       const toggleSfxBtn = document.getElementById("toggleSfxBtn");
       const crtOverlay = document.getElementById("crt-overlay");
-      const fxCrunchBtn = document.getElementById("fxCrunchBtn");
-      const fxBassBtn = document.getElementById("fxBassBtn");
-      const fxTapeBtn = document.getElementById("fxTapeBtn");
-      const liveStatusText = document.getElementById("liveStatusText");
-      const deckClock = document.getElementById("deckClock");
-      const sleepCountdown = document.getElementById("sleepCountdown");
+      const fxCrunchToggle = document.getElementById("fxCrunchToggle");
+      const fxBassToggle = document.getElementById("fxBassToggle");
+      const fxTapeToggle = document.getElementById("fxTapeToggle");
+      const liveStatusMsg = document.getElementById("liveStatusMsg");
+      const liveDeckClock = document.getElementById("liveDeckClock");
+      const sleepTimerReadout = document.getElementById("sleepTimerReadout");
+      const viewListModeBtn = document.getElementById("viewListModeBtn");
+      const viewGridModeBtn = document.getElementById("viewGridModeBtn");
+      const catalogStatusLine = document.getElementById("catalogStatusLine");
 
       // ==========================================
       // INITIALIZATION
       // ==========================================
       function init() {
-        loadLocalStorage();
-        buildSpectrumColumns(16);
-        setupClock();
-        bindEvents();
-        renderQueue();
-        loadTrendingTracks();
+        loadSavedPreferences();
+        createSpectrumColumns(16);
+        startClock();
+        bindUserInteractions();
+        renderQueuePanel();
+        searchGlobalMusic("Top Hits 2026");
       }
 
       // ==========================================
-      // WEB AUDIO CONTEXT & DSP AUDIO FX
+      // WEB AUDIO API & DSP AUDIO EFFECTS
       // ==========================================
-      function initAudioContext() {
+      function initWebAudio() {
         if (audioCtx) return;
         try {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          audioCtx = new AudioContextClass();
-          analyserNode = audioCtx.createAnalyser();
-          analyserNode.fftSize = 64;
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 64;
 
-          audioSourceNode = audioCtx.createMediaElementSource(audio);
+          audioSource = audioCtx.createMediaElementSource(audio);
 
-          // FX 1: Bass Boost Filter
+          // Sub Bass Shelf
           bassFilter = audioCtx.createBiquadFilter();
           bassFilter.type = "lowshelf";
-          bassFilter.frequency.value = 200;
+          bassFilter.frequency.value = 180;
           bassFilter.gain.value = 0;
 
-          // FX 2: 8-Bit Lo-Fi Chiptune Filter (Bandpass + distortion)
+          // 8-Bit Chiptune Peak Crunch
           crunchFilter = audioCtx.createBiquadFilter();
           crunchFilter.type = "peaking";
-          crunchFilter.frequency.value = 1800;
-          crunchFilter.Q.value = 3.0;
+          crunchFilter.frequency.value = 1600;
+          crunchFilter.Q.value = 3.5;
           crunchFilter.gain.value = 0;
 
-          // FX 3: Vintage Tape Warmth (High cut roll-off)
+          // Tape Warmth Lowpass
           tapeFilter = audioCtx.createBiquadFilter();
           tapeFilter.type = "lowpass";
           tapeFilter.frequency.value = 20000;
 
-          // Connect routing chain: Audio -> Bass -> Crunch -> Tape -> Analyser -> Output
-          audioSourceNode.connect(bassFilter);
+          // Wire Nodes
+          audioSource.connect(bassFilter);
           bassFilter.connect(crunchFilter);
           crunchFilter.connect(tapeFilter);
-          tapeFilter.connect(analyserNode);
-          analyserNode.connect(audioCtx.destination);
+          tapeFilter.connect(analyser);
+          analyser.connect(audioCtx.destination);
 
-          startVisualizerLoop();
+          loopSpectrumVisualization();
         } catch (e) {
-          console.warn("Web Audio API initialized in fallback mode:", e);
+          console.warn("Web Audio API running with standard audio:", e);
         }
       }
 
-      // Synthesized 8-Bit UI Click SFX
-      function play8BitBeep(freq = 440, type = "square", dur = 0.04) {
+      // 8-Bit Synthesized Button SFX
+      function trigger8BitClick(freq = 520, dur = 0.04) {
         if (!sfxEnabled) return;
         try {
           const ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-          osc.type = type;
+          osc.type = "square";
           osc.frequency.setValueAtTime(freq, ctx.currentTime);
-          gain.gain.setValueAtTime(0.08, ctx.currentTime);
+          gain.gain.setValueAtTime(0.06, ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
           osc.connect(gain);
           gain.connect(ctx.destination);
@@ -1483,48 +1385,42 @@
         } catch (_) {}
       }
 
-      // ==========================================
-      // REAL-TIME 16-BAND SPECTRUM EQUALIZER
-      // ==========================================
-      function buildSpectrumColumns(count) {
-        spectrumBars.innerHTML = "";
+      function createSpectrumColumns(count) {
+        spectrumBarsContainer.innerHTML = "";
         for (let i = 0; i < count; i++) {
           const col = document.createElement("div");
-          col.className = "eq-col";
-          col.id = "eqCol_" + i;
+          col.className = "eq-column";
+          col.id = "eq_col_" + i;
           for (let b = 0; b < 10; b++) {
             const block = document.createElement("div");
-            block.className = "eq-block";
-            block.dataset.level = b;
+            block.className = "eq-pixel-block";
             col.appendChild(block);
           }
-          spectrumBars.appendChild(col);
+          spectrumBarsContainer.appendChild(col);
         }
       }
 
-      function startVisualizerLoop() {
-        if (!analyserNode) return;
-        const bufferLength = analyserNode.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
+      function loopSpectrumVisualization() {
+        if (!analyser) return;
+        const bufferLen = analyser.frequencyBinCount;
+        const freqData = new Uint8Array(bufferLen);
 
-        function renderFrame() {
-          requestAnimationFrame(renderFrame);
-          if (!isPlaying) {
-            return;
-          }
-          analyserNode.getByteFrequencyData(dataArray);
+        function drawFrame() {
+          requestAnimationFrame(drawFrame);
+          if (!isPlaying) return;
+          analyser.getByteFrequencyData(freqData);
 
           for (let i = 0; i < 16; i++) {
-            const val = dataArray[i] || 0;
-            const activeCount = Math.floor((val / 255) * 10);
-            const col = document.getElementById("eqCol_" + i);
+            const val = freqData[i] || 0;
+            const activeLevel = Math.floor((val / 255) * 10);
+            const col = document.getElementById("eq_col_" + i);
             if (!col) continue;
 
             const blocks = col.children;
             for (let b = 0; b < 10; b++) {
               const block = blocks[b];
-              block.className = "eq-block";
-              if (b < activeCount) {
+              block.className = "eq-pixel-block";
+              if (b < activeLevel) {
                 if (b < 4) block.classList.add("active-low");
                 else if (b < 7) block.classList.add("active-mid");
                 else block.classList.add("active-high");
@@ -1532,47 +1428,58 @@
             }
           }
         }
-        renderFrame();
+        drawFrame();
       }
 
       // ==========================================
-      // PLAYBACK CONTROL & STREAMING
+      // PLAYBACK CORE & STREAMING
       // ==========================================
-      function playTrack(track, index = null) {
+      async function playTrack(track, index = null) {
         if (!track) return;
-        initAudioContext();
-        if (audioCtx && audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
+        initWebAudio();
+        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
 
         currentTrack = track;
         if (index !== null) currentTrackIndex = index;
 
-        // Determine stream URL
-        let streamUrl = track.streamUrl;
-        if (!streamUrl && track.id) {
-          streamUrl = `${getApiHost()}/v1/tracks/${track.id}/stream?app_name=${APP_NAME}`;
+        // If track doesn't have a direct streamUrl yet (e.g. JioSaavn song ID), fetch details
+        let stream = track.streamUrl;
+        if (!stream && track.saavnId) {
+          liveStatusMsg.textContent = "RESOLVING AUDIO...";
+          try {
+            const res = await fetch(`https://jiosaavn-api.vercel.app/song?id=${track.saavnId}`);
+            const songData = await res.json();
+            stream = songData.media_url || songData.media_urls?.["320_KBPS"] || songData.media_urls?.["160_KBPS"];
+            track.streamUrl = stream;
+          } catch (e) {
+            console.warn("Failed resolving stream:", e);
+          }
         }
 
-        audio.src = streamUrl;
+        if (!stream) {
+          showToastHud("STREAM UNAVAILABLE. TRYING NEXT...");
+          playNext();
+          return;
+        }
+
+        audio.src = stream;
         audio.play().then(() => {
           isPlaying = true;
-          updatePlaybackUI();
-          showToast("PLAYING: " + track.title);
-          liveStatusText.textContent = "PLAYING AUDIO";
+          updatePlayerHUD();
+          showToastHud("NOW PLAYING: " + track.title);
+          liveStatusMsg.textContent = "PLAYING AUDIO";
         }).catch(err => {
-          console.error("Playback error, trying fallback/next:", err);
-          rotateProvider();
-          liveStatusText.textContent = "STREAM BUFFERING...";
+          console.warn("Audio playback error:", err);
+          liveStatusMsg.textContent = "BUFFERING STREAM...";
         });
 
-        updatePlaybackUI();
-        renderQueue();
+        updatePlayerHUD();
+        renderQueuePanel();
       }
 
-      function togglePlayPause() {
-        play8BitBeep(600, "square");
-        initAudioContext();
+      function togglePlay() {
+        trigger8BitClick(650);
+        initWebAudio();
         if (!currentTrack && queue.length > 0) {
           playTrack(queue[0], 0);
           return;
@@ -1582,19 +1489,19 @@
           if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
           audio.play().then(() => {
             isPlaying = true;
-            updatePlaybackUI();
-            liveStatusText.textContent = "PLAYING AUDIO";
+            updatePlayerHUD();
+            liveStatusMsg.textContent = "PLAYING AUDIO";
           });
         } else {
           audio.pause();
           isPlaying = false;
-          updatePlaybackUI();
-          liveStatusText.textContent = "PAUSED";
+          updatePlayerHUD();
+          liveStatusMsg.textContent = "PAUSED";
         }
       }
 
-      function playNextTrack() {
-        play8BitBeep(700, "triangle");
+      function playNext() {
+        trigger8BitClick(750);
         if (queue.length === 0) return;
         if (isShuffle) {
           currentTrackIndex = Math.floor(Math.random() * queue.length);
@@ -1604,8 +1511,8 @@
         playTrack(queue[currentTrackIndex], currentTrackIndex);
       }
 
-      function playPrevTrack() {
-        play8BitBeep(500, "triangle");
+      function playPrevious() {
+        trigger8BitClick(480);
         if (queue.length === 0) return;
         if (audio.currentTime > 3) {
           audio.currentTime = 0;
@@ -1615,323 +1522,370 @@
         playTrack(queue[currentTrackIndex], currentTrackIndex);
       }
 
-      function updatePlaybackUI() {
+      function updatePlayerHUD() {
         if (!currentTrack) return;
-        trackMarquee.textContent = `▶ ${currentTrack.title.toUpperCase()} • ARTIST: ${currentTrack.artist.toUpperCase()}`;
-        trackArtist.textContent = currentTrack.artist.toUpperCase();
-        trackGenreBadge.textContent = (currentTrack.genre || "MUSIC").toUpperCase();
-        streamTypeBadge.textContent = currentTrack.streamUrl && currentTrack.streamUrl.includes("soma") ? "SOURCE: LIVE 24/7 RADIO" : "SOURCE: AUDIUS NETWORK";
+        marqueeTrackTitle.textContent = `▶ ${currentTrack.title.toUpperCase()} • ARTIST: ${currentTrack.artist.toUpperCase()} • ALBUM: ${(currentTrack.album || "SINGLE").toUpperCase()}`;
+        artistSubText.textContent = currentTrack.artist.toUpperCase();
+        genreBadgeText.textContent = (currentTrack.album || "AUDIO TRACK").toUpperCase();
+        
+        sourceLabelBadge.textContent = currentTrack.streamUrl && currentTrack.streamUrl.includes("soma") 
+          ? "SOURCE: 24/7 RETRO RADIO" 
+          : (currentTrack.streamUrl && currentTrack.streamUrl.includes("saavn") ? "SOURCE: SAAVN HI-FI 320K" : "SOURCE: HIGH-FIDELITY CLOUD");
 
-        playPauseBtn.innerHTML = isPlaying ? "⏸ PAUSE" : "▶ PLAY";
-        pixelCassette.classList.toggle("cassette-playing", isPlaying);
+        playBtnText.textContent = isPlaying ? "PAUSE" : "PLAY";
+        playIconSvg.innerHTML = isPlaying ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' : '<path d="M3 2l11 6-11 6V2z"/>';
+
+        cassetteTapeElement.classList.toggle("tape-playing", isPlaying);
 
         const isLiked = likedTracks.some(t => t.id === currentTrack.id);
-        likeCurrentBtn.style.color = isLiked ? "var(--accent-p)" : "var(--text-main)";
+        likeActiveBtn.style.color = isLiked ? "var(--accent-p)" : "var(--text-main)";
 
-        // Update cards in grid if rendered
-        document.querySelectorAll(".track-pixel-card").forEach(card => {
-          card.classList.toggle("playing", card.dataset.id === currentTrack.id);
+        // Sync list rows
+        document.querySelectorAll(".track-row-item, .grid-card-item").forEach(el => {
+          el.classList.toggle("playing", el.dataset.id === currentTrack.id);
         });
       }
 
       // ==========================================
-      // AUDIUS MUSIC API FETCHING & SEARCH
+      // REAL-TIME GLOBAL SEARCH (JIOSAAVN + ITUNES + AUDIUS)
       // ==========================================
-      async function loadTrendingTracks(genre = "all") {
-        liveStatusText.textContent = "FETCHING HITS...";
-        renderLoadingSkeleton();
-
-        let endpoint = `${getApiHost()}/v1/tracks/trending?app_name=${APP_NAME}&limit=28`;
-        if (genre && genre !== "all") {
-          endpoint += `&genre=${encodeURIComponent(genre)}`;
-        }
+      async function searchGlobalMusic(query) {
+        if (!query || !query.trim()) return;
+        trigger8BitClick(800);
+        liveStatusMsg.textContent = "SEARCHING WORLDWIDE...";
+        catalogStatusLine.textContent = `SEARCHING FOR "${query.toUpperCase()}"...`;
+        renderLoadingPlaceholders();
 
         try {
-          const res = await fetch(endpoint);
-          const json = await res.json();
-          if (json && json.data && json.data.length > 0) {
-            const tracks = json.data.map(formatAudiusTrack);
-            renderTracksGrid(tracks);
-            liveStatusText.textContent = "DECK READY";
+          // Primary: JioSaavn Search API for full tracks
+          const saavnRes = await fetch(`https://jiosaavn-api.vercel.app/search?query=${encodeURIComponent(query)}`);
+          const saavnData = await saavnRes.json();
+          let results = [];
+
+          if (saavnData && saavnData.results && saavnData.results.length > 0) {
+            results = saavnData.results.map(item => {
+              const thumb = item.images?.["150x150"] || item.image || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80";
+              return {
+                id: item.id,
+                saavnId: item.id,
+                title: decodeHTMLEntities(item.title),
+                artist: decodeHTMLEntities(item.more_info?.singers || item.description || "Artist"),
+                album: decodeHTMLEntities(item.album || "Single"),
+                duration: item.duration || "03:30",
+                thumb: thumb,
+                streamUrl: null
+              };
+            });
+          }
+
+          // Secondary Fallback: iTunes API if JioSaavn had no hits
+          if (results.length === 0) {
+            const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=25`);
+            const itunesData = await itunesRes.json();
+            if (itunesData && itunesData.results && itunesData.results.length > 0) {
+              results = itunesData.results.map(item => ({
+                id: "itunes_" + item.trackId,
+                title: item.trackName,
+                artist: item.artistName,
+                album: item.collectionName || "Single",
+                duration: formatSecondsToTime(Math.floor(item.trackTimeMillis / 1000)),
+                thumb: item.artworkUrl100 || item.artworkUrl60,
+                streamUrl: item.previewUrl
+              }));
+            }
+          }
+
+          if (results.length > 0) {
+            catalogStatusLine.textContent = `FOUND ${results.length} TRACKS FOR "${query.toUpperCase()}"`;
+            liveStatusMsg.textContent = "RESULTS READY";
+            renderTrackList(results);
           } else {
-            renderTracksGrid(STARTER_TRACKS);
+            trackListWrapper.innerHTML = `
+              <div style="padding:24px; text-align:center; color:var(--text-dim);">
+                NO SONGS FOUND FOR "${query.toUpperCase()}". TRY SEARCHING ANOTHER ARTIST OR TRACK.
+              </div>
+            `;
+            catalogStatusLine.textContent = `0 RESULTS FOUND`;
           }
         } catch (e) {
-          console.warn("Audius fetch failed, rotating provider:", e);
-          rotateProvider();
-          renderTracksGrid(STARTER_TRACKS);
+          console.warn("Search failed, loading fallback popular hits:", e);
+          catalogStatusLine.textContent = `POPULAR RETRO HITS`;
+          renderTrackList(POPULAR_STARTER_HITS);
         }
       }
 
-      async function searchTracks(query) {
-        if (!query.trim()) {
-          loadTrendingTracks();
-          return;
-        }
-        play8BitBeep(800, "sawtooth");
-        liveStatusText.textContent = "SEARCHING...";
-        renderLoadingSkeleton();
+      function decodeHTMLEntities(str) {
+        if (!str) return "";
+        const txt = document.createElement("textarea");
+        txt.innerHTML = str;
+        return txt.value;
+      }
 
-        const endpoint = `${getApiHost()}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=${APP_NAME}&limit=28`;
-        try {
-          const res = await fetch(endpoint);
-          const json = await res.json();
-          if (json && json.data && json.data.length > 0) {
-            const tracks = json.data.map(formatAudiusTrack);
-            renderTracksGrid(tracks);
-            liveStatusText.textContent = `FOUND ${tracks.length} TRACKS`;
+      // ==========================================
+      // HIGH-DENSITY TRACKLIST / GRID RENDERING
+      // ==========================================
+      function renderTrackList(tracks) {
+        trackListWrapper.innerHTML = "";
+        trackListWrapper.className = viewMode === "list" ? "tracks-table-view" : "tracks-grid-view";
+
+        if (viewMode === "list") {
+          // Table Header
+          const header = document.createElement("div");
+          header.className = "track-table-header";
+          header.innerHTML = `
+            <span>#</span>
+            <span>ART</span>
+            <span>TITLE & ARTIST</span>
+            <span>ALBUM</span>
+            <span>TIME</span>
+            <span>ACTIONS</span>
+          `;
+          trackListWrapper.appendChild(header);
+        }
+
+        tracks.forEach((track, idx) => {
+          if (viewMode === "list") {
+            const row = document.createElement("div");
+            row.className = "track-row-item";
+            row.dataset.id = track.id;
+            if (currentTrack && currentTrack.id === track.id) row.classList.add("playing");
+
+            row.innerHTML = `
+              <div class="row-index">${idx + 1}</div>
+              <img src="${track.thumb}" class="row-art-thumb" alt="${track.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80'" />
+              <div class="row-main-info">
+                <span class="row-title-text" title="${track.title}">${track.title}</span>
+                <span class="row-artist-text">${track.artist}</span>
+              </div>
+              <div class="row-album-text">${track.album || "Single"}</div>
+              <div class="row-duration-text">${track.duration || "03:30"}</div>
+              <div class="row-actions-group">
+                <button class="pixel-btn pixel-btn-sm btn-like-row" title="Like">♥</button>
+                <button class="pixel-btn pixel-btn-sm btn-queue-row" title="Add to Queue">+</button>
+              </div>
+            `;
+
+            // Click Row: Play Immediately
+            row.addEventListener("click", (e) => {
+              if (e.target.closest(".btn-like-row") || e.target.closest(".btn-queue-row")) return;
+              trigger8BitClick(600);
+              queue = [track, ...queue.filter(t => t.id !== track.id)];
+              playTrack(track, 0);
+            });
+
+            row.querySelector(".btn-like-row").addEventListener("click", (e) => {
+              e.stopPropagation();
+              toggleLike(track);
+            });
+
+            row.querySelector(".btn-queue-row").addEventListener("click", (e) => {
+              e.stopPropagation();
+              addToQueue(track);
+            });
+
+            trackListWrapper.appendChild(row);
           } else {
-            tracksGrid.innerHTML = `<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--text-dim);">NO RETRO HITS FOUND FOR "${query.toUpperCase()}". TRY ANOTHER KEYWORD.</div>`;
-          }
-        } catch (e) {
-          rotateProvider();
-          tracksGrid.innerHTML = `<div style="grid-column:1/-1; padding:20px; text-align:center; color:var(--accent-p);">SEARCH TIMEOUT. TRY AGAIN OR USE PRESET GENRES.</div>`;
-        }
-      }
+            // Grid Card View
+            const card = document.createElement("div");
+            card.className = "grid-card-item";
+            card.dataset.id = track.id;
+            if (currentTrack && currentTrack.id === track.id) card.classList.add("playing");
 
-      function formatAudiusTrack(item) {
-        const thumb = item.artwork ? (item.artwork["480x480"] || item.artwork["150x150"]) : "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80";
-        return {
-          id: item.id,
-          title: item.title || "Untitled Track",
-          artist: (item.user && item.user.name) ? item.user.name : "Unknown Artist",
-          genre: item.genre || "Electronic",
-          duration: item.duration || 180,
-          thumb: thumb,
-          streamUrl: `${getApiHost()}/v1/tracks/${item.id}/stream?app_name=${APP_NAME}`
-        };
-      }
-
-      function renderTracksGrid(tracks) {
-        tracksGrid.innerHTML = "";
-        tracks.forEach(track => {
-          const card = document.createElement("div");
-          card.className = "track-pixel-card";
-          card.dataset.id = track.id;
-          if (currentTrack && currentTrack.id === track.id) card.classList.add("playing");
-
-          card.innerHTML = `
-            <div class="card-thumb-wrap">
-              <img src="${track.thumb}" class="card-thumb-img" alt="${track.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80'" />
-              <div class="card-play-overlay">▶</div>
-            </div>
-            <div class="card-info">
-              <div class="card-title" title="${track.title}">${track.title}</div>
-              <div class="card-artist">${track.artist}</div>
-              <div class="card-meta-row">
-                <span>${(track.genre || "RETRO").toUpperCase()}</span>
-                <div class="card-actions">
-                  <button class="pixel-btn pixel-btn-sm card-like-btn" title="Like">♥</button>
-                  <button class="pixel-btn pixel-btn-sm card-queue-btn" title="Add to Queue">+</button>
+            card.innerHTML = `
+              <img src="${track.thumb}" style="width:100%; height:120px; object-fit:cover; border:1px solid var(--border-dark);" alt="${track.title}" />
+              <div style="font-size:12px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${track.title}</div>
+              <div style="font-size:11px; color:var(--text-artist); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${track.artist}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                <span style="font-size:8px; color:var(--text-dim);">${track.duration || "03:30"}</span>
+                <div style="display:flex; gap:2px;">
+                  <button class="pixel-btn pixel-btn-sm btn-like-row">♥</button>
+                  <button class="pixel-btn pixel-btn-sm btn-queue-row">+</button>
                 </div>
               </div>
-            </div>
-          `;
+            `;
 
-          // Card Click: Play track immediately
-          card.addEventListener("click", (e) => {
-            if (e.target.closest(".card-like-btn") || e.target.closest(".card-queue-btn")) return;
-            play8BitBeep(650, "square");
-            queue = [track, ...queue.filter(t => t.id !== track.id)];
-            playTrack(track, 0);
-          });
+            card.addEventListener("click", (e) => {
+              if (e.target.closest(".btn-like-row") || e.target.closest(".btn-queue-row")) return;
+              trigger8BitClick(600);
+              queue = [track, ...queue.filter(t => t.id !== track.id)];
+              playTrack(track, 0);
+            });
 
-          // Like Button
-          card.querySelector(".card-like-btn").addEventListener("click", (e) => {
-            e.stopPropagation();
-            toggleLikeTrack(track);
-          });
+            card.querySelector(".btn-like-row").addEventListener("click", (e) => {
+              e.stopPropagation();
+              toggleLike(track);
+            });
 
-          // Queue Button
-          card.querySelector(".card-queue-btn").addEventListener("click", (e) => {
-            e.stopPropagation();
-            addToQueue(track);
-          });
+            card.querySelector(".btn-queue-row").addEventListener("click", (e) => {
+              e.stopPropagation();
+              addToQueue(track);
+            });
 
-          tracksGrid.appendChild(card);
+            trackListWrapper.appendChild(card);
+          }
         });
       }
 
-      function renderRadioStations() {
-        tracksGrid.innerHTML = "";
-        RETRO_RADIOS.forEach(station => {
-          const card = document.createElement("div");
-          card.className = "radio-card";
-          card.innerHTML = `
-            <div class="card-thumb-wrap">
-              <img src="${station.thumb}" class="card-thumb-img" alt="${station.title}" />
-              <div class="card-play-overlay">📻 LIVE</div>
+      function renderRadioTab() {
+        trackListWrapper.innerHTML = "";
+        trackListWrapper.className = "tracks-table-view";
+        catalogStatusLine.textContent = "LIVE 24/7 BROADCAST STATIONS";
+
+        RETRO_RADIO_STATIONS.forEach(station => {
+          const row = document.createElement("div");
+          row.className = "radio-station-card";
+          row.innerHTML = `
+            <img src="${station.thumb}" style="width:50px; height:50px; border:1px solid var(--border-dark); object-fit:cover;" alt="${station.title}" />
+            <div style="flex:1;">
+              <div style="font-size:14px; font-weight:bold; color:var(--text-bright);">${station.title}</div>
+              <div style="font-size:12px; color:var(--text-artist);">${station.artist}</div>
             </div>
-            <div class="card-info">
-              <div class="card-title" style="color:var(--accent-s);">${station.title}</div>
-              <div class="card-artist">${station.artist}</div>
-              <div class="card-meta-row">
-                <span style="color:var(--accent-g);">● 24/7 BROADCAST</span>
-                <span class="pixel-badge">LIVE</span>
-              </div>
-            </div>
+            <span class="status-badge" style="background:var(--accent-g); color:#000;">● LIVE</span>
+            <button class="pixel-btn pixel-btn-cyan">▶ TUNE IN</button>
           `;
 
-          card.addEventListener("click", () => {
-            play8BitBeep(720, "sine");
+          row.addEventListener("click", () => {
+            trigger8BitClick(700);
             playTrack(station);
           });
 
-          tracksGrid.appendChild(card);
+          trackListWrapper.appendChild(row);
         });
       }
 
-      function renderLoadingSkeleton() {
-        tracksGrid.innerHTML = "";
-        for (let i = 0; i < 8; i++) {
-          const s = document.createElement("div");
-          s.className = "track-pixel-card";
-          s.innerHTML = `
-            <div class="card-thumb-wrap" style="background:#111; animation:ledPulse 1s infinite;"></div>
-            <div class="card-info" style="gap:8px;">
-              <div style="height:10px; background:#222;"></div>
-              <div style="height:14px; background:#1e1e1e; width:60%;"></div>
+      function renderLocalFilesTab() {
+        trackListWrapper.innerHTML = `
+          <div style="border:2px dashed var(--accent-s); background:rgba(0,229,255,0.06); padding:32px 16px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <svg class="pixel-icon-svg" style="width:32px; height:32px;" viewBox="0 0 16 16"><path d="M1 3h14v10H1V3zm2 2v6h10V5H3z"/></svg>
+            <div style="font-size:14px; font-weight:bold; color:var(--text-bright);">DRAG & DROP LOCAL AUDIO FILES HERE</div>
+            <div style="font-size:11px; color:var(--text-dim);">SUPPORTS MP3, WAV, FLAC, AAC, OGG (PLAYS INSTANTLY IN BROWSER)</div>
+            <input type="file" id="localFileInputElem" multiple accept="audio/*" style="display:none;" />
+            <button id="browseFilesBtn" class="pixel-btn pixel-btn-cyan" style="margin-top:8px;">BROWSE LOCAL FILES</button>
+          </div>
+        `;
+
+        const browseBtn = document.getElementById("browseFilesBtn");
+        const fileInput = document.getElementById("localFileInputElem");
+
+        browseBtn.addEventListener("click", () => fileInput.click());
+        fileInput.addEventListener("change", (e) => handleLocalAudioFiles(e.target.files));
+      }
+
+      function handleLocalAudioFiles(files) {
+        if (!files || files.length === 0) return;
+        const loaded = [];
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const url = URL.createObjectURL(file);
+          loaded.push({
+            id: "local_" + Date.now() + "_" + i,
+            title: file.name.replace(/\.[^/.]+$/, ""),
+            artist: "LOCAL AUDIO",
+            album: "PC STORAGE",
+            duration: "LOCAL",
+            thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
+            streamUrl: url
+          });
+        }
+        if (loaded.length > 0) {
+          queue = [...loaded, ...queue];
+          playTrack(loaded[0], 0);
+          showToastHud(`LOADED ${loaded.length} LOCAL SONGS`);
+        }
+      }
+
+      function renderLoadingPlaceholders() {
+        trackListWrapper.innerHTML = "";
+        for (let i = 0; i < 6; i++) {
+          const row = document.createElement("div");
+          row.className = "track-row-item";
+          row.innerHTML = `
+            <div class="row-index">...</div>
+            <div style="width:42px; height:42px; background:#111; animation:ledFlash 1s infinite;"></div>
+            <div style="display:flex; flex-direction:column; gap:4px; flex:1;">
+              <div style="height:12px; background:#222; width:50%;"></div>
+              <div style="height:10px; background:#1a1a1a; width:30%;"></div>
             </div>
+            <div></div><div></div><div></div>
           `;
-          tracksGrid.appendChild(s);
+          trackListWrapper.appendChild(row);
         }
       }
 
       // ==========================================
-      // QUEUE & PLAYLISTS MANAGEMENT
+      // QUEUE & FAVORITES
       // ==========================================
       function addToQueue(track) {
-        play8BitBeep(520, "triangle");
+        trigger8BitClick(540);
         queue.push(track);
-        renderQueue();
-        showToast("ADDED TO QUEUE");
+        renderQueuePanel();
+        showToastHud("ADDED TO PLAY QUEUE");
       }
 
-      function renderQueue() {
-        queueList.innerHTML = "";
+      function renderQueuePanel() {
+        queueRowsContainer.innerHTML = "";
         if (queue.length === 0) {
-          queueList.innerHTML = `<div style="padding:10px; font-size:8px; color:var(--text-dim);">QUEUE IS EMPTY.</div>`;
+          queueRowsContainer.innerHTML = `<div style="padding:8px; font-size:8px; color:var(--text-dim);">QUEUE IS EMPTY.</div>`;
           return;
         }
 
         queue.forEach((track, idx) => {
-          const item = document.createElement("div");
-          item.className = "queue-item";
-          if (currentTrack && currentTrack.id === track.id) item.classList.add("active");
+          const row = document.createElement("div");
+          row.className = "queue-row";
+          if (currentTrack && currentTrack.id === track.id) row.classList.add("active");
 
-          item.innerHTML = `
-            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+          row.innerHTML = `
+            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
               ${idx + 1}. ${track.title}
             </span>
-            <button class="pixel-btn pixel-btn-sm remove-q-btn" style="padding:2px 4px;">✕</button>
+            <button class="pixel-btn pixel-btn-sm btn-del-q" style="padding:2px 4px;">✕</button>
           `;
 
-          item.addEventListener("click", (e) => {
-            if (e.target.classList.contains("remove-q-btn")) return;
+          row.addEventListener("click", (e) => {
+            if (e.target.classList.contains("btn-del-q")) return;
             playTrack(track, idx);
           });
 
-          item.querySelector(".remove-q-btn").addEventListener("click", (e) => {
+          row.querySelector(".btn-del-q").addEventListener("click", (e) => {
             e.stopPropagation();
             queue.splice(idx, 1);
-            renderQueue();
+            renderQueuePanel();
           });
 
-          queueList.appendChild(item);
+          queueRowsContainer.appendChild(row);
         });
       }
 
-      function toggleLikeTrack(track) {
+      function toggleLike(track) {
         const idx = likedTracks.findIndex(t => t.id === track.id);
         if (idx >= 0) {
           likedTracks.splice(idx, 1);
-          showToast("REMOVED FROM LIKED");
+          showToastHud("REMOVED FROM LIKED");
         } else {
           likedTracks.push(track);
-          showToast("SAVED TO LIKED ♥");
+          showToastHud("SAVED TO LIKED ♥");
         }
-        saveLocalStorage();
-        updatePlaybackUI();
-        if (activeTab === "liked") renderTracksGrid(likedTracks);
+        saveSavedPreferences();
+        updatePlayerHUD();
+        if (activeTab === "liked") renderTrackList(likedTracks);
       }
 
       // ==========================================
-      // LOCAL MP3 DRAG & DROP
+      // TIME & TIMELINE SCRUBBING
       // ==========================================
-      function renderLocalDropzone() {
-        tracksGrid.innerHTML = `
-          <div style="grid-column: 1 / -1;">
-            <div id="fileDropzone" class="dropzone-box">
-              <span style="font-size:32px;">💾</span>
-              <div style="font-size:12px; color:var(--text-bright);">DRAG & DROP LOCAL AUDIO FILES HERE</div>
-              <div style="font-size:9px; color:var(--text-dim);">SUPPORTS MP3, WAV, OGG, FLAC (PROCESSED LOCALLY IN BROWSER)</div>
-              <input type="file" id="localFileInput" multiple accept="audio/*" style="display:none;" />
-              <button id="browseFilesBtn" class="pixel-btn pixel-btn-cyan" style="margin-top:8px;">BROWSE FILES</button>
-            </div>
-          </div>
-        `;
-
-        const dropzone = document.getElementById("fileDropzone");
-        const fileInput = document.getElementById("localFileInput");
-        const browseBtn = document.getElementById("browseFilesBtn");
-
-        browseBtn.addEventListener("click", () => fileInput.click());
-        fileInput.addEventListener("change", (e) => handleLocalFiles(e.target.files));
-
-        dropzone.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          dropzone.style.background = "rgba(0, 229, 255, 0.25)";
-        });
-        dropzone.addEventListener("dragleave", () => {
-          dropzone.style.background = "rgba(0, 229, 255, 0.05)";
-        });
-        dropzone.addEventListener("drop", (e) => {
-          e.preventDefault();
-          dropzone.style.background = "rgba(0, 229, 255, 0.05)";
-          handleLocalFiles(e.dataTransfer.files);
-        });
-      }
-
-      function handleLocalFiles(files) {
-        if (!files || files.length === 0) return;
-        const localTracks = [];
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          if (!file.type.startsWith("audio/")) continue;
-          const objectUrl = URL.createObjectURL(file);
-          localTracks.push({
-            id: "local_" + Date.now() + "_" + i,
-            title: file.name.replace(/\.[^/.]+$/, ""),
-            artist: "LOCAL AUDIO",
-            genre: "LOCAL FILE",
-            thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80",
-            streamUrl: objectUrl
-          });
-        }
-
-        if (localTracks.length > 0) {
-          queue = [...localTracks, ...queue];
-          playTrack(localTracks[0], 0);
-          showToast(`LOADED ${localTracks.length} LOCAL TRACKS`);
-        }
-      }
-
-      // ==========================================
-      // TIME FORMATTING & PROGRESS
-      // ==========================================
-      function formatTime(seconds) {
-        if (isNaN(seconds) || seconds < 0) return "00:00";
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
+      function formatSecondsToTime(sec) {
+        if (isNaN(sec) || sec < 0) return "00:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
         return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
       }
 
       audio.addEventListener("timeupdate", () => {
         if (!audio.duration) return;
         const pct = (audio.currentTime / audio.duration) * 100;
-        timelineBar.style.width = pct + "%";
-        timeCurrent.textContent = formatTime(audio.currentTime);
-        timeTotal.textContent = formatTime(audio.duration);
+        scrubberFillBar.style.width = pct + "%";
+        currentTimeDisplay.textContent = formatSecondsToTime(audio.currentTime);
+        totalTimeDisplay.textContent = formatSecondsToTime(audio.duration);
       });
 
       audio.addEventListener("ended", () => {
@@ -1939,227 +1893,233 @@
           audio.currentTime = 0;
           audio.play();
         } else {
-          playNextTrack();
+          playNext();
         }
       });
 
-      timelineWrap.addEventListener("click", (e) => {
+      scrubberTrackWrap.addEventListener("click", (e) => {
         if (!audio.duration) return;
-        const rect = timelineWrap.getBoundingClientRect();
+        const rect = scrubberTrackWrap.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const pct = clickX / rect.width;
         audio.currentTime = pct * audio.duration;
       });
 
       // ==========================================
-      // EVENT BINDINGS
+      // USER INTERACTIONS & EVENT BINDINGS
       // ==========================================
-      function bindEvents() {
-        playPauseBtn.addEventListener("click", togglePlayPause);
-        nextBtn.addEventListener("click", playNextTrack);
-        prevBtn.addEventListener("click", playPrevTrack);
+      function bindUserInteractions() {
+        playPauseBtn.addEventListener("click", togglePlay);
+        nextBtn.addEventListener("click", playNext);
+        prevBtn.addEventListener("click", playPrevious);
 
         rwdBtn.addEventListener("click", () => {
-          play8BitBeep(450, "square");
+          trigger8BitClick(420);
           audio.currentTime = Math.max(0, audio.currentTime - 10);
         });
+
         fwdBtn.addEventListener("click", () => {
-          play8BitBeep(550, "square");
+          trigger8BitClick(580);
           audio.currentTime = Math.min(audio.duration || 9999, audio.currentTime + 10);
         });
 
         shuffleBtn.addEventListener("click", () => {
           isShuffle = !isShuffle;
           shuffleBtn.classList.toggle("active", isShuffle);
-          showToast(isShuffle ? "SHUFFLE: ON" : "SHUFFLE: OFF");
+          showToastHud(isShuffle ? "SHUFFLE: ON" : "SHUFFLE: OFF");
         });
 
         repeatBtn.addEventListener("click", () => {
           isRepeat = !isRepeat;
           repeatBtn.classList.toggle("active", isRepeat);
-          showToast(isRepeat ? "REPEAT: ON" : "REPEAT: OFF");
+          showToastHud(isRepeat ? "REPEAT: ON" : "REPEAT: OFF");
         });
 
-        volumeSlider.addEventListener("input", (e) => {
+        volumeSliderInput.addEventListener("input", (e) => {
           audio.volume = e.target.value / 100;
         });
 
-        likeCurrentBtn.addEventListener("click", () => {
-          if (currentTrack) toggleLikeTrack(currentTrack);
+        likeActiveBtn.addEventListener("click", () => {
+          if (currentTrack) toggleLike(currentTrack);
         });
 
-        clearQueueBtn.addEventListener("click", () => {
+        clearQueueActionBtn.addEventListener("click", () => {
           queue = currentTrack ? [currentTrack] : [];
-          renderQueue();
-          showToast("QUEUE CLEARED");
+          renderQueuePanel();
+          showToastHud("QUEUE CLEARED");
         });
 
-        // Search Handlers
-        searchBtn.addEventListener("click", () => searchTracks(searchInput.value));
-        searchInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") searchTracks(searchInput.value);
+        // Search Trigger
+        executeSearchBtn.addEventListener("click", () => searchGlobalMusic(globalSongSearchInput.value));
+        globalSongSearchInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") searchGlobalMusic(globalSongSearchInput.value);
         });
 
-        // Genre Chips
-        document.querySelectorAll(".genre-chip").forEach(chip => {
+        // Preset Filter Chips
+        document.querySelectorAll(".filter-chip").forEach(chip => {
           chip.addEventListener("click", () => {
-            play8BitBeep(500, "triangle");
-            document.querySelectorAll(".genre-chip").forEach(c => c.classList.remove("active"));
+            trigger8BitClick(500);
+            document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
             chip.classList.add("active");
-            activeGenre = chip.dataset.genre;
-            loadTrendingTracks(activeGenre);
+            searchGlobalMusic(chip.dataset.query);
           });
         });
 
-        // Navigation Tabs
-        document.querySelectorAll(".nav-tab-btn").forEach(btn => {
-          btn.addEventListener("click", () => {
-            play8BitBeep(600, "sine");
-            document.querySelectorAll(".nav-tab-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            activeTab = btn.dataset.tab;
+        // Nav Tabs
+        document.querySelectorAll(".nav-tab-item").forEach(tab => {
+          tab.addEventListener("click", () => {
+            trigger8BitClick(600);
+            document.querySelectorAll(".nav-tab-item").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            activeTab = tab.dataset.tab;
 
-            searchControlsArea.style.display = (activeTab === "trending" || activeTab === "search") ? "block" : "none";
+            searchBarSection.style.display = (activeTab === "trending" || activeTab === "search") ? "flex" : "none";
 
-            if (activeTab === "trending") loadTrendingTracks(activeGenre);
-            else if (activeTab === "search") searchTracks(searchInput.value || "synthwave");
-            else if (activeTab === "radio") renderRadioStations();
-            else if (activeTab === "memory" || activeTab === "liked") renderTracksGrid(likedTracks);
-            else if (activeTab === "local") renderLocalDropzone();
+            if (activeTab === "trending") searchGlobalMusic("Top Hits 2026");
+            else if (activeTab === "search") searchGlobalMusic(globalSongSearchInput.value || "Trending");
+            else if (activeTab === "radio") renderRadioTab();
+            else if (activeTab === "liked") {
+              catalogStatusLine.textContent = "YOUR LIKED HITS";
+              renderTrackList(likedTracks);
+            } else if (activeTab === "local") renderLocalFilesTab();
           });
         });
 
-        // Retro Theme Switcher
-        themeSelect.addEventListener("change", (e) => {
+        // View Mode Toggle
+        viewListModeBtn.addEventListener("click", () => {
+          viewMode = "list";
+          viewListModeBtn.classList.add("active");
+          viewGridModeBtn.classList.remove("active");
+          if (activeTab === "liked") renderTrackList(likedTracks);
+          else if (activeTab === "radio") renderRadioTab();
+          else searchGlobalMusic(globalSongSearchInput.value || "Top Hits");
+        });
+
+        viewGridModeBtn.addEventListener("click", () => {
+          viewMode = "grid";
+          viewGridModeBtn.classList.add("active");
+          viewListModeBtn.classList.remove("active");
+          if (activeTab === "liked") renderTrackList(likedTracks);
+          else if (activeTab === "radio") renderRadioTab();
+          else searchGlobalMusic(globalSongSearchInput.value || "Top Hits");
+        });
+
+        // Theme Switcher
+        themeDropdown.addEventListener("change", (e) => {
           document.body.setAttribute("data-theme", e.target.value);
-          saveLocalStorage();
-          showToast("THEME: " + e.target.options[e.target.selectedIndex].text);
+          saveSavedPreferences();
+          showToastHud("THEME: " + e.target.options[e.target.selectedIndex].text);
         });
 
-        // CRT Toggle
+        // CRT & SFX
         toggleCrtBtn.addEventListener("click", () => {
           crtEnabled = !crtEnabled;
           crtOverlay.classList.toggle("disabled", !crtEnabled);
           toggleCrtBtn.textContent = crtEnabled ? "CRT: ON" : "CRT: OFF";
-          showToast(crtEnabled ? "SCANLINES ACTIVE" : "SCANLINES OFF");
         });
 
-        // SFX Toggle
         toggleSfxBtn.addEventListener("click", () => {
           sfxEnabled = !sfxEnabled;
           toggleSfxBtn.textContent = sfxEnabled ? "SFX: ON" : "SFX: OFF";
-          showToast(sfxEnabled ? "8-BIT SFX ON" : "8-BIT SFX OFF");
         });
 
         // Audio DSP FX Knobs
-        fxCrunchBtn.addEventListener("click", () => {
-          initAudioContext();
-          isCrunchOn = !isCrunchOn;
-          fxCrunchBtn.classList.toggle("active", isCrunchOn);
-          if (crunchFilter) crunchFilter.gain.value = isCrunchOn ? 14 : 0;
-          showToast(isCrunchOn ? "8-BIT CRUNCH ACTIVE" : "CRUNCH BYPASSED");
+        fxCrunchToggle.addEventListener("click", () => {
+          initWebAudio();
+          isCrunch = !isCrunch;
+          fxCrunchToggle.classList.toggle("active", isCrunch);
+          if (crunchFilter) crunchFilter.gain.value = isCrunch ? 12 : 0;
+          showToastHud(isCrunch ? "8-BIT CRUNCH ON" : "CRUNCH BYPASSED");
         });
 
-        fxBassBtn.addEventListener("click", () => {
-          initAudioContext();
-          isBassOn = !isBassOn;
-          fxBassBtn.classList.toggle("active", isBassOn);
-          if (bassFilter) bassFilter.gain.value = isBassOn ? 10 : 0;
-          showToast(isBassOn ? "BASS BOOST ACTIVE" : "BASS FLAT");
+        fxBassToggle.addEventListener("click", () => {
+          initWebAudio();
+          isBass = !isBass;
+          fxBassToggle.classList.toggle("active", isBass);
+          if (bassFilter) bassFilter.gain.value = isBass ? 10 : 0;
+          showToastHud(isBass ? "BASS BOOST ON" : "BASS FLAT");
         });
 
-        fxTapeBtn.addEventListener("click", () => {
-          initAudioContext();
-          isTapeOn = !isTapeOn;
-          fxTapeBtn.classList.toggle("active", isTapeOn);
-          if (tapeFilter) tapeFilter.frequency.value = isTapeOn ? 3800 : 20000;
-          showToast(isTapeOn ? "TAPE WARMTH ACTIVE" : "TAPE BYPASSED");
+        fxTapeToggle.addEventListener("click", () => {
+          initWebAudio();
+          isTape = !isTape;
+          fxTapeToggle.classList.toggle("active", isTape);
+          if (tapeFilter) tapeFilter.frequency.value = isTape ? 3600 : 20000;
+          showToastHud(isTape ? "TAPE WARMTH ON" : "TAPE BYPASSED");
         });
 
-        // Sleep Timer Buttons
-        document.querySelectorAll(".sleep-btn").forEach(btn => {
+        // Sleep Timer Selection
+        document.querySelectorAll(".sleep-sel-btn").forEach(btn => {
           btn.addEventListener("click", () => {
-            const min = parseInt(btn.dataset.min, 10);
-            setSleepTimer(min);
+            const m = parseInt(btn.dataset.m, 10);
+            configureSleepTimer(m);
           });
         });
       }
 
-      // ==========================================
-      // SLEEP TIMER & CLOCK
-      // ==========================================
-      function setSleepTimer(minutes) {
+      function configureSleepTimer(min) {
         clearInterval(sleepTimerInterval);
-        if (minutes === 0) {
+        if (min === 0) {
           sleepTimerEnd = 0;
-          sleepCountdown.textContent = "OFF";
-          showToast("SLEEP TIMER OFF");
+          sleepTimerReadout.textContent = "OFF";
+          showToastHud("SLEEP TIMER OFF");
           return;
         }
-        sleepTimerEnd = Date.now() + minutes * 60 * 1000;
-        showToast(`SLEEP TIMER: ${minutes} MIN`);
+        sleepTimerEnd = Date.now() + min * 60 * 1000;
+        showToastHud(`SLEEP TIMER: ${min} MIN`);
 
         sleepTimerInterval = setInterval(() => {
-          const remaining = Math.max(0, Math.floor((sleepTimerEnd - Date.now()) / 1000));
-          if (remaining <= 0) {
+          const rem = Math.max(0, Math.floor((sleepTimerEnd - Date.now()) / 1000));
+          if (rem <= 0) {
             clearInterval(sleepTimerInterval);
             audio.pause();
             isPlaying = false;
-            updatePlaybackUI();
-            sleepCountdown.textContent = "OFF";
-            showToast("SLEEP TIMER: PAUSED");
+            updatePlayerHUD();
+            sleepTimerReadout.textContent = "OFF";
+            showToastHud("SLEEP TIMER: PAUSED");
           } else {
-            sleepCountdown.textContent = formatTime(remaining);
+            sleepTimerReadout.textContent = formatSecondsToTime(rem);
           }
         }, 1000);
       }
 
-      function setupClock() {
+      function startClock() {
         setInterval(() => {
-          const now = new Date();
-          deckClock.textContent = now.toTimeString().split(" ")[0];
+          const d = new Date();
+          liveDeckClock.textContent = d.toTimeString().split(" ")[0];
         }, 1000);
       }
 
-      // ==========================================
-      // TOAST NOTIFICATION HELPER
-      // ==========================================
-      let toastTimer = null;
-      function showToast(msg) {
-        const toast = document.getElementById("pixel-toast");
-        toast.textContent = msg;
-        toast.classList.add("show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+      let toastHudTimer = null;
+      function showToastHud(msg) {
+        const t = document.getElementById("pixel-toast-hud");
+        t.textContent = msg;
+        t.classList.add("show");
+        clearTimeout(toastHudTimer);
+        toastHudTimer = setTimeout(() => t.classList.remove("show"), 1800);
       }
 
-      // ==========================================
-      // LOCAL STORAGE PERSISTENCE
-      // ==========================================
-      function saveLocalStorage() {
+      function saveSavedPreferences() {
         try {
           const data = {
             theme: document.body.getAttribute("data-theme") || "cyber",
-            liked: likedTracks,
-            playlists: playlists
+            liked: likedTracks
           };
-          localStorage.setItem("PIXEL_DECK_PREFS", JSON.stringify(data));
+          localStorage.setItem("PIXEL_DECK_STORAGE", JSON.stringify(data));
         } catch (_) {}
       }
 
-      function loadLocalStorage() {
+      function loadSavedPreferences() {
         try {
-          const saved = JSON.parse(localStorage.getItem("PIXEL_DECK_PREFS") || "{}");
-          if (saved.theme) {
-            document.body.setAttribute("data-theme", saved.theme);
-            themeSelect.value = saved.theme;
+          const data = JSON.parse(localStorage.getItem("PIXEL_DECK_STORAGE") || "{}");
+          if (data.theme) {
+            document.body.setAttribute("data-theme", data.theme);
+            themeDropdown.value = data.theme;
           }
-          if (Array.isArray(saved.liked)) likedTracks = saved.liked;
-          if (Array.isArray(saved.playlists)) playlists = saved.playlists;
+          if (Array.isArray(data.liked)) likedTracks = data.liked;
         } catch (_) {}
       }
 
-      // Start App
       init();
     })();
   </script>
