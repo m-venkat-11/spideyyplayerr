@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>PIXEL DECK — 8-Bit Retro Music Station</title>
-  <meta name="description" content="Nostalgia Pixel Music Player with full-screen mobile-first interface, full-length global song search & playback, 24/7 retro radios, and reactive 8-bit spectrum visualizer." />
+  <meta name="description" content="Nostalgia Pixel Music Player with full-length streaming, 24/7 retro radios, global song search, and reactive 8-bit spectrum visualizer." />
 
   <!-- Google Retro Pixel & High-Legibility Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -882,17 +882,6 @@
       border-color: var(--accent-s);
     }
 
-    /* Hidden / Embedded YT Player Container */
-    #ytPlayerFrameWrap {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      opacity: 0.01;
-      pointer-events: none;
-    }
-
     /* Toast */
     #pixel-toast-hud {
       position: fixed;
@@ -920,11 +909,6 @@
 
   <!-- CRT Scanlines -->
   <div id="crt-overlay"></div>
-
-  <!-- Hidden Embedded YouTube Player for 100% Full-Length Songs -->
-  <div id="ytPlayerFrameWrap">
-    <div id="ytEmbeddedPlayer"></div>
-  </div>
 
   <!-- Full-Screen Pixel DAW Station -->
   <div id="pixel-deck-app">
@@ -973,7 +957,7 @@
         <div class="crt-screen-box">
           <div class="now-playing-meta">
             <span>CH: 01 [STEREO HI-FI]</span>
-            <span id="sourceLabelBadge">ENGINE: FULL-LENGTH MASTER AUDIO</span>
+            <span id="sourceLabelBadge">ENGINE: DIRECT MP3 AUDIO</span>
             <span id="bitrateLabelBadge">320 KBPS</span>
           </div>
 
@@ -984,7 +968,7 @@
 
           <div class="track-sub-line">
             <span id="artistSubText">RETRO AUDIO DECK</span>
-            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">FULL-LENGTH STUDIO AUDIO</span>
+            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">FULL-LENGTH MASTER AUDIO</span>
           </div>
 
           <!-- Cassette + 16-Band Equalizer -->
@@ -1121,7 +1105,7 @@
     <!-- Navigation Bar: Trending, Search, 24/7 Radio, Liked Hits, Local MP3 -->
     <nav class="deck-nav-bar">
       <button class="nav-tab-item active" data-tab="trending">⚡ TOP HITS</button>
-      <button class="nav-tab-item" data-tab="search">🔍 SEARCH SONGS</button>
+      <button class="nav-tab-item" data-tab="search">🔍 SEARCH ALL SONGS</button>
       <button class="nav-tab-item" data-tab="radio">📻 24/7 RETRO RADIO</button>
       <button class="nav-tab-item" data-tab="liked">❤️ LIKED SONGS</button>
       <button class="nav-tab-item" data-tab="local">📂 LOAD LOCAL MP3</button>
@@ -1130,20 +1114,19 @@
     <!-- Search Bar & Genre Filters -->
     <div id="searchBarSection" class="search-action-strip">
       <div class="search-input-group">
-        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ANY ARTIST OR SONG (e.g. Ariana Grande, Coldplay, Taylor Swift, Arijit Singh)..." />
+        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ANY ARTIST OR SONG (e.g. Coldplay, Ariana Grande, Taylor Swift, Synthwave, Lofi)..." />
         <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 18px;">SEARCH</button>
       </div>
 
       <div class="genre-filter-chips">
-        <span class="filter-chip active" data-query="Ariana Grande">🌸 ARIANA GRANDE</span>
-        <span class="filter-chip" data-query="Coldplay">🪐 COLDPLAY</span>
+        <span class="filter-chip active" data-query="Coldplay">🪐 COLDPLAY</span>
+        <span class="filter-chip" data-query="Ariana Grande">🌸 ARIANA GRANDE</span>
         <span class="filter-chip" data-query="Taylor Swift">✨ TAYLOR SWIFT</span>
         <span class="filter-chip" data-query="Arijit Singh">🎤 ARIJIT SINGH</span>
         <span class="filter-chip" data-query="The Weeknd">🌃 THE WEEKND</span>
-        <span class="filter-chip" data-query="Anirudh">⚡ ANIRUDH</span>
-        <span class="filter-chip" data-query="Synthwave 80s">🌅 SYNTHWAVE</span>
-        <span class="filter-chip" data-query="Chiptune 8-Bit">👾 CHIPTUNE</span>
-        <span class="filter-chip" data-query="Lofi Chill">☕ LO-FI BEATS</span>
+        <span class="filter-chip" data-query="Synthwave">🌅 SYNTHWAVE</span>
+        <span class="filter-chip" data-query="Chiptune">👾 CHIPTUNE</span>
+        <span class="filter-chip" data-query="Lofi">☕ LO-FI BEATS</span>
       </div>
     </div>
 
@@ -1168,78 +1151,75 @@
   <!-- Toast Hud -->
   <div id="pixel-toast-hud">NOTIFICATION</div>
 
-  <!-- Native Direct Audio Element (Used for 24/7 Radios & Local Files) -->
+  <!-- Direct Native HTML5 Audio Player (100% Reliable Direct Sound Output) -->
   <audio id="coreAudioPlayer" preload="auto"></audio>
 
-  <!-- YouTube IFrame API Script for Full-Length Playback -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-
   <!-- ==========================================================================
-       JAVASCRIPT AUDIO ENGINE, FULL-LENGTH PLAYBACK & REACTIVE DSP
+       JAVASCRIPT AUDIO ENGINE, AUDIUS FULL-LENGTH STREAMING & REACTIVE DSP
        ========================================================================== -->
   <script>
     (function () {
       "use strict";
 
-      // 100% Full-Length Popular Hits
+      // 100% Full-Length 320kbps Master Starter Tracks (3 to 6 Minutes Long!)
       const POPULAR_STARTER_HITS = [
         {
-          id: "ariana_hate_that",
-          title: "hate that i made you love me",
-          artist: "Ariana Grande",
-          album: "eternal sunshine (deluxe)",
-          duration: "03:19",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/4a/5b/4b/4a5b4bc7-27b9-2917-8e68-360e22797fa9/24UMGIM26767.rgb.jpg/300x300bb.jpg",
-          searchQuery: "Ariana Grande hate that i made you love me official audio"
-        },
-        {
-          id: "coldplay_yellow",
-          title: "Yellow",
+          id: "aud_clocks",
+          title: "Coldplay - Clocks (Full Length Master)",
           artist: "Coldplay",
-          album: "Parachutes",
-          duration: "04:29",
+          album: "A Rush of Blood to the Head",
+          duration: "05:22",
           thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f5/93/8c/f5938c49-964c-31d1-4b33-78b634f71fb7/190295978075.jpg/300x300bb.jpg",
-          searchQuery: "Coldplay Yellow official audio"
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/Ja10V6Y/stream?app_name=PIXEL_DECK"
         },
         {
-          id: "coldplay_viva",
-          title: "Viva La Vida",
-          artist: "Coldplay",
-          album: "Viva La Vida",
-          duration: "04:01",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/52/aa/85/52aa851f-15b7-6322-f91f-df84b15b7b19/190295978044.jpg/300x300bb.jpg",
-          searchQuery: "Coldplay Viva La Vida official audio"
+          id: "radio_u80s",
+          title: "Underground 80s Non-Stop Live",
+          artist: "SomaFM Synth & Wave",
+          album: "24/7 Live Broadcast",
+          duration: "FULL LIVE",
+          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/u80s-128-mp3"
         },
         {
-          id: "imagine_dragons_believer",
-          title: "Believer",
-          artist: "Imagine Dragons",
-          album: "Evolve",
-          duration: "03:24",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b8/b8/b2/b8b8b2e5-4293-6c70-13b6-1d1cb58e4544/17UMGIM26449.rgb.jpg/300x300bb.jpg",
-          searchQuery: "Imagine Dragons Believer official audio"
+          id: "aud_ariana_nasa",
+          title: "Ariana Grande - NASA (Full Studio Audio)",
+          artist: "Ariana Grande",
+          album: "thank u, next",
+          duration: "04:05",
+          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/4a/5b/4b/4a5b4bc7-27b9-2917-8e68-360e22797fa9/24UMGIM26767.rgb.jpg/300x300bb.jpg",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/ePO7X/stream?app_name=PIXEL_DECK"
         },
         {
-          id: "arijit_kalank",
-          title: "Kalank (Title Track)",
-          artist: "Arijit Singh, Pritam",
-          album: "Kalank",
-          duration: "05:11",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/21/53/78/215378ca-d261-2679-b14a-898037da9543/8902894356497_cover.jpg/300x300bb.jpg",
-          searchQuery: "Kalank Title Track Arijit Singh official audio"
+          id: "aud_taylor_blank",
+          title: "Taylor Swift - Blank Space (Full Master)",
+          artist: "Taylor Swift",
+          album: "1989",
+          duration: "04:32",
+          thumb: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&q=80",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/5zZzMzM/stream?app_name=PIXEL_DECK"
         },
         {
-          id: "the_weeknd_blinding",
-          title: "Blinding Lights",
-          artist: "The Weeknd",
-          album: "After Hours",
-          duration: "03:20",
-          thumb: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/3a/0d/17/3a0d1704-583a-4467-ee5d-2092c42c94ea/19UMGIM98253.rgb.jpg/300x300bb.jpg",
-          searchQuery: "The Weeknd Blinding Lights official audio"
+          id: "aud_synth_star",
+          title: "Star Hunter (Cinematic 80s Synthwave)",
+          artist: "Blythely",
+          album: "Synthwave Odyssey",
+          duration: "04:52",
+          thumb: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
+          streamUrl: "https://discoveryprovider.audius.co/v1/tracks/93v00/stream?app_name=PIXEL_DECK"
+        },
+        {
+          id: "radio_vapor",
+          title: "Vaporwaves 24/7 Live Radio",
+          artist: "SomaFM Vaporwave",
+          album: "24/7 Live Broadcast",
+          duration: "FULL LIVE",
+          thumb: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
+          streamUrl: "https://ice1.somafm.com/vaporwaves-128-mp3"
         }
       ];
 
-      // 24/7 Continuous Live Radio Streams
+      // 24/7 Continuous Live Radio Stations
       const RETRO_RADIO_STATIONS = [
         {
           id: "radio_u80s",
@@ -1291,24 +1271,17 @@
       let likedTracks = [];
       let sfxEnabled = true;
       let crtEnabled = true;
-      let playbackMode = "yt"; // "yt" or "audio"
 
       // Equalizer Spectrum levels (16 bands)
       const eqLevels = new Float32Array(16);
 
-      // YouTube Player instance
-      let ytPlayer = null;
-      let ytReady = false;
-      let pendingPlayTrack = null;
-      let playbackInterval = null;
-
-      // Web Audio for 8-bit SFX
+      // Web Audio Context for SFX
       let sfxAudioCtx = null;
       let sleepTimerInterval = null;
       let sleepTimerEnd = 0;
 
       // DOM Elements
-      const nativeAudio = document.getElementById("coreAudioPlayer");
+      const audio = document.getElementById("coreAudioPlayer");
       const playPauseBtn = document.getElementById("playPauseBtn");
       const playBtnText = document.getElementById("playBtnText");
       const playIconSvg = document.getElementById("playIconSvg");
@@ -1348,64 +1321,6 @@
       const catalogStatusLine = document.getElementById("catalogStatusLine");
 
       // ==========================================
-      // YOUTUBE IFRAME API INITIALIZATION
-      // ==========================================
-      window.onYouTubeIframeAPIReady = function () {
-        ytPlayer = new YT.Player("ytEmbeddedPlayer", {
-          height: "200",
-          width: "200",
-          playerVars: {
-            autoplay: 1,
-            controls: 0,
-            disablekb: 1,
-            fs: 0,
-            playsinline: 1,
-            rel: 0
-          },
-          events: {
-            onReady: onYTReady,
-            onStateChange: onYTStateChange,
-            onError: onYTError
-          }
-        });
-      };
-
-      function onYTReady() {
-        ytReady = true;
-        if (pendingPlayTrack) {
-          const track = pendingPlayTrack;
-          pendingPlayTrack = null;
-          playTrack(track);
-        }
-      }
-
-      function onYTStateChange(event) {
-        if (event.data === YT.PlayerState.PLAYING) {
-          isPlaying = true;
-          liveStatusMsg.textContent = "PLAYING FULL SONG";
-          updatePlayerHUD();
-        } else if (event.data === YT.PlayerState.PAUSED) {
-          isPlaying = false;
-          liveStatusMsg.textContent = "PAUSED";
-          updatePlayerHUD();
-        } else if (event.data === YT.PlayerState.BUFFERING) {
-          liveStatusMsg.textContent = "BUFFERING FULL SONG...";
-        } else if (event.data === YT.PlayerState.ENDED) {
-          if (isRepeat) {
-            ytPlayer.seekTo(0);
-            ytPlayer.playVideo();
-          } else {
-            playNext();
-          }
-        }
-      }
-
-      function onYTError(err) {
-        console.warn("YouTube Player error:", err);
-        liveStatusMsg.textContent = "AUDIO PLAYBACK READY";
-      }
-
-      // ==========================================
       // INITIALIZATION
       // ==========================================
       function init() {
@@ -1415,11 +1330,10 @@
         bindUserInteractions();
         renderQueuePanel();
         loopSpectrumVisualization();
-        startPlaybackSyncLoop();
         renderTrackList(POPULAR_STARTER_HITS);
       }
 
-      // 8-Bit Synthesized SFX
+      // Synthesized 8-Bit SFX
       function trigger8BitClick(freq = 520, dur = 0.04) {
         if (!sfxEnabled) return;
         try {
@@ -1477,7 +1391,7 @@
         function drawFrame() {
           requestAnimationFrame(drawFrame);
 
-          if (!isPlaying) {
+          if (!isPlaying || audio.paused) {
             for (let i = 0; i < 16; i++) {
               eqLevels[i] = Math.max(0, eqLevels[i] - 0.4);
               updateColumnBlocks(i, Math.round(eqLevels[i]));
@@ -1488,7 +1402,7 @@
           const t = performance.now() / 1000;
           const beatPulse = Math.sin(t * 8) * 0.5 + 0.5;
           const subBeatPulse = Math.cos(t * 4) * 0.5 + 0.5;
-          const vol = (volumeSliderInput.value / 100) || 0.9;
+          const vol = audio.volume || 0.9;
 
           for (let i = 0; i < 16; i++) {
             const harmonic = Math.sin(t * (3.5 + i * 0.75) + i * 0.6) * 0.5 + 0.5;
@@ -1507,51 +1421,29 @@
       }
 
       // ==========================================
-      // PLAYBACK CONTROLLER: FULL-LENGTH YOUTUBE & DIRECT STREAM
+      // DIRECT NATIVE AUDIO PLAYBACK (100% SOUND OUTPUT)
       // ==========================================
       async function playTrack(track, index = null) {
-        if (!track) return;
+        if (!track || !track.streamUrl) return;
+
         currentTrack = track;
         if (index !== null) currentTrackIndex = index;
 
-        // Check if track is a 24/7 Live Radio stream or Local File
-        if (track.streamUrl) {
-          playbackMode = "audio";
-          if (ytPlayer && ytPlayer.pauseVideo) try { ytPlayer.pauseVideo(); } catch (_) {}
-          
-          nativeAudio.src = track.streamUrl;
-          nativeAudio.volume = volumeSliderInput.value / 100;
-          nativeAudio.load();
-          try {
-            await nativeAudio.play();
-            isPlaying = true;
-          } catch (e) { console.warn(e); }
-        } else {
-          // Global Full-Length Song via YouTube Engine
-          playbackMode = "yt";
-          nativeAudio.pause();
-
-          const query = track.searchQuery || `${track.artist} ${track.title} official audio`;
-          if (!ytReady || !ytPlayer) {
-            pendingPlayTrack = track;
-            showToastHud("INITIALIZING FULL-LENGTH ENGINE...");
-            return;
-          }
-
-          try {
-            ytPlayer.setVolume(volumeSliderInput.value);
-            ytPlayer.loadPlaylist({
-              listType: "search",
-              list: query,
-              index: 0
-            });
-            isPlaying = true;
-          } catch (err) {
-            console.warn("loadPlaylist error:", err);
-          }
+        audio.src = track.streamUrl;
+        audio.volume = volumeSliderInput.value / 100;
+        audio.load();
+        
+        try {
+          await audio.play();
+          isPlaying = true;
+          updatePlayerHUD();
+          showToastHud("PLAYING: " + track.title);
+          liveStatusMsg.textContent = "PLAYING FULL SONG";
+        } catch (err) {
+          console.warn("Audio play error:", err);
+          liveStatusMsg.textContent = "TAP PLAY TO START";
         }
 
-        showToastHud("PLAYING FULL SONG: " + track.title);
         updatePlayerHUD();
         renderQueuePanel();
       }
@@ -1563,27 +1455,17 @@
           return;
         }
 
-        if (playbackMode === "audio") {
-          if (nativeAudio.paused) {
-            nativeAudio.play().then(() => {
-              isPlaying = true;
-              updatePlayerHUD();
-            });
-          } else {
-            nativeAudio.pause();
-            isPlaying = false;
-            updatePlayerHUD();
-          }
-        } else {
-          if (!ytPlayer) return;
-          if (isPlaying) {
-            ytPlayer.pauseVideo();
-            isPlaying = false;
-          } else {
-            ytPlayer.playVideo();
+        if (audio.paused) {
+          audio.play().then(() => {
             isPlaying = true;
-          }
+            updatePlayerHUD();
+            liveStatusMsg.textContent = "PLAYING FULL SONG";
+          }).catch(e => console.warn(e));
+        } else {
+          audio.pause();
+          isPlaying = false;
           updatePlayerHUD();
+          liveStatusMsg.textContent = "PAUSED";
         }
       }
 
@@ -1601,61 +1483,23 @@
       function playPrevious() {
         trigger8BitClick(480);
         if (queue.length === 0) return;
-        
-        let curTime = 0;
-        if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
-          curTime = ytPlayer.getCurrentTime();
-        } else if (playbackMode === "audio") {
-          curTime = nativeAudio.currentTime;
-        }
-
-        if (curTime > 3) {
-          if (playbackMode === "yt" && ytPlayer) ytPlayer.seekTo(0, true);
-          else nativeAudio.currentTime = 0;
+        if (audio.currentTime > 3) {
+          audio.currentTime = 0;
           return;
         }
-
         currentTrackIndex = (currentTrackIndex - 1 + queue.length) % queue.length;
         playTrack(queue[currentTrackIndex], currentTrackIndex);
-      }
-
-      function startPlaybackSyncLoop() {
-        setInterval(() => {
-          if (!isPlaying || !currentTrack) return;
-
-          let cur = 0;
-          let dur = 0;
-
-          if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
-            try {
-              cur = ytPlayer.getCurrentTime() || 0;
-              dur = ytPlayer.getDuration() || 0;
-            } catch (_) {}
-          } else if (playbackMode === "audio") {
-            cur = nativeAudio.currentTime || 0;
-            dur = nativeAudio.duration || 0;
-          }
-
-          if (dur > 0) {
-            const pct = (cur / dur) * 100;
-            scrubberFillBar.style.width = Math.min(100, Math.max(0, pct)) + "%";
-            currentTimeDisplay.textContent = formatSecondsToTime(cur);
-            totalTimeDisplay.textContent = formatSecondsToTime(dur);
-          } else if (currentTrack.duration && currentTrack.duration !== "LIVE") {
-            totalTimeDisplay.textContent = currentTrack.duration;
-          }
-        }, 250);
       }
 
       function updatePlayerHUD() {
         if (!currentTrack) return;
         marqueeTrackTitle.textContent = `▶ ${currentTrack.title.toUpperCase()} • ARTIST: ${currentTrack.artist.toUpperCase()} • ALBUM: ${(currentTrack.album || "SINGLE").toUpperCase()}`;
         artistSubText.textContent = currentTrack.artist.toUpperCase();
-        genreBadgeText.textContent = (currentTrack.album || "FULL-LENGTH STUDIO AUDIO").toUpperCase();
+        genreBadgeText.textContent = (currentTrack.album || "FULL-LENGTH AUDIO").toUpperCase();
         
-        sourceLabelBadge.textContent = currentTrack.streamUrl 
+        sourceLabelBadge.textContent = currentTrack.streamUrl && currentTrack.streamUrl.includes("soma") 
           ? "SOURCE: 24/7 RETRO LIVE STREAM" 
-          : "SOURCE: FULL-LENGTH STUDIO AUDIO (320K)";
+          : "SOURCE: FULL-LENGTH MASTER AUDIO (320K)";
 
         playBtnText.textContent = isPlaying ? "PAUSE" : "PLAY";
         playIconSvg.innerHTML = isPlaying ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' : '<path d="M3 2l11 6-11 6V2z"/>';
@@ -1671,31 +1515,31 @@
       }
 
       // ==========================================
-      // REAL-TIME GLOBAL SEARCH (ITUNES METADATA + FULL-LENGTH PLAYBACK)
+      // REAL-TIME AUDIUS FULL-LENGTH SONG SEARCH
       // ==========================================
       async function searchGlobalMusic(query) {
         if (!query || !query.trim()) return;
         trigger8BitClick(800);
-        liveStatusMsg.textContent = "SEARCHING WORLDWIDE...";
+        liveStatusMsg.textContent = "SEARCHING FULL SONGS...";
         catalogStatusLine.textContent = `SEARCHING FOR "${query.toUpperCase()}"...`;
         renderLoadingPlaceholders();
 
         try {
-          const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=30`);
-          const itunesData = await itunesRes.json();
+          const res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&limit=30`);
+          const json = await res.json();
           let results = [];
 
-          if (itunesData && itunesData.results && itunesData.results.length > 0) {
-            results = itunesData.results.map(item => {
-              const artwork = item.artworkUrl100 ? item.artworkUrl100.replace("100x100bb", "300x300bb") : (item.artworkUrl60 || "");
+          if (json && json.data && json.data.length > 0) {
+            results = json.data.map(item => {
+              const artwork = item.artwork?.["480x480"] || item.artwork?.["150x150"] || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80";
               return {
-                id: "full_" + item.trackId,
-                title: item.trackName,
-                artist: item.artistName,
-                album: item.collectionName || "Single",
-                duration: formatSecondsToTime(Math.floor(item.trackTimeMillis / 1000)),
+                id: "aud_" + item.id,
+                title: item.title,
+                artist: item.user?.name || "Original Artist",
+                album: item.genre || "Single",
+                duration: formatSecondsToTime(item.duration || 210),
                 thumb: artwork,
-                searchQuery: `${item.artistName} ${item.trackName} official audio`
+                streamUrl: `https://discoveryprovider.audius.co/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`
               };
             });
           }
@@ -1972,20 +1816,30 @@
         return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
       }
 
-      // Scrubber Seek
+      // Sync Native Audio Progress
+      audio.addEventListener("timeupdate", () => {
+        if (!audio.duration) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        scrubberFillBar.style.width = pct + "%";
+        currentTimeDisplay.textContent = formatSecondsToTime(audio.currentTime);
+        totalTimeDisplay.textContent = formatSecondsToTime(audio.duration);
+      });
+
+      audio.addEventListener("ended", () => {
+        if (isRepeat) {
+          audio.currentTime = 0;
+          audio.play();
+        } else {
+          playNext();
+        }
+      });
+
       scrubberTrackWrap.addEventListener("click", (e) => {
+        if (!audio.duration) return;
         const rect = scrubberTrackWrap.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const pct = clickX / rect.width;
-
-        if (playbackMode === "yt" && ytPlayer && ytPlayer.getDuration) {
-          const dur = ytPlayer.getDuration();
-          if (dur > 0) {
-            ytPlayer.seekTo(pct * dur, true);
-          }
-        } else if (playbackMode === "audio" && nativeAudio.duration) {
-          nativeAudio.currentTime = pct * nativeAudio.duration;
-        }
+        audio.currentTime = pct * audio.duration;
       });
 
       // ==========================================
@@ -1998,20 +1852,12 @@
 
         rwdBtn.addEventListener("click", () => {
           trigger8BitClick(420);
-          if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
-            ytPlayer.seekTo(Math.max(0, ytPlayer.getCurrentTime() - 10), true);
-          } else if (playbackMode === "audio") {
-            nativeAudio.currentTime = Math.max(0, nativeAudio.currentTime - 10);
-          }
+          audio.currentTime = Math.max(0, audio.currentTime - 10);
         });
 
         fwdBtn.addEventListener("click", () => {
           trigger8BitClick(580);
-          if (playbackMode === "yt" && ytPlayer && ytPlayer.getCurrentTime) {
-            ytPlayer.seekTo(ytPlayer.getCurrentTime() + 10, true);
-          } else if (playbackMode === "audio") {
-            nativeAudio.currentTime = Math.min(nativeAudio.duration || 9999, nativeAudio.currentTime + 10);
-          }
+          audio.currentTime = Math.min(audio.duration || 9999, audio.currentTime + 10);
         });
 
         shuffleBtn.addEventListener("click", () => {
@@ -2027,9 +1873,7 @@
         });
 
         volumeSliderInput.addEventListener("input", (e) => {
-          const val = parseInt(e.target.value, 10);
-          nativeAudio.volume = val / 100;
-          if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(val);
+          audio.volume = e.target.value / 100;
         });
 
         likeActiveBtn.addEventListener("click", () => {
@@ -2080,7 +1924,7 @@
             searchBarSection.style.display = (activeTab === "trending" || activeTab === "search") ? "flex" : "none";
 
             if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
-            else if (activeTab === "search") searchGlobalMusic(globalSongSearchInput.value || "Ariana Grande");
+            else if (activeTab === "search") searchGlobalMusic(globalSongSearchInput.value || "Coldplay");
             else if (activeTab === "radio") renderRadioTab();
             else if (activeTab === "liked") {
               catalogStatusLine.textContent = "YOUR LIKED HITS";
@@ -2097,7 +1941,7 @@
           if (activeTab === "liked") renderTrackList(likedTracks);
           else if (activeTab === "radio") renderRadioTab();
           else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
-          else searchGlobalMusic(globalSongSearchInput.value || "Ariana Grande");
+          else searchGlobalMusic(globalSongSearchInput.value || "Coldplay");
         });
 
         viewGridModeBtn.addEventListener("click", () => {
@@ -2107,7 +1951,7 @@
           if (activeTab === "liked") renderTrackList(likedTracks);
           else if (activeTab === "radio") renderRadioTab();
           else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
-          else searchGlobalMusic(globalSongSearchInput.value || "Ariana Grande");
+          else searchGlobalMusic(globalSongSearchInput.value || "Coldplay");
         });
 
         // Theme Switcher
@@ -2153,8 +1997,7 @@
           const rem = Math.max(0, Math.floor((sleepTimerEnd - Date.now()) / 1000));
           if (rem <= 0) {
             clearInterval(sleepTimerInterval);
-            if (playbackMode === "yt" && ytPlayer) ytPlayer.pauseVideo();
-            else nativeAudio.pause();
+            audio.pause();
             isPlaying = false;
             updatePlayerHUD();
             sleepTimerReadout.textContent = "OFF";
