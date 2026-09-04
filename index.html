@@ -4,17 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>PIXEL DECK — 8-Bit Retro Music Station</title>
-  <meta name="description" content="Nostalgia Pixel Music Player with full-length streaming, multi-provider search, 24/7 retro radios, recently played history, and reactive 8-bit visualizer." />
+  <meta name="description" content="Nostalgia Pixel Music Player with full-length official streaming, multi-language catalog, 24/7 retro radios, recently played history, and reactive 8-bit visualizer." />
 
   <!-- Google Retro Pixel & High-Legibility Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
+  <!-- Official YouTube IFrame Player API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <style>
     /* ==========================================================================
        NOSTALGIA PIXEL DESIGN SYSTEM — 100% FULL-SCREEN & MOBILE RESPONSIVE
        ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
       --font-pixel: 'Press Start 2P', monospace;
       --font-silk: 'Silkscreen', monospace;
@@ -47,38 +56,38 @@
       --border-glow: rgba(0, 229, 255, 0.4);
 
       --pixel-shadow: 2px 2px 0px #000000;
-      --scanline-opacity: 0.25;
+      --scanline-opacity: 0.22;
       --crt-bloom: 0 0 12px rgba(0, 229, 255, 0.25);
     }
 
-    /* THEME 1: AUTHENTIC NINTENDO GAMEBOY DMG-01 (Dot-Matrix LCD Palette) */
-    body[data-theme="gameboy"] {
-      --bg-body: #626d48;
-      --bg-deck: #7a875a;
-      --bg-bezel: #283318;
-      --bg-screen: #8b956d;
-      --bg-panel: #727e53;
-      --bg-row: #849064;
-      --bg-row-alt: #7c885c;
-      --bg-row-hover: #919d70;
-      --bg-row-active: #5c6841;
-      --text-main: #0f380f;
-      --text-dim: #234223;
-      --text-bright: #052205;
-      --text-artist: #0f380f;
-      --accent-p: #306230;
-      --accent-s: #0f380f;
-      --accent-y: #306230;
-      --accent-g: #0f380f;
-      --border-dark: #0f380f;
-      --border-light: #8bac0f;
-      --border-glow: rgba(15, 56, 15, 0.3);
-      --pixel-shadow: 2px 2px 0px #0f380f;
-      --scanline-opacity: 0.15;
-      --crt-bloom: none;
+    /* THEME 1: RETRO WALKMAN 1979 (SONY TPS-L2 HI-FI) */
+    body[data-theme="walkman"], body[data-theme="gameboy"] {
+      --bg-body: #0a111a;
+      --bg-deck: #131e2b;
+      --bg-bezel: #1b2a3c;
+      --bg-screen: #070d15;
+      --bg-panel: #162436;
+      --bg-row: #1a2c42;
+      --bg-row-alt: #152436;
+      --bg-row-hover: #243a57;
+      --bg-row-active: rgba(56, 189, 248, 0.22);
+      --text-main: #f0f6fc;
+      --text-dim: #8fa4bc;
+      --text-bright: #38bdf8;
+      --text-artist: #fbbf24;
+      --accent-p: #ff5722;      /* Iconic Walkman Hotline Orange */
+      --accent-s: #38bdf8;      /* Electric Sky Blue */
+      --accent-y: #fbbf24;      /* Analog VU Gold */
+      --accent-g: #10b981;      /* Dolby NR Green */
+      --border-dark: #060b12;
+      --border-light: #2c4260;
+      --border-glow: rgba(56, 189, 248, 0.35);
+      --pixel-shadow: 2px 2px 0px #060b12;
+      --scanline-opacity: 0.16;
+      --crt-bloom: 0 0 10px rgba(56, 189, 248, 0.25);
     }
 
-    /* THEME 2: VAPORWAVE 1995 (Win95 Chrome, High Contrast) */
+    /* THEME 2: VAPORWAVE 1995 */
     body[data-theme="vaporwave"] {
       --bg-body: #008080;
       --bg-deck: #c0c0c0;
@@ -101,7 +110,7 @@
       --border-light: #ffffff;
       --border-glow: rgba(0, 0, 128, 0.25);
       --pixel-shadow: 2px 2px 0px #404040;
-      --scanline-opacity: 0.12;
+      --scanline-opacity: 0.10;
       --crt-bloom: none;
     }
 
@@ -128,7 +137,7 @@
       --border-light: #5a248f;
       --border-glow: rgba(255, 0, 127, 0.4);
       --pixel-shadow: 2px 2px 0px #000000;
-      --scanline-opacity: 0.25;
+      --scanline-opacity: 0.22;
       --crt-bloom: 0 0 12px rgba(255, 0, 127, 0.35);
     }
 
@@ -150,175 +159,153 @@
       --accent-p: #e60012;
       --accent-s: #ffffff;
       --accent-y: #f0a000;
-      --accent-g: #00d020;
+      --accent-g: #00a800;
       --border-dark: #000000;
       --border-light: #444444;
-      --border-glow: rgba(230, 0, 18, 0.4);
+      --border-glow: rgba(230, 0, 18, 0.35);
       --pixel-shadow: 2px 2px 0px #000000;
-      --scanline-opacity: 0.25;
+      --scanline-opacity: 0.18;
+      --crt-bloom: none;
     }
 
-    /* ==========================================================================
-       BASE & FULL-SCREEN LAYOUT
-       ========================================================================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      image-rendering: pixelated;
-    }
-
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      margin: 0;
-      padding: 0;
+    body {
       background-color: var(--bg-body);
       color: var(--text-main);
       font-family: var(--font-pixel);
-      font-size: 11px;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #pixel-deck-app {
-      width: 100%;
-      min-height: 100vh;
-      background: var(--bg-deck);
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      gap: 10px;
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 768px) {
-      #pixel-deck-app {
-        padding: 6px;
-        gap: 8px;
-      }
-    }
-
-    .pixel-box {
-      background: var(--bg-panel);
-      border: 2px solid var(--border-dark);
-      box-shadow: var(--pixel-shadow);
-      position: relative;
-    }
-
-    .pixel-btn {
-      font-family: var(--font-pixel);
-      font-size: 9px;
-      color: var(--text-main);
-      background: var(--bg-panel);
-      border: 2px solid var(--border-dark);
-      box-shadow: 2px 2px 0px var(--border-dark), inset 1px 1px 0px rgba(255,255,255,0.25);
-      padding: 8px 10px;
-      min-height: 38px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      text-transform: uppercase;
       user-select: none;
-      transition: transform 0.05s ease;
-      outline: none;
-      line-height: 1;
+      -webkit-user-select: none;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .pixel-btn:hover {
-      background: var(--bg-row-hover);
-      color: var(--text-bright);
-    }
-
-    .pixel-btn:active, .pixel-btn.active {
-      transform: translate(2px, 2px);
-      box-shadow: 0px 0px 0px var(--border-dark);
-      background: var(--accent-p);
-      color: #ffffff !important;
-    }
-
-    .pixel-btn-accent {
-      background: var(--accent-p);
-      color: #ffffff !important;
-      font-weight: bold;
-    }
-
-    .pixel-btn-cyan {
-      background: var(--accent-s);
-      color: #000000 !important;
-      font-weight: bold;
-    }
-
-    .pixel-btn-sm {
-      font-size: 8px;
-      padding: 5px 8px;
-      min-height: 28px;
-    }
-
-    .pixel-icon-svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-      display: inline-block;
-      vertical-align: middle;
-      flex-shrink: 0;
-    }
-
-    .pixel-input {
-      font-family: var(--font-sans);
-      font-size: 15px;
-      font-weight: 600;
-      background: var(--bg-screen);
-      color: var(--text-bright);
-      border: 2px solid var(--border-dark);
-      padding: 8px 12px;
-      box-shadow: inset 2px 2px 0px rgba(0,0,0,0.8);
-      outline: none;
-      width: 100%;
-    }
-    .pixel-input::placeholder {
-      color: var(--text-dim);
-    }
-    .pixel-input:focus {
-      border-color: var(--accent-s);
-    }
-
-    .pixel-select {
-      font-family: var(--font-pixel);
-      font-size: 9px;
-      background: var(--bg-screen);
-      color: var(--text-main);
-      border: 2px solid var(--border-dark);
-      padding: 6px 8px;
-      min-height: 34px;
-      box-shadow: 2px 2px 0px var(--border-dark);
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* Scanlines */
+    /* CRT Scanline Overlay */
     #crt-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 9999;
       background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%, 
+        rgba(18, 16, 16, 0) 50%,
         rgba(0, 0, 0, var(--scanline-opacity)) 50%
       );
       background-size: 100% 4px;
+      mix-blend-mode: overlay;
     }
     #crt-overlay.disabled { display: none; }
 
-    /* ==========================================================================
-       HEADER: FULL WIDTH BAR
-       ========================================================================== */
+    /* App Shell */
+    #pixel-deck-app {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    /* Pixel UI Elements */
+    .pixel-box {
+      background: var(--bg-deck);
+      border: 3px solid var(--border-dark);
+      box-shadow: inset 1px 1px 0px var(--border-light), var(--pixel-shadow);
+    }
+
+    .pixel-btn {
+      font-family: var(--font-pixel);
+      font-size: 9px;
+      padding: 7px 10px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      box-shadow: inset 1px 1px 0px var(--border-light), var(--pixel-shadow);
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: transform 0.05s ease, background 0.1s ease;
+    }
+    .pixel-btn:hover {
+      background: var(--accent-s);
+      color: #000000;
+    }
+    .pixel-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+    .pixel-btn.active {
+      background: var(--accent-p);
+      color: #ffffff;
+      border-color: var(--accent-y);
+    }
+
+    .pixel-btn-accent {
+      background: var(--accent-p);
+      color: #ffffff;
+    }
+    .pixel-btn-accent:hover {
+      background: #ff3377;
+      color: #ffffff;
+    }
+
+    .pixel-btn-cyan {
+      background: var(--accent-s);
+      color: #000000;
+    }
+    .pixel-btn-cyan:hover {
+      background: #33eeff;
+      color: #000000;
+    }
+
+    .pixel-btn-sm {
+      font-size: 8px;
+      padding: 4px 6px;
+    }
+
+    .pixel-select, .pixel-input {
+      font-family: var(--font-pixel);
+      font-size: 9px;
+      padding: 6px 8px;
+      background: var(--bg-screen);
+      border: 2px solid var(--border-dark);
+      color: var(--text-bright);
+      outline: none;
+      box-shadow: inset 1px 1px 0px #000000;
+    }
+    .pixel-input {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .pixel-icon-svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      font-size: 7px;
+      padding: 2px 6px;
+      background: var(--accent-p);
+      color: #ffffff;
+      border: 1px solid #000000;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* Top Status Bar */
     .deck-top-bar {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
@@ -326,6 +313,7 @@
       background: var(--bg-bezel);
       border: 2px solid var(--border-dark);
       box-shadow: var(--pixel-shadow);
+      flex-wrap: wrap;
     }
 
     .brand-section {
@@ -333,125 +321,156 @@
       align-items: center;
       gap: 8px;
     }
-
     .brand-logo {
-      font-size: 13px;
-      font-weight: 900;
-      color: var(--text-bright);
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .status-badge {
-      font-size: 8px;
-      padding: 2px 5px;
-      background: var(--accent-p);
-      color: #ffffff;
-      border: 1px solid var(--border-dark);
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--text-bright);
+      text-shadow: 1px 1px 0px #000;
     }
 
     .top-clock-hud {
-      font-family: var(--font-vt);
-      font-size: 18px;
-      color: var(--text-dim);
       display: flex;
       align-items: center;
       gap: 8px;
+      font-family: var(--font-vt);
+      font-size: 18px;
+      color: var(--text-artist);
     }
-
     .led-dot {
       width: 8px;
       height: 8px;
       background: var(--accent-g);
-      border: 1px solid #000;
-      display: inline-block;
-      animation: ledFlash 2s infinite;
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent-g);
+      animation: ledPulse 1.2s infinite alternate;
     }
-    @keyframes ledFlash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes ledPulse {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
 
-    /* ==========================================================================
-       TOP CONSOLE: CRT DISPLAY + CONTROLS + SIDE RACK
-       ========================================================================== */
+    /* Top Console Grid */
     .deck-top-grid {
       display: grid;
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: minmax(0, 1fr) 280px;
       gap: 10px;
+      min-width: 0;
+      width: 100%;
+    }
+    .deck-top-grid > * {
+      min-width: 0;
     }
 
-    @media (max-width: 960px) {
-      .deck-top-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
+    /* CRT Monitor Screen */
     .crt-screen-box {
       background: var(--bg-screen);
       border: 3px solid var(--border-dark);
-      padding: 12px;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9), var(--crt-bloom);
+      padding: 8px 12px;
+      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      box-shadow: inset 3px 3px 0px rgba(0,0,0,0.8), var(--crt-bloom);
+      gap: 6px;
     }
 
     .now-playing-meta {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      font-size: 9px;
+      font-size: 8px;
       color: var(--text-dim);
       border-bottom: 1px dashed var(--border-light);
       padding-bottom: 4px;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
     .track-marquee-wrap {
-      background: rgba(0,0,0,0.5);
-      border: 2px solid var(--border-dark);
-      padding: 6px 8px;
       overflow: hidden;
       white-space: nowrap;
+      background: #000000;
+      border: 1px solid var(--border-dark);
+      padding: 4px 6px;
     }
-
     .track-marquee-text {
       display: inline-block;
-      font-family: var(--font-pixel);
-      font-size: 12px;
+      font-size: 10px;
       color: var(--text-bright);
-      animation: scrollMarquee 20s linear infinite;
+      letter-spacing: 0.5px;
+      animation: marqueeAnim 22s linear infinite;
     }
-    @keyframes scrollMarquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    @keyframes marqueeAnim {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
 
     .track-sub-line {
-      font-family: var(--font-sans);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-artist);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-artist);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       gap: 8px;
     }
 
-    /* Cassette + Real-Time Spectrum Analyzer */
-    .cassette-spectrum-deck {
+    /* CRT Media Container: Video Screen + Cassette / 16-band Spectrum */
+    .crt-media-container {
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
       gap: 10px;
       align-items: center;
-      background: rgba(0,0,0,0.3);
+      margin: 4px 0;
+      min-width: 0;
+    }
+
+    .crt-video-frame {
+      width: 100%;
+      height: 135px;
+      background: #000000;
       border: 2px solid var(--border-dark);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 10px #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .crt-video-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .crt-video-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 8px;
+      color: var(--text-dim);
+      text-align: center;
       padding: 8px;
     }
-    @media (max-width: 600px) {
-      .cassette-spectrum-deck {
-        grid-template-columns: 1fr;
-      }
+
+    /* Cassette + Spectrum Deck */
+    .cassette-spectrum-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
     }
 
     /* Pixel Cassette Tape */
     .pixel-tape {
-      width: 130px;
-      height: 80px;
+      width: 120px;
+      height: 72px;
       background: #232533;
       border: 2px solid #000;
       border-radius: 4px;
@@ -462,14 +481,12 @@
       padding: 4px;
       margin: 0 auto;
     }
-
-    body[data-theme="gameboy"] .pixel-tape {
-      background: #303923;
-    }
+    body[data-theme="walkman"] .pixel-tape,
+    body[data-theme="gameboy"] .pixel-tape { background: #162436; border-color: #ff5722; }
 
     .tape-label {
-      width: 112px;
-      height: 34px;
+      width: 104px;
+      height: 30px;
       background: var(--accent-p);
       border: 2px solid #000;
       display: flex;
@@ -477,21 +494,19 @@
       align-items: center;
       justify-content: center;
     }
-
     .tape-spools {
-      width: 74px;
-      height: 18px;
+      width: 68px;
+      height: 16px;
       background: #111;
       border: 1px solid #000;
-      border-radius: 9px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: space-around;
     }
-
     .tape-wheel {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       background: #ffffff;
       border: 2px solid #000;
       border-radius: 50%;
@@ -504,7 +519,6 @@
       background: #000;
       border-radius: 50%;
     }
-
     .tape-playing .tape-wheel {
       animation: spinWheel 1.2s linear infinite;
     }
@@ -514,17 +528,17 @@
     .spectrum-grid {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
       width: 100%;
     }
     .spectrum-bars-row {
       display: flex;
       align-items: flex-end;
-      gap: 3px;
-      height: 64px;
+      gap: 2px;
+      height: 48px;
       background: #000000;
       border: 2px solid var(--border-dark);
-      padding: 3px 4px;
+      padding: 2px 4px;
     }
     .eq-column {
       flex: 1;
@@ -535,7 +549,7 @@
     }
     .eq-pixel-block {
       width: 100%;
-      height: 4px;
+      height: 3px;
       background: #111;
     }
     .eq-pixel-block.active-low { background: var(--accent-g) !important; }
@@ -546,7 +560,7 @@
     .timeline-container {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
     .scrubber-track {
       width: 100%;
@@ -566,6 +580,7 @@
         var(--accent-p) 6px,
         var(--accent-p) 12px
       );
+      transition: width 0.1s linear;
     }
     .time-readout {
       display: flex;
@@ -592,6 +607,8 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      min-width: 0;
+      width: 100%;
     }
 
     .rack-header {
@@ -603,10 +620,11 @@
       border: 2px solid var(--border-dark);
       font-size: 9px;
       color: var(--text-bright);
+      min-width: 0;
     }
 
     .side-queue-box {
-      max-height: 160px;
+      max-height: 200px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -614,6 +632,7 @@
       background: var(--bg-screen);
       border: 2px solid var(--border-dark);
       padding: 4px;
+      min-width: 0;
     }
 
     .queue-row {
@@ -621,18 +640,80 @@
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      padding: 5px 6px;
+      padding: 6px 6px;
       background: var(--bg-row);
       border: 1px solid var(--border-dark);
       cursor: pointer;
       font-size: 8px;
+      min-width: 0;
     }
     .queue-row:hover { background: var(--bg-row-hover); }
     .queue-row.active { border-color: var(--accent-s); background: var(--bg-row-active); color: var(--text-bright); }
+    .queue-row span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+    .queue-row .btn-del-q {
+      flex-shrink: 0;
+    }
 
-    /* ==========================================================================
-       NAVIGATION TABS & SEARCH BAR
-       ========================================================================== */
+    /* Mobile Bottom Sheet / Drawer for Queue */
+    .mobile-queue-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 80vh;
+      background: var(--bg-deck);
+      border-top: 3px solid var(--accent-s);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.9);
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(110%);
+      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    .mobile-queue-drawer.open {
+      transform: translateY(0);
+    }
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(2px);
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg-bezel);
+      border-bottom: 2px solid var(--border-dark);
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--text-bright);
+    }
+    .drawer-queue-list {
+      overflow-y: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 60vh;
+    }
+
+    /* Navigation Bar */
     .deck-nav-bar {
       display: flex;
       flex-wrap: wrap;
@@ -641,7 +722,6 @@
       border: 2px solid var(--border-dark);
       padding: 6px;
     }
-
     .nav-tab-item {
       font-family: var(--font-pixel);
       font-size: 9px;
@@ -658,6 +738,7 @@
       font-weight: bold;
     }
 
+    /* Search Action Strip */
     .search-action-strip {
       display: flex;
       flex-direction: column;
@@ -665,11 +746,15 @@
       background: var(--bg-panel);
       border: 2px solid var(--border-dark);
       padding: 8px;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
     }
-
     .search-input-group {
       display: flex;
       gap: 6px;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .genre-filter-chips {
@@ -677,13 +762,15 @@
       overflow-x: auto;
       white-space: nowrap;
       gap: 4px;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
       -webkit-overflow-scrolling: touch;
+      min-width: 0;
+      max-width: 100%;
+      width: 100%;
     }
-
     .filter-chip {
       font-size: 8px;
-      padding: 4px 8px;
+      padding: 5px 8px;
       background: var(--bg-row);
       border: 1px solid var(--border-dark);
       color: var(--text-dim);
@@ -703,23 +790,21 @@
       padding: 4px 6px;
       font-size: 9px;
       color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
-    /* ==========================================================================
-       SPOTIFY / JIOSAAVN STYLE HIGH-DENSITY TRACKLIST
-       ========================================================================== */
+    /* Tracklist Container & High-Density Table */
     .tracks-container {
       width: 100%;
       min-height: 250px;
     }
-
     .tracks-table-view {
       display: flex;
       flex-direction: column;
       gap: 3px;
       width: 100%;
     }
-
     .track-table-header {
       display: grid;
       grid-template-columns: 36px 44px 1fr 160px 60px 80px;
@@ -731,7 +816,6 @@
       background: var(--bg-bezel);
       text-transform: uppercase;
     }
-
     .track-row-item {
       display: grid;
       grid-template-columns: 36px 44px 1fr 160px 60px 80px;
@@ -743,32 +827,22 @@
       transition: background 0.1s ease;
       cursor: pointer;
     }
-
-    .track-row-item:nth-child(even) {
-      background: var(--bg-row-alt);
-    }
-
-    .track-row-item:hover {
-      background: var(--bg-row-hover);
-    }
-
+    .track-row-item:nth-child(even) { background: var(--bg-row-alt); }
+    .track-row-item:hover { background: var(--bg-row-hover); }
     .track-row-item.playing {
       background: var(--bg-row-active);
       border-color: var(--accent-s);
     }
-
     .row-index {
       font-family: var(--font-vt);
       font-size: 18px;
       color: var(--text-dim);
       text-align: center;
     }
-
     .track-row-item.playing .row-index {
       color: var(--accent-s);
       font-weight: bold;
     }
-
     .row-art-thumb {
       width: 40px;
       height: 40px;
@@ -779,7 +853,6 @@
       border-radius: 2px;
       flex-shrink: 0;
     }
-
     .row-main-info {
       display: flex;
       flex-direction: column;
@@ -787,7 +860,6 @@
       overflow: hidden;
       min-width: 0;
     }
-
     .row-title-text {
       font-family: var(--font-sans);
       font-size: 14px;
@@ -797,7 +869,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .row-artist-text {
       font-family: var(--font-sans);
       font-size: 12px;
@@ -806,7 +877,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .row-album-text {
       font-family: var(--font-sans);
       font-size: 12px;
@@ -815,37 +885,17 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .row-duration-text {
       font-family: var(--font-vt);
       font-size: 17px;
       color: var(--text-dim);
       white-space: nowrap;
     }
-
     .row-actions-group {
       display: flex;
       align-items: center;
       gap: 4px;
       justify-content: flex-end;
-    }
-
-    /* Mobile Responsive Overrides */
-    @media (max-width: 768px) {
-      .track-table-header {
-        grid-template-columns: 28px 40px 1fr 64px;
-      }
-      .track-table-header > *:nth-child(4),
-      .track-table-header > *:nth-child(5) {
-        display: none;
-      }
-      .track-row-item {
-        grid-template-columns: 28px 40px 1fr 64px;
-      }
-      .track-row-item > *:nth-child(4),
-      .track-row-item > *:nth-child(5) {
-        display: none;
-      }
     }
 
     /* Grid View */
@@ -854,7 +904,6 @@
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 8px;
     }
-
     .grid-card-item {
       background: var(--bg-row);
       border: 2px solid var(--border-dark);
@@ -864,9 +913,7 @@
       gap: 6px;
       cursor: pointer;
     }
-    .grid-card-item:hover {
-      background: var(--bg-row-hover);
-    }
+    .grid-card-item:hover { background: var(--bg-row-hover); }
     .grid-card-item.playing {
       border-color: var(--accent-s);
       background: var(--bg-row-active);
@@ -905,7 +952,7 @@
       padding: 8px 12px;
       font-size: 10px;
       font-family: var(--font-pixel);
-      z-index: 10000;
+      z-index: 10002;
       transform: translateY(100px);
       opacity: 0;
       transition: transform 0.2s ease, opacity 0.2s ease;
@@ -915,6 +962,96 @@
     #pixel-toast-hud.show {
       transform: translateY(0);
       opacity: 1;
+    }
+
+    /* Responsive Overrides across Viewports */
+    @media (max-width: 1080px) and (min-width: 769px) {
+      .deck-top-grid {
+        grid-template-columns: 1fr;
+      }
+      .side-rack-panel {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        gap: 10px;
+      }
+      .side-queue-box {
+        max-height: 140px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .deck-top-grid {
+        grid-template-columns: 1fr;
+      }
+      .side-rack-panel {
+        display: none; /* Replaced by Mobile Bottom Sheet */
+      }
+      .mobile-only-btn {
+        display: inline-flex !important;
+      }
+      .crt-media-container {
+        grid-template-columns: 1fr;
+      }
+      .crt-video-frame {
+        height: 180px;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-only-btn {
+        display: none !important;
+      }
+      .mobile-queue-drawer, .drawer-backdrop {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .track-table-header {
+        grid-template-columns: 28px 40px 1fr 64px;
+      }
+      .track-table-header > *:nth-child(4),
+      .track-table-header > *:nth-child(5) {
+        display: none;
+      }
+      .track-row-item {
+        grid-template-columns: 28px 40px 1fr 64px;
+      }
+      .track-row-item > *:nth-child(4),
+      .track-row-item > *:nth-child(5) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #pixel-deck-app {
+        padding: 6px;
+      }
+      .master-controls-bar {
+        gap: 4px;
+        padding: 6px 4px;
+      }
+      .master-controls-bar .pixel-btn {
+        padding: 6px 7px;
+        font-size: 8px;
+      }
+      .track-table-header {
+        grid-template-columns: 22px 36px 1fr 58px;
+        font-size: 7px;
+      }
+      .track-row-item {
+        grid-template-columns: 22px 36px 1fr 58px;
+        padding: 5px 4px;
+      }
+      .row-title-text {
+        font-size: 12px;
+      }
+      .row-artist-text {
+        font-size: 10px;
+      }
+      .time-readout {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -930,12 +1067,11 @@
     <header class="deck-top-bar">
       <div class="brand-section">
         <div class="brand-logo">
-          <!-- Pixel Cassette Icon SVG -->
           <svg class="pixel-icon-svg" viewBox="0 0 16 16">
             <path d="M1 3h14v10H1V3zm2 2v6h10V5H3zm2 1h6v4H5V6zm1 1v2h1V7H6zm3 0v2h1V7H9z"/>
           </svg>
           <span>PIXEL DECK</span>
-          <span class="status-badge">DIRECT 320K</span>
+          <span class="status-badge">GLOBAL HI-FI</span>
         </div>
       </div>
 
@@ -947,12 +1083,16 @@
       </div>
 
       <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+        <button id="mobileQueueToggleBtn" class="pixel-btn pixel-btn-sm pixel-btn-cyan mobile-only-btn">
+          💾 QUEUE (<span id="mobileQueueCountBadge">0</span>)
+        </button>
+
         <button id="toggleCrtBtn" class="pixel-btn pixel-btn-sm">CRT: ON</button>
         <button id="toggleSfxBtn" class="pixel-btn pixel-btn-sm">SFX: ON</button>
 
         <select id="themeDropdown" class="pixel-select" aria-label="Select Retro Theme">
           <option value="cyber">🎮 ARCADE 1984</option>
-          <option value="gameboy">🕹️ GAMEBOY DMG</option>
+          <option value="walkman">📻 RETRO WALKMAN</option>
           <option value="vaporwave">💾 VAPORWAVE 95</option>
           <option value="synthwave">🌅 SYNTHWAVE 86</option>
           <option value="nes">👾 NES CLASSIC</option>
@@ -966,51 +1106,61 @@
       <!-- Left Console: Now Playing & Audio Controls -->
       <section class="pixel-box" style="display:flex; flex-direction:column; gap:8px; padding:10px;">
         
-        <!-- CRT Monitor -->
+        <!-- CRT Monitor Screen -->
         <div class="crt-screen-box">
           <div class="now-playing-meta">
-            <span>CH: 01 [STEREO HI-FI]</span>
-            <span id="sourceLabelBadge">ENGINE: NATIVE AUDIO STREAM</span>
-            <span id="bitrateLabelBadge">320 KBPS</span>
+            <span>CH: 01 [OFFICIAL STUDIO MASTER]</span>
+            <span id="sourceLabelBadge">ENGINE: YOUTUBE HI-FI AUDIO</span>
+            <span id="bitrateLabelBadge">OFFICIAL RELEASE</span>
           </div>
 
           <!-- Marquee Title -->
           <div class="track-marquee-wrap">
-            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — FULL LENGTH AUDIO • CLICK ANY TRACK TO PLAY</div>
+            <div id="marqueeTrackTitle" class="track-marquee-text">PIXEL DECK HI-FI — OFFICIAL MUSIC RELEASES FROM EVERY LANGUAGE • CLICK ANY TRACK TO PLAY</div>
           </div>
 
           <div class="track-sub-line">
-            <span id="artistSubText">RETRO AUDIO DECK</span>
-            <span id="genreBadgeText" style="font-size:13px; opacity:0.85;">DIRECT MASTER AUDIO</span>
+            <span id="artistSubText">RETRO MUSIC STATION</span>
+            <span id="genreBadgeText" style="font-size:12px; opacity:0.85;">ALL LANGUAGES SUPPORTED</span>
           </div>
 
-          <!-- Cassette + 16-Band Equalizer -->
-          <div class="cassette-spectrum-deck">
+          <!-- CRT Media Screen: Video Viewport & Cassette + 16-Band Spectrum -->
+          <div class="crt-media-container">
             
-            <!-- Cassette Tape -->
-            <div id="cassetteTapeElement" class="pixel-tape">
-              <div class="tape-label">
-                <span style="font-size:7px; color:#fff; font-weight:bold;">SIDE A • HI-FI</span>
-                <div class="tape-spools">
-                  <div class="tape-wheel"></div>
-                  <div class="tape-wheel"></div>
-                </div>
-              </div>
-              <div style="font-size:6px; color:#777; width:100%; display:flex; justify-content:space-between; padding:0 4px;">
-                <span>TYPE-I</span>
-                <span>DSP</span>
-              </div>
+            <!-- Video Frame (Compliant with Google Developer Terms) -->
+            <div class="crt-video-frame">
+              <div id="ytPlayerEmbed"></div>
             </div>
 
-            <!-- Spectrum Analyzer -->
-            <div class="spectrum-grid">
-              <div style="display:flex; justify-content:space-between; font-size:8px; color:var(--text-dim);">
-                <span>16-BAND SPECTRUM</span>
-                <span id="dspActiveStatus">DYNAMIC DSP</span>
+            <!-- Cassette & Spectrum Deck -->
+            <div class="cassette-spectrum-deck">
+              
+              <!-- Cassette Tape -->
+              <div id="cassetteTapeElement" class="pixel-tape">
+                <div class="tape-label">
+                  <span style="font-size:7px; color:#fff; font-weight:bold;">SIDE A • HI-FI</span>
+                  <div class="tape-spools">
+                    <div class="tape-wheel"></div>
+                    <div class="tape-wheel"></div>
+                  </div>
+                </div>
+                <div style="font-size:6px; color:#777; width:100%; display:flex; justify-content:space-between; padding:0 4px;">
+                  <span>TYPE-I</span>
+                  <span>DSP ACTIVE</span>
+                </div>
               </div>
-              <div id="spectrumBarsContainer" class="spectrum-bars-row">
-                <!-- 16 Equalizer Columns Generated Dynamically -->
+
+              <!-- 16-Band Spectrum Analyzer -->
+              <div class="spectrum-grid">
+                <div style="display:flex; justify-content:space-between; font-size:7px; color:var(--text-dim);">
+                  <span>16-BAND SPECTRUM</span>
+                  <span id="dspActiveStatus">STEREO MASTER</span>
+                </div>
+                <div id="spectrumBarsContainer" class="spectrum-bars-row">
+                  <!-- 16 Equalizer Columns Generated Dynamically -->
+                </div>
               </div>
+
             </div>
 
           </div>
@@ -1052,24 +1202,24 @@
             <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M12 2h2v12h-2V2zM2 14V2l9 6-9 6z"/></svg>
           </button>
 
-          <button id="repeatBtn" class="pixel-btn pixel-btn-sm" title="Repeat">
+          <button id="repeatBtn" class="pixel-btn pixel-btn-sm" title="Repeat Mode">
             <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M4 3h8v2H4v2L1 4.5 4 2v1zm8 10H4v-2h8V9l3 2.5-3 2.5v-1z"/></svg>
-            <span>REP</span>
+            <span id="repeatBtnLabel">REP: OFF</span>
           </button>
 
           <div style="display:flex; align-items:center; gap:6px; font-size:9px; margin-left:6px;">
             <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 5v6h3l4 4V1L5 5H2zm9 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            <input id="volumeSliderInput" type="range" min="0" max="100" value="90" style="accent-color:var(--accent-p); cursor:pointer; width:70px;" />
+            <input id="volumeSliderInput" type="range" min="0" max="100" value="90" style="accent-color:var(--accent-p); cursor:pointer; width:65px;" />
           </div>
 
-          <button id="likeActiveBtn" class="pixel-btn pixel-btn-sm" title="Like Track">
+          <button id="likeActiveBtn" class="pixel-btn pixel-btn-sm" title="Save to Liked">
             <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M8 14s-6-4.35-6-8a4 4 0 017-2.6A4 4 0 0114 6c0 3.65-6 8-6 8z"/></svg>
           </button>
         </div>
 
       </section>
 
-      <!-- Right Side Rack: Up Next Queue & 24/7 Radio -->
+      <!-- Right Side Rack: Up Next Queue & 24/7 Radio (Desktop) -->
       <aside class="side-rack-panel">
         
         <!-- Queue Box -->
@@ -1090,10 +1240,10 @@
             <span style="font-size:8px; color:var(--accent-g);">● LIVE</span>
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
-            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_u80s">80S SYNTH</button>
-            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_vapor">VAPORWAVE</button>
-            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_defcon">CHIPTUNE</button>
-            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_groove">LO-FI CHILL</button>
+            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_u80s" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">80S SYNTH</button>
+            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_vapor" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">VAPORWAVE</button>
+            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_defcon" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">CHIPTUNE</button>
+            <button class="pixel-btn pixel-btn-sm quick-radio-btn" data-id="radio_groove" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">LO-FI CHILL</button>
           </div>
         </div>
 
@@ -1104,10 +1254,10 @@
             <span id="sleepTimerReadout" style="color:var(--accent-s);">OFF</span>
           </div>
           <div style="display:flex; justify-content:space-between; gap:4px;">
-            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="0">OFF</button>
-            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="15">15M</button>
-            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="30">30M</button>
-            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="60">60M</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="0" style="flex:1; min-width:0; padding:4px 2px; text-align:center;">OFF</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="15" style="flex:1; min-width:0; padding:4px 2px; text-align:center;">15M</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="30" style="flex:1; min-width:0; padding:4px 2px; text-align:center;">30M</button>
+            <button class="pixel-btn pixel-btn-sm sleep-sel-btn" data-m="60" style="flex:1; min-width:0; padding:4px 2px; text-align:center;">60M</button>
           </div>
         </div>
 
@@ -1115,7 +1265,20 @@
 
     </div>
 
-    <!-- Navigation Bar: Trending, Search, 24/7 Radio, Recently Played, Liked Hits, Local MP3 -->
+    <!-- Mobile Slide-Up Queue Drawer -->
+    <div id="drawerBackdrop" class="drawer-backdrop"></div>
+    <div id="mobileQueueDrawer" class="mobile-queue-drawer">
+      <div class="drawer-header">
+        <span>💾 PLAY QUEUE</span>
+        <div style="display:flex; gap:6px;">
+          <button id="clearQueueMobileBtn" class="pixel-btn pixel-btn-sm">CLEAR</button>
+          <button id="closeQueueDrawerBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">✕</button>
+        </div>
+      </div>
+      <div id="mobileQueueList" class="drawer-queue-list"></div>
+    </div>
+
+    <!-- Navigation Bar: Trending, Search, Recently Played, 24/7 Radio, Liked Hits, Local MP3 -->
     <nav class="deck-nav-bar">
       <button class="nav-tab-item active" data-tab="trending">⚡ TOP HITS</button>
       <button class="nav-tab-item" data-tab="search">🔍 SEARCH ALL SONGS</button>
@@ -1125,25 +1288,26 @@
       <button class="nav-tab-item" data-tab="local">📂 LOAD LOCAL MP3</button>
     </nav>
 
-    <!-- Search Bar & Genre Filters -->
+    <!-- Search Bar & Multi-Lingual Genre Filter Chips -->
     <div id="searchBarSection" class="search-action-strip">
       <div class="search-input-group">
-        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="SEARCH ARTISTS & SONGS (e.g. Coldplay, Taylor Swift, Ariana Grande, Ed Sheeran, Arijit Singh, Synthwave)..." />
-        <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 18px;">SEARCH</button>
+        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="Search any song, artist, language (Coldplay, Taylor Swift, Arijit Singh, Anirudh, BTS, Bad Bunny)..." />
+        <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 16px;">SEARCH</button>
       </div>
 
       <div class="genre-filter-chips">
-        <span class="filter-chip active" data-query="Hukum Anirudh">⚡ TAMIL HITS (Anirudh)</span>
-        <span class="filter-chip" data-query="Samajavaragamana">🔥 TELUGU HITS (Sid Sriram)</span>
-        <span class="filter-chip" data-query="Arijit Singh">🇮🇳 HINDI HITS (Arijit Singh)</span>
-        <span class="filter-chip" data-query="AR Rahman">🎶 AR RAHMAN</span>
+        <span class="filter-chip active" data-query="Coldplay">🪐 COLDPLAY</span>
         <span class="filter-chip" data-query="Taylor Swift">✨ TAYLOR SWIFT</span>
-        <span class="filter-chip" data-query="Coldplay">🪐 COLDPLAY</span>
+        <span class="filter-chip" data-query="Arijit Singh">🇮🇳 HINDI (Arijit Singh)</span>
+        <span class="filter-chip" data-query="Anirudh Hukum">⚡ TAMIL (Anirudh)</span>
+        <span class="filter-chip" data-query="Samajavaragamana">🔥 TELUGU (Sid Sriram)</span>
         <span class="filter-chip" data-query="The Weeknd">🌃 THE WEEKND</span>
+        <span class="filter-chip" data-query="Ariana Grande">💎 ARIANA GRANDE</span>
+        <span class="filter-chip" data-query="Bad Bunny">🌴 SPANISH (Bad Bunny)</span>
+        <span class="filter-chip" data-query="BTS">🇰🇷 K-POP (BTS)</span>
         <span class="filter-chip" data-query="Ed Sheeran">🎸 ED SHEERAN</span>
         <span class="filter-chip" data-query="Hans Zimmer">🎻 HANS ZIMMER</span>
-        <span class="filter-chip" data-query="Synthwave">🌅 SYNTHWAVE</span>
-        <span class="filter-chip" data-query="Lofi">☕ LO-FI BEATS</span>
+        <span class="filter-chip" data-query="Synthwave 80s">🌅 SYNTHWAVE</span>
       </div>
     </div>
 
@@ -1157,7 +1321,7 @@
       </div>
     </div>
 
-    <!-- Main Results Area: High-Density Spotify / JioSaavn Track List -->
+    <!-- Main Results Area: Track List / Grid -->
     <main id="mainTrackArea" class="tracks-container">
       <div id="trackListWrapper" class="tracks-table-view">
         <!-- Rendered track rows -->
@@ -1169,10 +1333,10 @@
 
   </div>
 
-  <!-- Toast Hud -->
+  <!-- Toast Notification HUD -->
   <div id="pixel-toast-hud">NOTIFICATION</div>
 
-  <!-- Direct Native HTML5 Audio Player (100% Reliable Direct Sound Output) -->
+  <!-- Direct Native HTML5 Audio Player (for Local MP3s & 24/7 Retro Radios) -->
   <audio id="coreAudioPlayer" preload="auto"></audio>
 
   <!-- ==========================================================================
@@ -1184,7 +1348,7 @@
 
       const DEFAULT_ARTWORK = "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80";
 
-      // 1. Curated 24/7 Live Radio Stations
+      // 1. Curated 24/7 Live Radio Stations (Icecast MP3 Streams via NativeAudioEngine)
       const RETRO_RADIO_STATIONS = [
         {
           id: "radio_u80s",
@@ -1236,79 +1400,111 @@
         }
       ];
 
-      // Curated Universal Global Starter Hits (Indian, Hollywood & Retro Radios)
+      // 2. Curated Universal Starter Hits (100% Official Global Releases in Every Language)
       const POPULAR_STARTER_HITS = [
         {
-          id: "saavn_hukum",
+          id: "yt_YykjpeuMNEk",
+          title: "Hymn For The Weekend",
+          artist: "Coldplay",
+          album: "A Head Full of Dreams",
+          duration: 261,
+          durationFormatted: "04:21",
+          artwork: "https://i.ytimg.com/vi/YykjpeuMNEk/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "YykjpeuMNEk",
+          playable: true,
+          sourceType: "youtube"
+        },
+        {
+          id: "yt_tCXGJQYZ9JA",
+          title: "Delicate",
+          artist: "Taylor Swift",
+          album: "Reputation",
+          duration: 235,
+          durationFormatted: "03:55",
+          artwork: "https://i.ytimg.com/vi/tCXGJQYZ9JA/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "tCXGJQYZ9JA",
+          playable: true,
+          sourceType: "youtube"
+        },
+        {
+          id: "yt_BddP6PYo2gs",
+          title: "Kesariya (From Brahmāstra)",
+          artist: "Arijit Singh, Pritam",
+          album: "Brahmāstra",
+          duration: 268,
+          durationFormatted: "04:28",
+          artwork: "https://i.ytimg.com/vi/BddP6PYo2gs/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "BddP6PYo2gs",
+          playable: true,
+          sourceType: "youtube"
+        },
+        {
+          id: "yt_1F3hm6MfR1k",
           title: "Hukum - Thalaivar Alappara",
-          artist: "Anirudh Ravichander, Super Subu",
+          artist: "Anirudh Ravichander",
           album: "Jailer (Tamil)",
           duration: 207,
           durationFormatted: "03:27",
-          artwork: "https://c.saavncdn.com/187/Jailer-Tamil-2023-20230728083838-500x500.jpg",
-          streamUrl: "https://aac.saavncdn.com/187/0c4d0aee91a3ac81d4b645ec448a2960_320.mp4",
-          provider: "jiosaavn",
-          sourceType: "stream"
+          artwork: "https://i.ytimg.com/vi/1F3hm6MfR1k/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "1F3hm6MfR1k",
+          playable: true,
+          sourceType: "youtube"
         },
         {
-          id: "saavn_kesariya",
-          title: "Kesariya",
-          artist: "Pritam, Arijit Singh, Amitabh Bhattacharya",
-          album: "Brahmastra (Hindi)",
-          duration: 268,
-          durationFormatted: "04:28",
-          artwork: "https://c.saavncdn.com/871/Kesariya-From-Brahmastra-Hindi-2022-20220717092820-500x500.jpg",
-          streamUrl: "https://aac.saavncdn.com/871/c2febd353f3a076a406fa37510f31f9f_320.mp4",
-          provider: "jiosaavn",
-          sourceType: "stream"
-        },
-        {
-          id: "saavn_samaja",
+          id: "yt_OCg6BWlAXSw",
           title: "Samajavaragamana",
-          artist: "Sid Sriram, S.S. Thaman",
+          artist: "Sid Sriram, Thaman S",
           album: "Ala Vaikunthapurramuloo (Telugu)",
-          duration: 219,
-          durationFormatted: "03:39",
-          artwork: "https://c.saavncdn.com/517/Samajavaragamana-Telugu-2019-20190928014524-500x500.jpg",
-          streamUrl: "https://aac.saavncdn.com/517/339d76dce4db4f43f4721eec2d8f03ef_320.mp4",
-          provider: "jiosaavn",
-          sourceType: "stream"
+          duration: 229,
+          durationFormatted: "03:49",
+          artwork: "https://i.ytimg.com/vi/OCg6BWlAXSw/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "OCg6BWlAXSw",
+          playable: true,
+          sourceType: "youtube"
         },
         {
-          id: "saavn_cruel",
-          title: "Cruel Summer",
-          artist: "Taylor Swift",
-          album: "Lover (Hollywood)",
-          duration: 178,
-          durationFormatted: "02:58",
-          artwork: "https://c.saavncdn.com/228/Lover-English-2019-20190823055848-500x500.jpg",
-          streamUrl: "https://aac.saavncdn.com/228/a4c61b868434d166db4171d7ff4292f2_320.mp4",
-          provider: "jiosaavn",
-          sourceType: "stream"
+          id: "yt_4NRXx6U8ABQ",
+          title: "Blinding Lights",
+          artist: "The Weeknd",
+          album: "After Hours",
+          duration: 260,
+          durationFormatted: "04:20",
+          artwork: "https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "4NRXx6U8ABQ",
+          playable: true,
+          sourceType: "youtube"
         },
         {
-          id: "saavn_yellow",
-          title: "Yellow",
-          artist: "Coldplay",
-          album: "Parachutes (Hollywood)",
-          duration: 266,
-          durationFormatted: "04:26",
-          artwork: "https://c.saavncdn.com/254/Yellow-English-2000-500x500.jpg",
-          streamUrl: "https://aac.saavncdn.com/254/6ebc38a6a7ea892f3a27cd66c71529d6_320.mp4",
-          provider: "jiosaavn",
-          sourceType: "stream"
+          id: "yt_Cr8K88UcO0s",
+          title: "Tití Me Preguntó",
+          artist: "Bad Bunny",
+          album: "Un Verano Sin Ti (Spanish)",
+          duration: 291,
+          durationFormatted: "04:51",
+          artwork: "https://i.ytimg.com/vi/Cr8K88UcO0s/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "Cr8K88UcO0s",
+          playable: true,
+          sourceType: "youtube"
         },
         {
-          id: "radio_u80s",
-          title: "Underground 80s Non-Stop Live",
-          artist: "SomaFM Synth & Wave",
-          album: "24/7 Live Broadcast",
-          duration: 0,
-          durationFormatted: "FULL LIVE",
-          artwork: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&q=80",
-          streamUrl: "https://ice1.somafm.com/u80s-128-mp3",
-          provider: "radio",
-          sourceType: "live"
+          id: "yt_gdZLi9oWNZg",
+          title: "Dynamite",
+          artist: "BTS",
+          album: "BE (K-Pop)",
+          duration: 223,
+          durationFormatted: "03:43",
+          artwork: "https://i.ytimg.com/vi/gdZLi9oWNZg/hqdefault.jpg",
+          provider: "youtube",
+          providerTrackId: "gdZLi9oWNZg",
+          playable: true,
+          sourceType: "youtube"
         }
       ];
 
@@ -1320,66 +1516,47 @@
       }
 
       // ==========================================
-      // 1. MODULAR UNIVERSAL MUSIC PROVIDER LAYER (INDIAN & HOLLYWOOD)
+      // 1. UNIFIED MUSIC PROVIDER ABSTRACTION
       // ==========================================
       const MusicProvider = {
-        apiEndpoint: "/api/search",
-        audiusHost: "https://api.audius.co",
-
-        async searchSongs(query, page = 0, limit = 20) {
-          if (!query || !query.trim()) return [];
-          const saavnPage = page + 1;
-
-          // 1. Primary: Query High-Quality Universal Catalog (Indian & Hollywood)
-          try {
-            const res = await fetch(`${this.apiEndpoint}?query=${encodeURIComponent(query)}&page=${saavnPage}&limit=${limit}`);
-            if (res.ok) {
-              const json = await res.json();
-              if (json && json.results && json.results.length > 0) {
-                return json.results;
-              }
+        apiEndpoint: (function() {
+          // Dynamic endpoint detection:
+          // 1. If opened directly via file:/// protocol, relative /api/search fails in the browser.
+          //    Route directly to the local server at http://127.0.0.1:3000/api/search.
+          if (typeof window !== "undefined") {
+            if (window.location.protocol === "file:") {
+              return "http://127.0.0.1:3000/api/search";
             }
-          } catch (err) {
-            console.warn("Primary search endpoint failed, trying Audius fallback:", err);
+            // 2. If served from a static dev server (e.g. Live Server on 5500, Vite on 5173, etc. not 3000)
+            if ((window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && window.location.port && window.location.port !== "3000") {
+              return "http://127.0.0.1:3000/api/search";
+            }
           }
+          // 3. Deployed on Vercel or hosted on http://127.0.0.1:3000
+          return "/api/search";
+        })(),
 
-          // 2. Fallback: Audius Open Music Provider
+        async searchSongs(query, page = 1, limit = 20) {
+          if (!query || !query.trim()) return [];
+
           try {
-            const offset = page * limit;
-            const url = `${this.audiusHost}/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=PIXEL_DECK&offset=${offset}&limit=${limit}`;
+            const url = `${this.apiEndpoint}?query=${encodeURIComponent(query.trim())}&page=${page}&limit=${limit}`;
             const res = await fetch(url);
             if (res.ok) {
               const json = await res.json();
-              if (json && json.data && json.data.length > 0) {
-                return json.data.map(item => ({
-                  id: "aud_" + item.id,
-                  title: item.title,
-                  artist: item.user?.name || "Original Artist",
-                  album: item.genre || "Single",
-                  duration: item.duration || 210,
-                  durationFormatted: formatSecondsToTime(item.duration || 210),
-                  artwork: item.artwork?.["480x480"] || item.artwork?.["150x150"] || DEFAULT_ARTWORK,
-                  streamUrl: `${this.audiusHost}/v1/tracks/${item.id}/stream?app_name=PIXEL_DECK`,
-                  provider: "audius",
-                  sourceType: "stream"
-                }));
+              if (json && json.results && Array.isArray(json.results)) {
+                return json.results;
               }
+            } else {
+              console.warn(`[MusicProvider] Search HTTP ${res.status} from ${url}`);
             }
-          } catch (e) {
-            console.warn("Audius fallback also failed:", e);
+          } catch (err) {
+            console.warn("[MusicProvider] Search network error:", err);
           }
-
           return [];
         },
 
-        async getTrending(limit = 20) {
-          try {
-            const res = await fetch(`${this.apiEndpoint}?query=Trending%20Hits&limit=${limit}`);
-            if (res.ok) {
-              const json = await res.json();
-              if (json && json.results && json.results.length > 0) return json.results;
-            }
-          } catch (_) {}
+        getStarterHits() {
           return POPULAR_STARTER_HITS;
         },
 
@@ -1389,7 +1566,7 @@
       };
 
       // ==========================================
-      // 2. RECENTLY PLAYED MANAGER (VERIFIED THRESHOLD)
+      // 2. RECENTLY PLAYED MANAGER (VERIFIED LISTENING THRESHOLD)
       // ==========================================
       const RecentlyPlayedManager = {
         STORAGE_KEY: "PIXEL_DECK_RECENTLY_PLAYED",
@@ -1406,127 +1583,312 @@
           if (!song || !song.id) return;
           try {
             let history = this.getHistory();
-            // Remove duplicate of this song
-            history = history.filter(item => item.id !== song.id);
-            // Prepend with timestamp
+            // Remove existing duplicate
+            history = history.filter(item => item.id !== song.id && item.providerTrackId !== song.providerTrackId);
+            // Move to top with timestamp
             history.unshift({
               ...song,
               playedAt: Date.now()
             });
-            // Cap at 50 tracks
-            if (history.length > 50) history = history.slice(0, 50);
+            // Cap at 100 tracks
+            if (history.length > 100) history = history.slice(0, 100);
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
+
+            if (activeTab === "recent") renderRecentlyPlayedTab();
           } catch (_) {}
         },
 
         clearHistory() {
           try {
             localStorage.removeItem(this.STORAGE_KEY);
+            if (activeTab === "recent") renderRecentlyPlayedTab();
           } catch (_) {}
         }
       };
 
       // ==========================================
-      // 3. CENTRALIZED PLAYER STATE MACHINE
+      // 3. YOUTUBE IRAME PLAYER ENGINE (OFFICIAL SDK)
+      // ==========================================
+      const YouTubeEngine = {
+        player: null,
+        isReady: false,
+        pendingTrack: null,
+        pollTimer: null,
+
+        init() {
+          const createPlayer = () => {
+            if (this.player || !window.YT || !window.YT.Player) return;
+            try {
+              this.player = new YT.Player("ytPlayerEmbed", {
+                height: "100%",
+                width: "100%",
+                playerVars: {
+                  autoplay: 0,
+                  controls: 1,
+                  modestbranding: 1,
+                  rel: 0,
+                  playsinline: 1,
+                  iv_load_policy: 3,
+                  fs: 0,
+                  disablekb: 1,
+                  origin: window.location.origin
+                },
+                events: {
+                  onReady: () => {
+                    this.isReady = true;
+                    if (this.pendingTrack) {
+                      const t = this.pendingTrack;
+                      this.pendingTrack = null;
+                      this.play(t);
+                    }
+                  },
+                  onStateChange: (e) => this.handleStateChange(e),
+                  onError: (e) => this.handleError(e)
+                }
+              });
+            } catch (err) {
+              console.warn("YouTube player init error:", err);
+            }
+          };
+
+          if (window.YT && window.YT.Player) {
+            createPlayer();
+          } else {
+            window.onYouTubeIframeAPIReady = () => createPlayer();
+            // Fallback load if needed
+            if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+              const tag = document.createElement("script");
+              tag.src = "https://www.youtube.com/iframe_api";
+              document.head.appendChild(tag);
+            }
+          }
+        },
+
+        play(track) {
+          if (!track || !track.providerTrackId) return;
+
+          if (!this.isReady || !this.player || typeof this.player.loadVideoById !== "function") {
+            this.pendingTrack = track;
+            return;
+          }
+
+          this.pendingTrack = null;
+          try {
+            this.player.loadVideoById({
+              videoId: track.providerTrackId,
+              startSeconds: 0
+            });
+            this.startPolling();
+          } catch (err) {
+            console.warn("YouTube loadVideoById error:", err);
+            PlayerStore.onPlaybackError("Failed to load video: " + err.message);
+          }
+        },
+
+        pause() {
+          if (this.isReady && this.player && typeof this.player.pauseVideo === "function") {
+            try { this.player.pauseVideo(); } catch (_) {}
+          }
+          this.stopPolling();
+        },
+
+        resume() {
+          if (this.isReady && this.player && typeof this.player.playVideo === "function") {
+            try {
+              this.player.playVideo();
+              this.startPolling();
+            } catch (_) {}
+          }
+        },
+
+        seekTo(seconds) {
+          if (this.isReady && this.player && typeof this.player.seekTo === "function") {
+            try { this.player.seekTo(seconds, true); } catch (_) {}
+          }
+        },
+
+        setVolume(pct) {
+          if (this.isReady && this.player && typeof this.player.setVolume === "function") {
+            try { this.player.setVolume(pct); } catch (_) {}
+          }
+        },
+
+        startPolling() {
+          this.stopPolling();
+          this.pollTimer = setInterval(() => {
+            if (this.isReady && this.player && typeof this.player.getCurrentTime === "function") {
+              const cur = this.player.getCurrentTime() || 0;
+              const dur = this.player.getDuration() || 0;
+              PlayerStore.onTimeUpdate(cur, dur);
+            }
+          }, 250);
+        },
+
+        stopPolling() {
+          if (this.pollTimer) {
+            clearInterval(this.pollTimer);
+            this.pollTimer = null;
+          }
+        },
+
+        handleStateChange(event) {
+          // YT.PlayerState: UNSTARTED (-1), ENDED (0), PLAYING (1), PAUSED (2), BUFFERING (3), CUED (5)
+          if (event.data === 1) { // PLAYING
+            PlayerStore.onPlaybackStarted("youtube");
+            this.startPolling();
+          } else if (event.data === 2) { // PAUSED
+            PlayerStore.onPlaybackPaused("youtube");
+            this.stopPolling();
+          } else if (event.data === 3) { // BUFFERING
+            PlayerStore.onPlaybackBuffering("youtube");
+          } else if (event.data === 0) { // ENDED
+            PlayerStore.onTrackEnded("youtube");
+            this.stopPolling();
+          }
+        },
+
+        handleError(event) {
+          console.warn("YouTube Player error code:", event.data);
+          let msg = "UNABLE TO PLAY THIS TRACK";
+          if (event.data === 100) msg = "VIDEO NOT FOUND";
+          else if (event.data === 101 || event.data === 150) msg = "EMBED RESTRICTED BY RIGHTS HOLDER";
+          PlayerStore.onPlaybackError(msg);
+        }
+      };
+
+      // ==========================================
+      // 4. NATIVE HTML5 AUDIO ENGINE (LOCAL MP3 & 24/7 RADIO)
+      // ==========================================
+      const NativeAudioEngine = {
+        audio: document.getElementById("coreAudioPlayer"),
+
+        init() {
+          this.audio.addEventListener("timeupdate", () => {
+            if (PlayerStore.currentEngine === "native") {
+              PlayerStore.onTimeUpdate(this.audio.currentTime, this.audio.duration);
+            }
+          });
+
+          this.audio.addEventListener("playing", () => {
+            if (PlayerStore.currentEngine === "native") {
+              PlayerStore.onPlaybackStarted("native");
+            }
+          });
+
+          this.audio.addEventListener("pause", () => {
+            if (PlayerStore.currentEngine === "native") {
+              PlayerStore.onPlaybackPaused("native");
+            }
+          });
+
+          this.audio.addEventListener("ended", () => {
+            if (PlayerStore.currentEngine === "native") {
+              PlayerStore.onTrackEnded("native");
+            }
+          });
+
+          this.audio.addEventListener("error", (e) => {
+            if (PlayerStore.currentEngine === "native") {
+              console.warn("Native audio error:", e);
+              PlayerStore.onPlaybackError("AUDIO STREAM FAILED");
+            }
+          });
+        },
+
+        play(track) {
+          if (!track || !track.streamUrl) return;
+          this.audio.src = track.streamUrl;
+          this.audio.load();
+          this.audio.play().catch(e => {
+            console.warn("Native audio play error:", e);
+            PlayerStore.onPlaybackError("TAP PLAY TO START AUDIO");
+          });
+        },
+
+        pause() {
+          this.audio.pause();
+        },
+
+        resume() {
+          this.audio.play().catch(e => console.warn(e));
+        },
+
+        seekTo(seconds) {
+          if (this.audio.duration) {
+            this.audio.currentTime = seconds;
+          }
+        },
+
+        setVolume(pct) {
+          this.audio.volume = pct / 100;
+        }
+      };
+
+      // ==========================================
+      // 5. CENTRALIZED PLAYER STATE MACHINE
       // ==========================================
       const PlayerStore = {
-        audio: document.getElementById("coreAudioPlayer"),
         currentSong: null,
+        currentEngine: null, // 'youtube' | 'native'
         isPlaying: false,
+        isLoading: false,
         currentTime: 0,
         duration: 0,
-        volume: 0.9,
+        volume: 90,
         queue: [...POPULAR_STARTER_HITS],
         currentIndex: 0,
-        repeatMode: false,
+        repeatMode: "off", // 'off' | 'all' | 'one'
         shuffleMode: false,
-        loading: false,
         error: null,
         playRequestId: 0,
         recentlyPlayedRecorded: false,
 
         init() {
-          this.audio.volume = this.volume;
-          this.bindAudioEvents();
-        },
-
-        bindAudioEvents() {
-          this.audio.addEventListener("timeupdate", () => {
-            if (!this.audio.duration) return;
-            this.currentTime = this.audio.currentTime;
-            this.duration = this.audio.duration;
-            
-            // Check verified listening threshold (3 seconds continuous playback)
-            if (this.currentTime >= 3 && !this.recentlyPlayedRecorded && this.currentSong) {
-              this.recentlyPlayedRecorded = true;
-              RecentlyPlayedManager.recordPlayback(this.currentSong);
-            }
-
-            renderTimelineProgress(this.currentTime, this.duration);
-          });
-
-          this.audio.addEventListener("ended", () => {
-            if (this.repeatMode) {
-              this.audio.currentTime = 0;
-              this.audio.play();
-            } else {
-              this.playNext();
-            }
-          });
-
-          this.audio.addEventListener("playing", () => {
-            this.isPlaying = true;
-            this.loading = false;
-            updatePlayerHUD();
-          });
-
-          this.audio.addEventListener("pause", () => {
-            this.isPlaying = false;
-            updatePlayerHUD();
-          });
-
-          this.audio.addEventListener("error", (e) => {
-            console.warn("Audio element error:", e);
-            this.isPlaying = false;
-            this.loading = false;
-            this.error = "Playback error";
-            showToastHud("PLAYBACK UNAVAILABLE FOR THIS TRACK");
-            updatePlayerHUD();
-          });
+          YouTubeEngine.init();
+          NativeAudioEngine.init();
+          this.setVolume(this.volume);
         },
 
         async play(song, newQueue = null, index = null) {
-          if (!song || !song.streamUrl) return;
+          if (!song) return;
 
           const reqId = ++this.playRequestId;
-          this.loading = true;
+          this.isLoading = true;
           this.error = null;
           this.currentSong = song;
           this.recentlyPlayedRecorded = false;
+          this.currentTime = 0;
+          this.duration = song.duration || 0;
 
           if (newQueue) this.queue = newQueue;
-          if (index !== null) this.currentIndex = index;
-
-          this.audio.src = song.streamUrl;
-          this.audio.load();
-
-          try {
-            await this.audio.play();
-            if (reqId !== this.playRequestId) return; // Discard stale request
-            this.isPlaying = true;
-            this.loading = false;
-            showToastHud("PLAYING: " + song.title);
-            updatePlayerHUD();
-            renderQueuePanel();
-          } catch (err) {
-            if (reqId !== this.playRequestId) return;
-            console.warn("Audio play rejected:", err);
-            this.isPlaying = false;
-            this.loading = false;
-            this.error = err.message;
-            showToastHud("TAP PLAY TO START");
-            updatePlayerHUD();
+          if (index !== null) {
+            this.currentIndex = index;
+          } else {
+            const idx = this.queue.findIndex(t => t.id === song.id);
+            if (idx !== -1) this.currentIndex = idx;
+            else {
+              this.queue.unshift(song);
+              this.currentIndex = 0;
+            }
           }
+
+          // Route to appropriate engine
+          const targetEngine = (song.provider === "radio" || song.provider === "local") ? "native" : "youtube";
+          this.currentEngine = targetEngine;
+
+          // Immediately pause other engine to prevent overlapping playback
+          if (targetEngine === "youtube") {
+            NativeAudioEngine.pause();
+            YouTubeEngine.play(song);
+          } else {
+            YouTubeEngine.pause();
+            NativeAudioEngine.play(song);
+          }
+
+          if (reqId !== this.playRequestId) return; // Stale request guard
+
+          updatePlayerHUD();
+          renderQueuePanel();
         },
 
         togglePlay() {
@@ -1536,16 +1898,26 @@
             return;
           }
 
-          if (this.audio.paused) {
-            this.audio.play().then(() => {
-              this.isPlaying = true;
-              updatePlayerHUD();
-            }).catch(e => console.warn(e));
+          if (this.isPlaying) {
+            if (this.currentEngine === "youtube") YouTubeEngine.pause();
+            else NativeAudioEngine.pause();
           } else {
-            this.audio.pause();
-            this.isPlaying = false;
-            updatePlayerHUD();
+            if (this.currentEngine === "youtube") YouTubeEngine.resume();
+            else NativeAudioEngine.resume();
           }
+        },
+
+        seek(seconds) {
+          this.currentTime = Math.max(0, Math.min(this.duration || 1000, seconds));
+          if (this.currentEngine === "youtube") YouTubeEngine.seekTo(this.currentTime);
+          else NativeAudioEngine.seekTo(this.currentTime);
+          renderTimelineProgress(this.currentTime, this.duration);
+        },
+
+        setVolume(pct) {
+          this.volume = pct;
+          YouTubeEngine.setVolume(pct);
+          NativeAudioEngine.setVolume(pct);
         },
 
         playNext() {
@@ -1562,22 +1934,71 @@
         playPrevious() {
           trigger8BitClick(480);
           if (this.queue.length === 0) return;
-          if (this.audio.currentTime > 3) {
-            this.audio.currentTime = 0;
+          if (this.currentTime > 3) {
+            this.seek(0);
             return;
           }
           this.currentIndex = (this.currentIndex - 1 + this.queue.length) % this.queue.length;
           this.play(this.queue[this.currentIndex], null, this.currentIndex);
         },
 
-        seek(sec) {
-          if (!this.audio.duration) return;
-          this.audio.currentTime = Math.max(0, Math.min(this.audio.duration, sec));
+        onPlaybackStarted(engine) {
+          if (engine !== this.currentEngine) return;
+          this.isPlaying = true;
+          this.isLoading = false;
+          this.error = null;
+          updatePlayerHUD();
+          showToastHud("PLAYING: " + (this.currentSong ? this.currentSong.title : ""));
         },
 
-        setVolume(pct) {
-          this.volume = pct / 100;
-          this.audio.volume = this.volume;
+        onPlaybackPaused(engine) {
+          if (engine !== this.currentEngine) return;
+          this.isPlaying = false;
+          this.isLoading = false;
+          updatePlayerHUD();
+        },
+
+        onPlaybackBuffering(engine) {
+          if (engine !== this.currentEngine) return;
+          this.isLoading = true;
+          updatePlayerHUD();
+        },
+
+        onTrackEnded(engine) {
+          if (engine !== this.currentEngine) return;
+          this.isPlaying = false;
+
+          if (this.repeatMode === "one") {
+            this.seek(0);
+            if (this.currentEngine === "youtube") YouTubeEngine.resume();
+            else NativeAudioEngine.resume();
+          } else if (this.repeatMode === "all" || this.currentIndex < this.queue.length - 1) {
+            this.playNext();
+          } else {
+            updatePlayerHUD();
+            showToastHud("QUEUE PLAYBACK COMPLETED");
+          }
+        },
+
+        onPlaybackError(msg) {
+          this.isPlaying = false;
+          this.isLoading = false;
+          this.error = msg;
+          showToastHud(msg || "UNABLE TO PLAY THIS TRACK");
+          updatePlayerHUD();
+        },
+
+        onTimeUpdate(cur, dur) {
+          this.currentTime = cur;
+          if (dur && !isNaN(dur) && dur > 0) this.duration = dur;
+
+          // Verified listening threshold: record to Recently Played once 3s reached
+          if (this.currentTime >= 3 && !this.recentlyPlayedRecorded && this.currentSong) {
+            this.recentlyPlayedRecorded = true;
+            RecentlyPlayedManager.recordPlayback(this.currentSong);
+          }
+
+          renderTimelineProgress(this.currentTime, this.duration);
         },
 
         addToQueue(song) {
@@ -1587,7 +2008,20 @@
         },
 
         removeFromQueue(idx) {
+          if (idx < 0 || idx >= this.queue.length) return;
           this.queue.splice(idx, 1);
+          if (idx === this.currentIndex) {
+            if (this.queue.length > 0) {
+              this.currentIndex = this.currentIndex % this.queue.length;
+              this.play(this.queue[this.currentIndex], null, this.currentIndex);
+            } else {
+              this.currentSong = null;
+              this.isPlaying = false;
+              updatePlayerHUD();
+            }
+          } else if (idx < this.currentIndex) {
+            this.currentIndex--;
+          }
           renderQueuePanel();
         },
 
@@ -1607,7 +2041,7 @@
       let likedTracks = [];
       let currentSearchResults = [];
       let currentSearchQuery = "";
-      let currentSearchPage = 0;
+      let currentSearchPage = 1;
       let sfxEnabled = true;
       let crtEnabled = true;
 
@@ -1629,6 +2063,7 @@
       const fwdBtn = document.getElementById("fwdBtn");
       const shuffleBtn = document.getElementById("shuffleBtn");
       const repeatBtn = document.getElementById("repeatBtn");
+      const repeatBtnLabel = document.getElementById("repeatBtnLabel");
       const volumeSliderInput = document.getElementById("volumeSliderInput");
       const likeActiveBtn = document.getElementById("likeActiveBtn");
       const scrubberTrackWrap = document.getElementById("scrubberTrackWrap");
@@ -1660,6 +2095,15 @@
       const loadMoreContainer = document.getElementById("loadMoreContainer");
       const loadMoreBtn = document.getElementById("loadMoreBtn");
       const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+      // Mobile Queue Drawer Elements
+      const mobileQueueToggleBtn = document.getElementById("mobileQueueToggleBtn");
+      const mobileQueueCountBadge = document.getElementById("mobileQueueCountBadge");
+      const mobileQueueDrawer = document.getElementById("mobileQueueDrawer");
+      const mobileQueueList = document.getElementById("mobileQueueList");
+      const drawerBackdrop = document.getElementById("drawerBackdrop");
+      const closeQueueDrawerBtn = document.getElementById("closeQueueDrawerBtn");
+      const clearQueueMobileBtn = document.getElementById("clearQueueMobileBtn");
 
       // ==========================================
       // INITIALIZATION
@@ -1740,7 +2184,7 @@
           const t = performance.now() / 1000;
           const beatPulse = Math.sin(t * 8) * 0.5 + 0.5;
           const subBeatPulse = Math.cos(t * 4) * 0.5 + 0.5;
-          const vol = PlayerStore.volume || 0.9;
+          const vol = (PlayerStore.volume || 90) / 100;
 
           for (let i = 0; i < 16; i++) {
             const harmonic = Math.sin(t * (3.5 + i * 0.75) + i * 0.6) * 0.5 + 0.5;
@@ -1759,29 +2203,49 @@
       }
 
       function renderTimelineProgress(cur, dur) {
-        if (!dur || isNaN(dur)) return;
-        const pct = (cur / dur) * 100;
-        scrubberFillBar.style.width = Math.min(100, Math.max(0, pct)) + "%";
+        if (!dur || isNaN(dur) || dur <= 0) {
+          scrubberFillBar.style.width = "0%";
+          currentTimeDisplay.textContent = formatSecondsToTime(cur);
+          return;
+        }
+        const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
+        scrubberFillBar.style.width = pct + "%";
         currentTimeDisplay.textContent = formatSecondsToTime(cur);
         totalTimeDisplay.textContent = formatSecondsToTime(dur);
       }
 
       function updatePlayerHUD() {
         const song = PlayerStore.currentSong;
-        if (!song) return;
+        if (!song) {
+          marqueeTrackTitle.textContent = "PIXEL DECK HI-FI — READY • SELECT ANY SONG TO PLAY";
+          artistSubText.textContent = "RETRO MUSIC STATION";
+          genreBadgeText.textContent = "STANDBY";
+          sourceLabelBadge.textContent = "ENGINE: STANDBY";
+          liveStatusMsg.textContent = "READY";
+          playBtnText.textContent = "PLAY";
+          playIconSvg.innerHTML = '<path d="M3 2l11 6-11 6V2z"/>';
+          cassetteTapeElement.classList.remove("tape-playing");
+          return;
+        }
 
-        marqueeTrackTitle.textContent = `▶ ${song.title.toUpperCase()} • ARTIST: ${song.artist.toUpperCase()} • ALBUM: ${(song.album || "SINGLE").toUpperCase()}`;
+        marqueeTrackTitle.textContent = `▶ ${song.title.toUpperCase()} • ARTIST: ${song.artist.toUpperCase()} • ${(song.album || "OFFICIAL RELEASE").toUpperCase()}`;
         artistSubText.textContent = song.artist.toUpperCase();
-        genreBadgeText.textContent = (song.album || "FULL-LENGTH AUDIO").toUpperCase();
+        genreBadgeText.textContent = (song.album || "OFFICIAL RELEASE").toUpperCase();
         
-        sourceLabelBadge.textContent = song.sourceType === "live" 
-          ? "SOURCE: 24/7 RETRO LIVE BROADCAST" 
-          : "SOURCE: DIRECT 320K MASTER AUDIO";
+        if (song.provider === "youtube") {
+          sourceLabelBadge.textContent = "ENGINE: YOUTUBE OFFICIAL MASTER";
+        } else if (song.provider === "radio") {
+          sourceLabelBadge.textContent = "ENGINE: 24/7 RETRO LIVE BROADCAST";
+        } else {
+          sourceLabelBadge.textContent = "ENGINE: LOCAL FILE SYSTEM";
+        }
 
-        liveStatusMsg.textContent = PlayerStore.isPlaying ? "PLAYING AUDIO" : (PlayerStore.loading ? "LOADING..." : "PAUSED");
+        liveStatusMsg.textContent = PlayerStore.isPlaying ? "PLAYING AUDIO" : (PlayerStore.isLoading ? "LOADING..." : "PAUSED");
 
         playBtnText.textContent = PlayerStore.isPlaying ? "PAUSE" : "PLAY";
-        playIconSvg.innerHTML = PlayerStore.isPlaying ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' : '<path d="M3 2l11 6-11 6V2z"/>';
+        playIconSvg.innerHTML = PlayerStore.isPlaying 
+          ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' 
+          : '<path d="M3 2l11 6-11 6V2z"/>';
 
         cassetteTapeElement.classList.toggle("tape-playing", PlayerStore.isPlaying);
 
@@ -1802,13 +2266,13 @@
 
         if (isNew) {
           currentSearchQuery = query.trim();
-          currentSearchPage = 0;
+          currentSearchPage = 1;
           currentSearchResults = [];
           renderLoadingPlaceholders();
           loadMoreContainer.style.display = "none";
         }
 
-        catalogStatusLine.textContent = `SEARCHING FOR "${currentSearchQuery.toUpperCase()}" (PAGE ${currentSearchPage + 1})...`;
+        catalogStatusLine.textContent = `SEARCHING FOR "${currentSearchQuery.toUpperCase()}" (PAGE ${currentSearchPage})...`;
         liveStatusMsg.textContent = "SEARCHING...";
 
         try {
@@ -1817,19 +2281,21 @@
           if (isNew) {
             currentSearchResults = songs;
           } else {
-            currentSearchResults = [...currentSearchResults, ...songs];
+            // Deduplicate incoming tracks
+            const existingIds = new Set(currentSearchResults.map(t => t.id));
+            const newTracks = songs.filter(t => !existingIds.has(t.id));
+            currentSearchResults = [...currentSearchResults, ...newTracks];
           }
 
           if (currentSearchResults.length > 0) {
             catalogStatusLine.textContent = `FOUND ${currentSearchResults.length} TRACKS FOR "${currentSearchQuery.toUpperCase()}"`;
             liveStatusMsg.textContent = "RESULTS READY";
             renderTrackList(currentSearchResults);
-            // Show load more if returned 20 tracks
-            loadMoreContainer.style.display = songs.length >= 20 ? "flex" : "none";
+            loadMoreContainer.style.display = songs.length >= 15 ? "flex" : "none";
           } else {
             trackListWrapper.innerHTML = `
-              <div style="padding:24px; text-align:center; color:var(--text-dim);">
-                NO SONGS FOUND FOR "${currentSearchQuery.toUpperCase()}". TRY SEARCHING ANOTHER ARTIST OR TRACK.
+              <div style="padding:32px 16px; text-align:center; color:var(--text-dim);">
+                NO OFFICIAL TRACKS FOUND FOR "${currentSearchQuery.toUpperCase()}". TRY SEARCHING ANOTHER ARTIST OR TRACK.
               </div>
             `;
             catalogStatusLine.textContent = `0 RESULTS FOUND`;
@@ -1838,15 +2304,25 @@
         } catch (err) {
           console.warn("Search error:", err);
           catalogStatusLine.textContent = `ERROR SEARCHING TRACKS`;
+          liveStatusMsg.textContent = "ERROR";
         }
       }
 
       // ==========================================
-      // HIGH-DENSITY TRACKLIST / GRID RENDERING
+      // TRACKLIST / GRID RENDERING
       // ==========================================
       function renderTrackList(tracks) {
         trackListWrapper.innerHTML = "";
         trackListWrapper.className = viewMode === "list" ? "tracks-table-view" : "tracks-grid-view";
+
+        if (tracks.length === 0) {
+          trackListWrapper.innerHTML = `
+            <div style="padding:32px 16px; text-align:center; color:var(--text-dim);">
+              NO TRACKS IN THIS SECTION.
+            </div>
+          `;
+          return;
+        }
 
         if (viewMode === "list") {
           const header = document.createElement("div");
@@ -1876,7 +2352,7 @@
                 <span class="row-title-text" title="${track.title}">${track.title}</span>
                 <span class="row-artist-text">${track.artist}</span>
               </div>
-              <div class="row-album-text">${track.album || "Single"}</div>
+              <div class="row-album-text">${track.album || "Official Release"}</div>
               <div class="row-duration-text">${track.durationFormatted || "03:30"}</div>
               <div class="row-actions-group">
                 <button class="pixel-btn pixel-btn-sm btn-like-row" title="Like">♥</button>
@@ -2025,7 +2501,8 @@
             artwork: DEFAULT_ARTWORK,
             streamUrl: url,
             provider: "local",
-            sourceType: "file"
+            sourceType: "file",
+            playable: true
           });
         }
         if (loaded.length > 0) {
@@ -2042,7 +2519,7 @@
           row.className = "track-row-item";
           row.innerHTML = `
             <div class="row-index">...</div>
-            <div style="width:40px; height:40px; background:#111; animation:ledFlash 1s infinite;"></div>
+            <div style="width:40px; height:40px; background:#111; animation:ledPulse 1s infinite alternate;"></div>
             <div style="display:flex; flex-direction:column; gap:4px; flex:1;">
               <div style="height:12px; background:#222; width:50%;"></div>
               <div style="height:10px; background:#1a1a1a; width:30%;"></div>
@@ -2054,36 +2531,45 @@
       }
 
       function renderQueuePanel() {
-        queueRowsContainer.innerHTML = "";
-        if (PlayerStore.queue.length === 0) {
-          queueRowsContainer.innerHTML = `<div style="padding:8px; font-size:8px; color:var(--text-dim);">QUEUE IS EMPTY.</div>`;
-          return;
-        }
+        // Sync count badge
+        mobileQueueCountBadge.textContent = PlayerStore.queue.length;
 
-        PlayerStore.queue.forEach((track, idx) => {
-          const row = document.createElement("div");
-          row.className = "queue-row";
-          if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) row.classList.add("active");
+        // Render both Desktop Side Queue and Mobile Drawer Queue
+        const renderTo = (container) => {
+          container.innerHTML = "";
+          if (PlayerStore.queue.length === 0) {
+            container.innerHTML = `<div style="padding:8px; font-size:8px; color:var(--text-dim);">QUEUE IS EMPTY.</div>`;
+            return;
+          }
 
-          row.innerHTML = `
-            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
-              ${idx + 1}. ${track.title}
-            </span>
-            <button class="pixel-btn pixel-btn-sm btn-del-q" style="padding:2px 4px;">✕</button>
-          `;
+          PlayerStore.queue.forEach((track, idx) => {
+            const row = document.createElement("div");
+            row.className = "queue-row";
+            if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) row.classList.add("active");
 
-          row.addEventListener("click", (e) => {
-            if (e.target.classList.contains("btn-del-q")) return;
-            PlayerStore.play(track, null, idx);
+            row.innerHTML = `
+              <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
+                ${idx + 1}. ${track.title}
+              </span>
+              <button class="pixel-btn pixel-btn-sm btn-del-q" style="padding:2px 4px;">✕</button>
+            `;
+
+            row.addEventListener("click", (e) => {
+              if (e.target.classList.contains("btn-del-q")) return;
+              PlayerStore.play(track, null, idx);
+            });
+
+            row.querySelector(".btn-del-q").addEventListener("click", (e) => {
+              e.stopPropagation();
+              PlayerStore.removeFromQueue(idx);
+            });
+
+            container.appendChild(row);
           });
+        };
 
-          row.querySelector(".btn-del-q").addEventListener("click", (e) => {
-            e.stopPropagation();
-            PlayerStore.removeFromQueue(idx);
-          });
-
-          queueRowsContainer.appendChild(row);
-        });
+        renderTo(queueRowsContainer);
+        renderTo(mobileQueueList);
       }
 
       function toggleLike(track) {
@@ -2125,9 +2611,22 @@
         });
 
         repeatBtn.addEventListener("click", () => {
-          PlayerStore.repeatMode = !PlayerStore.repeatMode;
-          repeatBtn.classList.toggle("active", PlayerStore.repeatMode);
-          showToastHud(PlayerStore.repeatMode ? "REPEAT: ON" : "REPEAT: OFF");
+          if (PlayerStore.repeatMode === "off") {
+            PlayerStore.repeatMode = "all";
+            repeatBtn.classList.add("active");
+            repeatBtnLabel.textContent = "REP: ALL";
+            showToastHud("REPEAT: ALL TRACKS");
+          } else if (PlayerStore.repeatMode === "all") {
+            PlayerStore.repeatMode = "one";
+            repeatBtn.classList.add("active");
+            repeatBtnLabel.textContent = "REP: ONE";
+            showToastHud("REPEAT: CURRENT TRACK");
+          } else {
+            PlayerStore.repeatMode = "off";
+            repeatBtn.classList.remove("active");
+            repeatBtnLabel.textContent = "REP: OFF";
+            showToastHud("REPEAT: OFF");
+          }
         });
 
         volumeSliderInput.addEventListener("input", (e) => {
@@ -2140,6 +2639,25 @@
 
         clearQueueActionBtn.addEventListener("click", () => {
           PlayerStore.clearQueue();
+        });
+
+        clearQueueMobileBtn.addEventListener("click", () => {
+          PlayerStore.clearQueue();
+        });
+
+        // Mobile Queue Drawer Toggle
+        mobileQueueToggleBtn.addEventListener("click", () => {
+          trigger8BitClick(600);
+          mobileQueueDrawer.classList.add("open");
+          drawerBackdrop.classList.add("open");
+        });
+        closeQueueDrawerBtn.addEventListener("click", () => {
+          mobileQueueDrawer.classList.remove("open");
+          drawerBackdrop.classList.remove("open");
+        });
+        drawerBackdrop.addEventListener("click", () => {
+          mobileQueueDrawer.classList.remove("open");
+          drawerBackdrop.classList.remove("open");
         });
 
         // Scrubber Seeking
@@ -2190,7 +2708,7 @@
           showToastHud("RECENT HISTORY CLEARED");
         });
 
-        // Preset Filter Chips
+        // Preset Filter Chips (Multi-lingual)
         document.querySelectorAll(".filter-chip").forEach(chip => {
           chip.addEventListener("click", () => {
             trigger8BitClick(500);
@@ -2214,7 +2732,7 @@
             loadMoreContainer.style.display = "none";
 
             if (activeTab === "trending") {
-              catalogStatusLine.textContent = "TOP CURATED HITS";
+              catalogStatusLine.textContent = "TOP CURATED GLOBAL & REGIONAL HITS";
               renderTrackList(POPULAR_STARTER_HITS);
             } else if (activeTab === "search") {
               if (currentSearchResults.length > 0) {
@@ -2258,7 +2776,7 @@
           showToastHud("THEME: " + e.target.options[e.target.selectedIndex].text);
         });
 
-        // CRT & SFX
+        // CRT & SFX Toggles
         toggleCrtBtn.addEventListener("click", () => {
           crtEnabled = !crtEnabled;
           crtOverlay.classList.toggle("disabled", !crtEnabled);
@@ -2302,7 +2820,8 @@
           const rem = Math.max(0, Math.floor((sleepTimerEnd - Date.now()) / 1000));
           if (rem <= 0) {
             clearInterval(sleepTimerInterval);
-            PlayerStore.audio.pause();
+            if (PlayerStore.currentEngine === "youtube") YouTubeEngine.pause();
+            else NativeAudioEngine.pause();
             PlayerStore.isPlaying = false;
             updatePlayerHUD();
             sleepTimerReadout.textContent = "OFF";
@@ -2326,7 +2845,7 @@
         t.textContent = msg;
         t.classList.add("show");
         clearTimeout(toastHudTimer);
-        toastHudTimer = setTimeout(() => t.classList.remove("show"), 1800);
+        toastHudTimer = setTimeout(() => t.classList.remove("show"), 2000);
       }
 
       function saveSavedPreferences() {
@@ -2343,8 +2862,9 @@
         try {
           const data = JSON.parse(localStorage.getItem("PIXEL_DECK_STORAGE") || "{}");
           if (data.theme) {
-            document.body.setAttribute("data-theme", data.theme);
-            themeDropdown.value = data.theme;
+            const resolvedTheme = data.theme === "gameboy" ? "walkman" : data.theme;
+            document.body.setAttribute("data-theme", resolvedTheme);
+            themeDropdown.value = resolvedTheme;
           }
           if (Array.isArray(data.liked)) likedTracks = data.liked;
         } catch (_) {}
