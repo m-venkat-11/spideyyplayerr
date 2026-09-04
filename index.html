@@ -428,6 +428,10 @@
       align-items: center;
       margin: 4px 0;
       min-width: 0;
+      transition: all 0.2s ease;
+    }
+    .crt-media-container.video-minimized {
+      grid-template-columns: 1fr !important;
     }
 
     .crt-video-frame {
@@ -441,6 +445,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: opacity 0.2s ease;
+    }
+    .crt-video-frame.minimized {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      opacity: 0.01 !important;
+      pointer-events: none !important;
+      clip: rect(0, 0, 0, 0) !important;
+      overflow: hidden !important;
     }
     .crt-video-frame iframe {
       width: 100%;
@@ -1089,6 +1103,7 @@
 
         <button id="toggleCrtBtn" class="pixel-btn pixel-btn-sm">CRT: ON</button>
         <button id="toggleSfxBtn" class="pixel-btn pixel-btn-sm">SFX: ON</button>
+        <button id="toggleVideoBtn" class="pixel-btn pixel-btn-sm" title="Toggle YouTube Video Screen Visibility">📺 VIDEO: SHOW</button>
 
         <select id="themeDropdown" class="pixel-select" aria-label="Select Retro Theme">
           <option value="cyber">🎮 ARCADE 1984</option>
@@ -1111,6 +1126,7 @@
           <div class="now-playing-meta">
             <span>CH: 01 [OFFICIAL STUDIO MASTER]</span>
             <span id="sourceLabelBadge">ENGINE: YOUTUBE HI-FI AUDIO</span>
+            <button id="screenModeToggleBtn" class="pixel-btn pixel-btn-sm" style="font-size:7px; padding:2px 6px; cursor:pointer;" title="Toggle Video Screen Visibility">📺 SHOW VIDEO</button>
             <span id="bitrateLabelBadge">OFFICIAL RELEASE</span>
           </div>
 
@@ -1125,10 +1141,10 @@
           </div>
 
           <!-- CRT Media Screen: Video Viewport & Cassette + 16-Band Spectrum -->
-          <div class="crt-media-container">
+          <div id="crtMediaContainer" class="crt-media-container video-minimized">
             
             <!-- Video Frame (Compliant with Google Developer Terms) -->
-            <div class="crt-video-frame">
+            <div id="crtVideoFrame" class="crt-video-frame minimized">
               <div id="ytPlayerEmbed"></div>
             </div>
 
@@ -2105,6 +2121,21 @@
       const closeQueueDrawerBtn = document.getElementById("closeQueueDrawerBtn");
       const clearQueueMobileBtn = document.getElementById("clearQueueMobileBtn");
 
+      // Video Screen Visibility Elements
+      let videoMinimized = true;
+      const crtMediaContainer = document.getElementById("crtMediaContainer");
+      const crtVideoFrame = document.getElementById("crtVideoFrame");
+      const toggleVideoBtn = document.getElementById("toggleVideoBtn");
+      const screenModeToggleBtn = document.getElementById("screenModeToggleBtn");
+
+      function setVideoMinimized(minimized) {
+        videoMinimized = !!minimized;
+        if (crtMediaContainer) crtMediaContainer.classList.toggle("video-minimized", videoMinimized);
+        if (crtVideoFrame) crtVideoFrame.classList.toggle("minimized", videoMinimized);
+        if (toggleVideoBtn) toggleVideoBtn.textContent = videoMinimized ? "📺 VIDEO: SHOW" : "📺 VIDEO: HIDE";
+        if (screenModeToggleBtn) screenModeToggleBtn.textContent = videoMinimized ? "📺 SHOW VIDEO" : "📺 HIDE VIDEO";
+      }
+
       // ==========================================
       // INITIALIZATION
       // ==========================================
@@ -2788,6 +2819,24 @@
           toggleSfxBtn.textContent = sfxEnabled ? "SFX: ON" : "SFX: OFF";
         });
 
+        if (toggleVideoBtn) {
+          toggleVideoBtn.addEventListener("click", () => {
+            trigger8BitClick(600);
+            setVideoMinimized(!videoMinimized);
+            saveSavedPreferences();
+            showToastHud(videoMinimized ? "VIDEO MINIMIZED" : "VIDEO VISIBLE");
+          });
+        }
+
+        if (screenModeToggleBtn) {
+          screenModeToggleBtn.addEventListener("click", () => {
+            trigger8BitClick(600);
+            setVideoMinimized(!videoMinimized);
+            saveSavedPreferences();
+            showToastHud(videoMinimized ? "VIDEO MINIMIZED" : "VIDEO VISIBLE");
+          });
+        }
+
         // Sleep Timer Selection
         document.querySelectorAll(".sleep-sel-btn").forEach(btn => {
           btn.addEventListener("click", () => {
@@ -2852,7 +2901,8 @@
         try {
           const data = {
             theme: document.body.getAttribute("data-theme") || "cyber",
-            liked: likedTracks
+            liked: likedTracks,
+            videoMinimized: videoMinimized
           };
           localStorage.setItem("PIXEL_DECK_STORAGE", JSON.stringify(data));
         } catch (_) {}
@@ -2865,6 +2915,11 @@
             const resolvedTheme = data.theme === "gameboy" ? "walkman" : data.theme;
             document.body.setAttribute("data-theme", resolvedTheme);
             themeDropdown.value = resolvedTheme;
+          }
+          if (typeof data.videoMinimized === "boolean") {
+            setVideoMinimized(data.videoMinimized);
+          } else {
+            setVideoMinimized(true); // Default to minimized / hidden as requested!
           }
           if (Array.isArray(data.liked)) likedTracks = data.liked;
         } catch (_) {}
