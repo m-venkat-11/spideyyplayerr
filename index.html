@@ -200,7 +200,7 @@
       width: 100%;
       max-width: 1440px;
       margin: 0 auto;
-      padding: 10px;
+      padding: 10px 10px 84px 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -1039,7 +1039,7 @@
 
     @media (max-width: 480px) {
       #pixel-deck-app {
-        padding: 6px;
+        padding: 6px 6px 76px 6px;
       }
       .master-controls-bar {
         gap: 4px;
@@ -1065,6 +1065,183 @@
       }
       .time-readout {
         font-size: 16px;
+      }
+    }
+
+    /* ==========================================
+       SPOTIFY-STYLE FLOATING MINI-PLAYER BAR
+       ========================================== */
+    .mini-player-bar {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      width: calc(100% - 24px);
+      max-width: 900px;
+      background: var(--bg-deck);
+      border: 2px solid var(--border-light);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.65), var(--pixel-shadow);
+      z-index: 990;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease, visibility 0.2s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .mini-player-bar.hidden {
+      transform: translateX(-50%) translateY(140%);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .mini-scrubber-track {
+      width: 100%;
+      height: 3px;
+      background: var(--border-dark);
+      cursor: pointer;
+      position: relative;
+    }
+    .mini-scrubber-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-s);
+      box-shadow: 0 0 6px var(--accent-s);
+      transition: width 0.15s linear;
+    }
+    .mini-player-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      gap: 12px;
+    }
+    .mini-track-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+    .mini-track-thumb-wrap {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border: 1px solid var(--border-light);
+      background: var(--bg-panel);
+      overflow: hidden;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mini-player-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .mini-track-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 2px;
+    }
+    .mini-track-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.5px;
+    }
+    .mini-track-artist {
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      color: var(--text-artist);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mini-player-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .mini-ctrl-btn {
+      padding: 6px 8px;
+      font-size: 10px;
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+    .mini-ctrl-btn:hover {
+      background: var(--bg-row-hover);
+      color: var(--accent-s);
+    }
+    .mini-play-btn {
+      padding: 7px 12px;
+      background: var(--accent-p);
+      color: #ffffff;
+      border: 1px solid var(--border-dark);
+      box-shadow: 1px 1px 0px var(--border-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+    .mini-play-btn:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 0 8px var(--accent-p);
+    }
+
+    @media (max-width: 480px) {
+      .mini-player-bar {
+        bottom: 8px;
+        left: 8px;
+        right: 8px;
+        width: auto;
+        transform: translateY(0);
+      }
+      .mini-player-bar.hidden {
+        transform: translateY(140%);
+      }
+      .mini-player-content {
+        padding: 6px 8px;
+        gap: 8px;
+      }
+      .mini-track-thumb-wrap {
+        width: 36px;
+        height: 36px;
+      }
+      .mini-track-title {
+        font-size: 8px;
+        max-width: 140px;
+      }
+      .mini-track-artist {
+        font-size: 12px;
+        max-width: 140px;
+      }
+      .mini-ctrl-btn {
+        padding: 5px 6px;
+      }
+      .mini-play-btn {
+        padding: 6px 9px;
+      }
+      #miniPrevBtn {
+        display: none;
       }
     }
   </style>
@@ -1347,6 +1524,50 @@
       </div>
     </main>
 
+  </div>
+
+  <!-- Floating Spotify-Style Bottom Mini-Player Bar -->
+  <div id="miniPlayerBar" class="mini-player-bar hidden" aria-label="Quick Playback Controls">
+    <!-- Slim progress bar along top of the mini player -->
+    <div class="mini-scrubber-track" id="miniScrubberTrack" title="Tap to seek">
+      <div class="mini-scrubber-fill" id="miniScrubberFill"></div>
+    </div>
+    <div class="mini-player-content">
+      <!-- Track Info (Clicking scrolls to top player deck) -->
+      <div class="mini-track-info" id="miniTrackInfo" title="Click to view full player deck">
+        <div class="mini-track-thumb-wrap">
+          <img id="miniPlayerThumb" src="" alt="Album Artwork" class="mini-player-thumb" />
+        </div>
+        <div class="mini-track-text">
+          <span id="miniPlayerTitle" class="mini-track-title">SELECT A TRACK</span>
+          <span id="miniPlayerArtist" class="mini-track-artist">PIXEL DECK HI-FI</span>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="mini-player-controls">
+        <button id="miniLikeBtn" class="pixel-btn mini-ctrl-btn" title="Like / Save Track" aria-label="Like Track">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 14s-5.5-3.5-7-7a4 4 0 017-2.5A4 4 0 0115 7c-1.5 3.5-7 7-7 7z"/>
+          </svg>
+        </button>
+        <button id="miniPrevBtn" class="pixel-btn mini-ctrl-btn" title="Previous Track" aria-label="Previous Track">
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4 2h2v12H4V2zm2 6l8-6v12L6 8z"/>
+          </svg>
+        </button>
+        <button id="miniPlayPauseBtn" class="pixel-btn mini-play-btn" title="Play / Pause" aria-label="Play or Pause">
+          <svg id="miniPlayIconSvg" width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M3 2l11 6-11 6V2z"/>
+          </svg>
+        </button>
+        <button id="miniNextBtn" class="pixel-btn mini-ctrl-btn" title="Next Track" aria-label="Next Track">
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M2 2l8 6-8 6V2zm8 0h2v12h-2V2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Toast Notification HUD -->
@@ -2136,6 +2357,74 @@
         if (screenModeToggleBtn) screenModeToggleBtn.textContent = videoMinimized ? "📺 SHOW VIDEO" : "📺 HIDE VIDEO";
       }
 
+      // Floating Mini-Player DOM Elements
+      const miniPlayerBar = document.getElementById("miniPlayerBar");
+      const miniScrubberTrack = document.getElementById("miniScrubberTrack");
+      const miniScrubberFill = document.getElementById("miniScrubberFill");
+      const miniTrackInfo = document.getElementById("miniTrackInfo");
+      const miniPlayerThumb = document.getElementById("miniPlayerThumb");
+      const miniPlayerTitle = document.getElementById("miniPlayerTitle");
+      const miniPlayerArtist = document.getElementById("miniPlayerArtist");
+      const miniLikeBtn = document.getElementById("miniLikeBtn");
+      const miniPrevBtn = document.getElementById("miniPrevBtn");
+      const miniPlayPauseBtn = document.getElementById("miniPlayPauseBtn");
+      const miniPlayIconSvg = document.getElementById("miniPlayIconSvg");
+      const miniNextBtn = document.getElementById("miniNextBtn");
+
+      // ==========================================
+      // MEDIA SESSION API & LOCKSCREEN CONTROLS
+      // ==========================================
+      function updateMediaSession(song, isPlaying) {
+        if (!("mediaSession" in navigator) || !song) return;
+        try {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: song.title,
+            artist: song.artist,
+            album: song.album || "Pixel Deck Global Hi-Fi",
+            artwork: [
+              { src: song.artwork || DEFAULT_ARTWORK, sizes: "96x96", type: "image/jpeg" },
+              { src: song.artwork || DEFAULT_ARTWORK, sizes: "128x128", type: "image/jpeg" },
+              { src: song.artwork || DEFAULT_ARTWORK, sizes: "256x256", type: "image/jpeg" },
+              { src: song.artwork || DEFAULT_ARTWORK, sizes: "512x512", type: "image/jpeg" }
+            ]
+          });
+          navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+        } catch (err) {
+          console.warn("MediaSession update error:", err);
+        }
+      }
+
+      function initMediaSessionHandlers() {
+        if (!("mediaSession" in navigator)) return;
+        try {
+          navigator.mediaSession.setActionHandler("play", () => {
+            PlayerStore.togglePlay();
+          });
+          navigator.mediaSession.setActionHandler("pause", () => {
+            PlayerStore.togglePlay();
+          });
+          navigator.mediaSession.setActionHandler("previoustrack", () => {
+            PlayerStore.playPrevious();
+          });
+          navigator.mediaSession.setActionHandler("nexttrack", () => {
+            PlayerStore.playNext();
+          });
+          navigator.mediaSession.setActionHandler("seekto", (details) => {
+            if (details.seekTime !== undefined) PlayerStore.seek(details.seekTime);
+          });
+          navigator.mediaSession.setActionHandler("seekbackward", (details) => {
+            const skip = details.seekOffset || 10;
+            PlayerStore.seek(Math.max(0, PlayerStore.currentTime - skip));
+          });
+          navigator.mediaSession.setActionHandler("seekforward", (details) => {
+            const skip = details.seekOffset || 10;
+            PlayerStore.seek(Math.min(PlayerStore.duration || 1000, PlayerStore.currentTime + skip));
+          });
+        } catch (err) {
+          console.warn("MediaSession handler error:", err);
+        }
+      }
+
       // ==========================================
       // INITIALIZATION
       // ==========================================
@@ -2144,6 +2433,7 @@
         createSpectrumColumns(16);
         startClock();
         PlayerStore.init();
+        initMediaSessionHandlers();
         bindUserInteractions();
         renderQueuePanel();
         loopSpectrumVisualization();
@@ -2236,11 +2526,13 @@
       function renderTimelineProgress(cur, dur) {
         if (!dur || isNaN(dur) || dur <= 0) {
           scrubberFillBar.style.width = "0%";
+          if (miniScrubberFill) miniScrubberFill.style.width = "0%";
           currentTimeDisplay.textContent = formatSecondsToTime(cur);
           return;
         }
         const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
         scrubberFillBar.style.width = pct + "%";
+        if (miniScrubberFill) miniScrubberFill.style.width = pct + "%";
         currentTimeDisplay.textContent = formatSecondsToTime(cur);
         totalTimeDisplay.textContent = formatSecondsToTime(dur);
       }
@@ -2256,6 +2548,7 @@
           playBtnText.textContent = "PLAY";
           playIconSvg.innerHTML = '<path d="M3 2l11 6-11 6V2z"/>';
           cassetteTapeElement.classList.remove("tape-playing");
+          if (miniPlayerBar) miniPlayerBar.classList.add("hidden");
           return;
         }
 
@@ -2282,6 +2575,25 @@
 
         const isLiked = likedTracks.some(t => t.id === song.id);
         likeActiveBtn.style.color = isLiked ? "var(--accent-p)" : "var(--text-main)";
+
+        // Sync Mini Player Bar
+        if (miniPlayerBar) {
+          miniPlayerBar.classList.remove("hidden");
+          if (miniPlayerTitle) miniPlayerTitle.textContent = song.title.toUpperCase();
+          if (miniPlayerArtist) miniPlayerArtist.textContent = song.artist.toUpperCase();
+          if (miniPlayerThumb) miniPlayerThumb.src = song.artwork || DEFAULT_ARTWORK;
+          if (miniPlayIconSvg) {
+            miniPlayIconSvg.innerHTML = PlayerStore.isPlaying 
+              ? '<path d="M3 2h3v12H3V2zm7 0h3v12h-3V2z"/>' 
+              : '<path d="M3 2l11 6-11 6V2z"/>';
+          }
+          if (miniLikeBtn) {
+            miniLikeBtn.style.color = isLiked ? "var(--accent-p)" : "var(--text-main)";
+          }
+        }
+
+        // Sync MediaSession metadata & playbackState
+        updateMediaSession(song, PlayerStore.isPlaying);
 
         document.querySelectorAll(".track-row-item, .grid-card-item").forEach(el => {
           el.classList.toggle("playing", el.dataset.id === song.id);
@@ -2837,6 +3149,47 @@
           });
         }
 
+        // Mini Player Bar Controls
+        if (miniPlayPauseBtn) {
+          miniPlayPauseBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            PlayerStore.togglePlay();
+          });
+        }
+        if (miniNextBtn) {
+          miniNextBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            PlayerStore.playNext();
+          });
+        }
+        if (miniPrevBtn) {
+          miniPrevBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            PlayerStore.playPrevious();
+          });
+        }
+        if (miniLikeBtn) {
+          miniLikeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (PlayerStore.currentSong) toggleLike(PlayerStore.currentSong);
+          });
+        }
+        if (miniTrackInfo) {
+          miniTrackInfo.addEventListener("click", () => {
+            trigger8BitClick(700);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        }
+        if (miniScrubberTrack) {
+          miniScrubberTrack.addEventListener("click", (e) => {
+            if (!PlayerStore.duration) return;
+            const rect = miniScrubberTrack.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const pct = Math.max(0, Math.min(1, clickX / rect.width));
+            PlayerStore.seek(pct * PlayerStore.duration);
+          });
+        }
+
         // Sleep Timer Selection
         document.querySelectorAll(".sleep-sel-btn").forEach(btn => {
           btn.addEventListener("click", () => {
@@ -2845,6 +3198,20 @@
           });
         });
       }
+
+      // Page Visibility Auto-Resume Handler
+      let wasPlayingBeforeVisibilityLoss = false;
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+          wasPlayingBeforeVisibilityLoss = PlayerStore.isPlaying;
+        } else if (document.visibilityState === "visible") {
+          // If track was playing when tab was hidden / phone locked, resume automatically
+          if (wasPlayingBeforeVisibilityLoss && !PlayerStore.isPlaying && PlayerStore.currentSong) {
+            console.log("Tab visibility restored: auto-resuming playback...");
+            PlayerStore.togglePlay();
+          }
+        }
+      });
 
       function refreshActiveTabView() {
         if (activeTab === "recent") renderRecentlyPlayedTab();
