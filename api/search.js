@@ -290,17 +290,19 @@ module.exports = async (req, res) => {
     return res.status(200).json(cachedData);
   }
 
-  // 1. Try internal Python microservice first (port 5005)
-  try {
-    const response = await queryPythonMicroservice(query, page, limit);
+  // 1. Try internal Python microservice first (port 5005) - skip immediately on Vercel/serverless
+  if (!process.env.VERCEL) {
+    try {
+      const response = await queryPythonMicroservice(query, page, limit);
 
-    if (response.statusCode === 200 && response.data && response.data.status === 'success' && Array.isArray(response.data.results) && response.data.results.length > 0) {
-      setCached(cacheKey, response.data);
-      return res.status(200).json(response.data);
+      if (response.statusCode === 200 && response.data && response.data.status === 'success' && Array.isArray(response.data.results) && response.data.results.length > 0) {
+        setCached(cacheKey, response.data);
+        return res.status(200).json(response.data);
+      }
+    } catch (err) {
+      // Python service unavailable or error (common in local development when Python is offline)
+      console.warn(`[SearchProxy] Python microservice unavailable on port ${PYTHON_SERVICE_PORT} (${err.message}). Falling back to direct YouTube Music engine...`);
     }
-  } catch (err) {
-    // Python service unavailable or error (common in Vercel / serverless deployments)
-    console.warn(`[SearchProxy] Python microservice unavailable on port ${PYTHON_SERVICE_PORT} (${err.message}). Falling back to direct YouTube Music engine...`);
   }
 
   // 2. Seamless fallback: Direct YouTube Music Innertube search in Node.js
