@@ -1972,14 +1972,17 @@
           // YT.PlayerState: UNSTARTED (-1), ENDED (0), PLAYING (1), PAUSED (2), BUFFERING (3), CUED (5)
           if (event.data === 1) { // PLAYING
             PlayerStore.onPlaybackStarted("youtube");
+            NativeAudioEngine.playSilentKeepAlive();
             this.startPolling();
           } else if (event.data === 2) { // PAUSED
             PlayerStore.onPlaybackPaused("youtube");
+            NativeAudioEngine.stopSilentKeepAlive();
             this.stopPolling();
           } else if (event.data === 3) { // BUFFERING
             PlayerStore.onPlaybackBuffering("youtube");
           } else if (event.data === 0) { // ENDED
             PlayerStore.onTrackEnded("youtube");
+            NativeAudioEngine.stopSilentKeepAlive();
             this.stopPolling();
           }
         },
@@ -1996,36 +1999,39 @@
       // ==========================================
       // 4. NATIVE HTML5 AUDIO ENGINE (LOCAL MP3 & 24/7 RADIO)
       // ==========================================
+      const SILENT_AUDIO_WAV = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+
       const NativeAudioEngine = {
         audio: document.getElementById("coreAudioPlayer"),
+        isKeepAliveActive: false,
 
         init() {
           this.audio.addEventListener("timeupdate", () => {
-            if (PlayerStore.currentEngine === "native") {
+            if (PlayerStore.currentEngine === "native" && !this.isKeepAliveActive) {
               PlayerStore.onTimeUpdate(this.audio.currentTime, this.audio.duration);
             }
           });
 
           this.audio.addEventListener("playing", () => {
-            if (PlayerStore.currentEngine === "native") {
+            if (PlayerStore.currentEngine === "native" && !this.isKeepAliveActive) {
               PlayerStore.onPlaybackStarted("native");
             }
           });
 
           this.audio.addEventListener("pause", () => {
-            if (PlayerStore.currentEngine === "native") {
+            if (PlayerStore.currentEngine === "native" && !this.isKeepAliveActive) {
               PlayerStore.onPlaybackPaused("native");
             }
           });
 
           this.audio.addEventListener("ended", () => {
-            if (PlayerStore.currentEngine === "native") {
+            if (PlayerStore.currentEngine === "native" && !this.isKeepAliveActive) {
               PlayerStore.onTrackEnded("native");
             }
           });
 
           this.audio.addEventListener("error", (e) => {
-            if (PlayerStore.currentEngine === "native") {
+            if (PlayerStore.currentEngine === "native" && !this.isKeepAliveActive) {
               console.warn("Native audio error:", e);
               PlayerStore.onPlaybackError("AUDIO STREAM FAILED");
             }
@@ -2034,12 +2040,35 @@
 
         play(track) {
           if (!track || !track.streamUrl) return;
+          this.isKeepAliveActive = false;
+          this.audio.loop = false;
           this.audio.src = track.streamUrl;
           this.audio.load();
           this.audio.play().catch(e => {
             console.warn("Native audio play error:", e);
             PlayerStore.onPlaybackError("TAP PLAY TO START AUDIO");
           });
+        },
+
+        playSilentKeepAlive() {
+          try {
+            this.isKeepAliveActive = true;
+            this.audio.loop = true;
+            if (this.audio.src !== SILENT_AUDIO_WAV) {
+              this.audio.src = SILENT_AUDIO_WAV;
+            }
+            this.audio.play().catch(() => {});
+          } catch (_) {}
+        },
+
+        stopSilentKeepAlive() {
+          if (this.isKeepAliveActive) {
+            this.isKeepAliveActive = false;
+            try {
+              this.audio.pause();
+              this.audio.loop = false;
+            } catch (_) {}
+          }
         },
 
         pause() {
@@ -2051,7 +2080,7 @@
         },
 
         seekTo(seconds) {
-          if (this.audio.duration) {
+          if (this.audio.duration && !this.isKeepAliveActive) {
             this.audio.currentTime = seconds;
           }
         },
@@ -2118,6 +2147,7 @@
             NativeAudioEngine.pause();
             YouTubeEngine.play(song);
           } else {
+            NativeAudioEngine.stopSilentKeepAlive();
             YouTubeEngine.pause();
             NativeAudioEngine.play(song);
           }
@@ -2136,11 +2166,19 @@
           }
 
           if (this.isPlaying) {
-            if (this.currentEngine === "youtube") YouTubeEngine.pause();
-            else NativeAudioEngine.pause();
+            if (this.currentEngine === "youtube") {
+              YouTubeEngine.pause();
+              NativeAudioEngine.stopSilentKeepAlive();
+            } else {
+              NativeAudioEngine.pause();
+            }
           } else {
-            if (this.currentEngine === "youtube") YouTubeEngine.resume();
-            else NativeAudioEngine.resume();
+            if (this.currentEngine === "youtube") {
+              YouTubeEngine.resume();
+              NativeAudioEngine.playSilentKeepAlive();
+            } else {
+              NativeAudioEngine.resume();
+            }
           }
         },
 
@@ -2389,6 +2427,14 @@
             ]
           });
           navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+
+          if ("setPositionState" in navigator.mediaSession && PlayerStore.duration > 0) {
+            navigator.mediaSession.setPositionState({
+              duration: PlayerStore.duration,
+              playbackRate: 1,
+              position: Math.min(PlayerStore.currentTime || 0, PlayerStore.duration)
+            });
+          }
         } catch (err) {
           console.warn("MediaSession update error:", err);
         }
