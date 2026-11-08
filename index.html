@@ -6,6 +6,12 @@
   <title>PIXEL DECK — 8-Bit Retro Music Station</title>
   <meta name="description" content="Nostalgia Pixel Music Player with full-length official streaming, multi-language catalog, 24/7 retro radios, recently played history, and reactive 8-bit visualizer." />
 
+  <!-- Chrome Tab / Browser Header Bar Favicon & Brand Icon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+
   <!-- Google Retro Pixel & High-Legibility Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -348,6 +354,12 @@
       font-weight: bold;
       color: var(--text-bright);
       text-shadow: 1px 1px 0px #000;
+    }
+    .brand-logo-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 5px rgba(0, 243, 255, 0.6));
     }
 
     .top-clock-hud {
@@ -1850,8 +1862,28 @@
     <header class="deck-top-bar">
       <div class="brand-section">
         <div class="brand-logo">
-          <svg class="pixel-icon-svg" viewBox="0 0 16 16">
-            <path d="M1 3h14v10H1V3zm2 2v6h10V5H3zm2 1h6v4H5V6zm1 1v2h1V7H6zm3 0v2h1V7H9z"/>
+          <svg class="brand-logo-icon" viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="hdrNeonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f3ff"/>
+                <stop offset="50%" stop-color="#ff007f"/>
+                <stop offset="100%" stop-color="#ffe600"/>
+              </linearGradient>
+              <linearGradient id="hdrBgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#1f073a"/>
+                <stop offset="100%" stop-color="#090117"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#hdrBgGrad)" stroke="#00f3ff" stroke-width="2.5"/>
+            <path d="M15 32 C15 17, 49 17, 49 32" fill="none" stroke="#00f3ff" stroke-width="4" stroke-linecap="round"/>
+            <rect x="10" y="28" width="7" height="15" rx="3.5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+            <rect x="47" y="28" width="7" height="15" rx="3.5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+            <rect x="21" y="28" width="3.5" height="13" rx="1.5" fill="#00f3ff"/>
+            <rect x="26" y="23" width="3.5" height="18" rx="1.5" fill="#ff71ce"/>
+            <rect x="31" y="17" width="3.5" height="24" rx="1.5" fill="#ffe600"/>
+            <rect x="36" y="23" width="3.5" height="18" rx="1.5" fill="#ff71ce"/>
+            <rect x="41" y="28" width="3.5" height="13" rx="1.5" fill="#00f3ff"/>
+            <path d="M22 46 L32 54 L42 46" fill="none" stroke="url(#hdrNeonGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <span>PIXEL DECK</span>
           <span class="status-badge">GLOBAL HI-FI</span>

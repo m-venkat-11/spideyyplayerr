@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f3ff"/>
+      <stop offset="50%" stop-color="#ff007f"/>
+      <stop offset="100%" stop-color="#ffe600"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f073a"/>
+      <stop offset="100%" stop-color="#090117"/>
+    </linearGradient>
+    <linearGradient id="cyanPurple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f3ff"/>
+      <stop offset="100%" stop-color="#ff007f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Retro Synth Rounded Canvas -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bgGrad)"/>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="none" stroke="url(#cyanPurple)" stroke-width="2.5"/>
+
+  <!-- Retro Headphone Arch -->
+  <path d="M15 32 C15 17, 49 17, 49 32" fill="none" stroke="#00f3ff" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Left & Right Headphone Earcups -->
+  <rect x="10" y="28" width="7" height="15" rx="3.5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+  <rect x="47" y="28" width="7" height="15" rx="3.5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+
+  <!-- Center 'V' Soundwave & Equalizer Bars -->
+  <rect x="21" y="28" width="3.5" height="13" rx="1.5" fill="#00f3ff"/>
+  <rect x="26" y="23" width="3.5" height="18" rx="1.5" fill="#ff71ce"/>
+  <rect x="31" y="17" width="3.5" height="24" rx="1.5" fill="#ffe600"/>
+  <rect x="36" y="23" width="3.5" height="18" rx="1.5" fill="#ff71ce"/>
+  <rect x="41" y="28" width="3.5" height="13" rx="1.5" fill="#00f3ff"/>
+
+  <!-- Dynamic Glowing 'V' Base Accent -->
+  <path d="M22 46 L32 54 L42 46" fill="none" stroke="url(#neonGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
