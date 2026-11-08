@@ -1000,11 +1000,15 @@
       margin-top: 4px;
       display: none;
       flex-direction: column;
-      max-height: 280px;
+      max-height: 380px;
       overflow-y: auto;
     }
     .search-suggestions-dropdown.open {
       display: flex;
+    }
+    .suggestion-section-wrapper {
+      display: flex;
+      flex-direction: column;
     }
     .suggestion-section-title {
       font-size: 8px;
@@ -1016,6 +1020,51 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .recent-chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 10px;
+      background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid var(--border-dark);
+      max-height: 80px;
+      overflow-y: auto;
+    }
+    .recent-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dark);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .recent-chip:hover {
+      background: var(--bg-row-hover);
+      border-color: var(--accent-p);
+      color: var(--accent-s);
+    }
+    .recent-chip-remove {
+      font-size: 11px;
+      line-height: 1;
+      opacity: 0.6;
+      cursor: pointer;
+      padding: 1px 3px;
+      border-radius: 50%;
+    }
+    .recent-chip-remove:hover {
+      opacity: 1;
+      color: #ff3366;
+    }
+    .suggestions-list-container {
+      display: flex;
+      flex-direction: column;
     }
     .suggestion-item {
       padding: 7px 10px;
@@ -1034,9 +1083,14 @@
       color: var(--accent-s);
     }
     .suggestion-item .sug-icon {
-      font-size: 11px;
-      opacity: 0.7;
+      font-size: 12px;
+      opacity: 0.8;
       flex-shrink: 0;
+    }
+    .suggestion-item .sug-sub {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-left: 6px;
     }
 
     /* Filter Chips ("Suggestions Down There") */
@@ -2042,15 +2096,22 @@
 
         <!-- Search Suggestions / Autocomplete Dropdown -->
         <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown">
-          <div class="suggestion-section-title">
-            <span>🕒 RECENT SEARCHES</span>
-            <button id="clearRecentSearchesBtn" class="pixel-btn pixel-btn-sm" style="font-size:7px; padding:1px 5px;">CLEAR</button>
+          <!-- Recent Searches Section (Compact chips) -->
+          <div id="recentSearchesSection" class="suggestion-section-wrapper">
+            <div class="suggestion-section-title">
+              <span>🕒 RECENT SEARCHES</span>
+              <button id="clearRecentSearchesBtn" class="pixel-btn pixel-btn-sm" style="font-size:7px; padding:1px 5px;" type="button">CLEAR ALL</button>
+            </div>
+            <div id="recentSearchesList" class="recent-chips-container"></div>
           </div>
-          <div id="recentSearchesList"></div>
-          <div class="suggestion-section-title">
-            <span>🔥 TRENDING SUGGESTIONS</span>
+
+          <!-- Song & Artist Suggestions Section -->
+          <div id="songSuggestionsSection" class="suggestion-section-wrapper">
+            <div class="suggestion-section-title">
+              <span id="suggestionsHeaderTitle">🎵 SUGGESTED SONGS & ARTISTS</span>
+            </div>
+            <div id="trendingSuggestionsList" class="suggestions-list-container"></div>
           </div>
-          <div id="trendingSuggestionsList"></div>
         </div>
       </div>
 
@@ -2566,6 +2627,15 @@
           history = history.filter(item => item.toLowerCase() !== clean.toLowerCase());
           history.unshift(clean);
           if (history.length > 8) history = history.slice(0, 8);
+          try {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
+          } catch (_) {}
+        },
+
+        removeQuery(q) {
+          if (!q) return;
+          const clean = q.trim().toLowerCase();
+          let history = this.getHistory().filter(item => item.toLowerCase() !== clean);
           try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
           } catch (_) {}
@@ -3198,8 +3268,11 @@
       // Enhanced Search & Suggestions DOM Elements
       const clearSearchInputBtn = document.getElementById("clearSearchInputBtn");
       const searchSuggestionsDropdown = document.getElementById("searchSuggestionsDropdown");
+      const recentSearchesSection = document.getElementById("recentSearchesSection");
       const recentSearchesList = document.getElementById("recentSearchesList");
       const clearRecentSearchesBtn = document.getElementById("clearRecentSearchesBtn");
+      const songSuggestionsSection = document.getElementById("songSuggestionsSection");
+      const suggestionsHeaderTitle = document.getElementById("suggestionsHeaderTitle");
       const trendingSuggestionsList = document.getElementById("trendingSuggestionsList");
 
       // Enhanced Queue DOM Elements
@@ -4202,49 +4275,157 @@
       // ==========================================
       // SEARCH SUGGESTIONS CONTROLLER
       // ==========================================
-      function renderSearchSuggestions() {
+      function renderSearchSuggestions(filterQuery = "") {
         if (!recentSearchesList || !trendingSuggestionsList) return;
+        const query = (filterQuery || "").trim().toLowerCase();
         const history = SearchHistoryManager.getHistory();
+
+        // 1. Render Recent Searches as compact chips
         recentSearchesList.innerHTML = "";
-        if (history.length === 0) {
-          recentSearchesList.innerHTML = `<div style="padding:6px 10px; font-size:10px; color:var(--text-dim);">No recent searches yet</div>`;
+        const filteredHistory = query
+          ? history.filter(item => item.toLowerCase().includes(query))
+          : history;
+
+        if (filteredHistory.length === 0) {
+          if (recentSearchesSection) {
+            recentSearchesSection.style.display = query ? "none" : "block";
+          }
+          if (!query) {
+            recentSearchesList.innerHTML = `<span style="font-size:10px; color:var(--text-dim); padding:2px 4px;">No recent searches yet</span>`;
+          }
         } else {
-          history.forEach(item => {
+          if (recentSearchesSection) recentSearchesSection.style.display = "block";
+          filteredHistory.forEach(item => {
+            const chip = document.createElement("div");
+            chip.className = "recent-chip";
+            chip.innerHTML = `<span>🕒 ${item}</span><span class="recent-chip-remove" title="Remove">✕</span>`;
+
+            chip.querySelector("span").addEventListener("click", (e) => {
+              e.stopPropagation();
+              globalSongSearchInput.value = item;
+              hideSearchSuggestions();
+              clearSearchInputBtn.classList.add("visible");
+              SearchHistoryManager.addQuery(item);
+              performSearch(item, true);
+            });
+
+            chip.querySelector(".recent-chip-remove").addEventListener("click", (e) => {
+              e.stopPropagation();
+              SearchHistoryManager.removeQuery(item);
+              renderSearchSuggestions(globalSongSearchInput.value);
+            });
+
+            recentSearchesList.appendChild(chip);
+          });
+        }
+
+        // 2. Render Song & Trending Suggestions
+        trendingSuggestionsList.innerHTML = "";
+
+        const trendingArtists = [
+          "Coldplay", "Taylor Swift", "Arijit Singh", "Anirudh",
+          "The Weeknd", "BTS", "Synthwave 80s", "Bad Bunny", "Ed Sheeran", "Ariana Grande", "Hans Zimmer"
+        ];
+
+        if (query) {
+          if (suggestionsHeaderTitle) suggestionsHeaderTitle.textContent = "🎵 SONG & ARTIST SUGGESTIONS";
+
+          // Match in POPULAR_STARTER_HITS (songs & artists)
+          const matchedSongs = (POPULAR_STARTER_HITS || []).filter(s =>
+            (s.title && s.title.toLowerCase().includes(query)) ||
+            (s.artist && s.artist.toLowerCase().includes(query))
+          ).slice(0, 4);
+
+          // Match in trending artists
+          const matchedArtists = trendingArtists.filter(a =>
+            a.toLowerCase().includes(query)
+          ).slice(0, 3);
+
+          // Direct search query action
+          const searchLiveRow = document.createElement("div");
+          searchLiveRow.className = "suggestion-item";
+          searchLiveRow.innerHTML = `<span class="sug-icon">🔍</span><span style="font-weight:bold; flex:1;">Search for "${globalSongSearchInput.value.trim()}"</span>`;
+          searchLiveRow.addEventListener("click", () => {
+            const q = globalSongSearchInput.value.trim();
+            SearchHistoryManager.addQuery(q);
+            hideSearchSuggestions();
+            clearSearchInputBtn.classList.add("visible");
+            performSearch(q, true);
+          });
+          trendingSuggestionsList.appendChild(searchLiveRow);
+
+          // Matched songs
+          matchedSongs.forEach(song => {
             const row = document.createElement("div");
             row.className = "suggestion-item";
-            row.innerHTML = `<span class="sug-icon">🕒</span><span style="flex:1;">${item}</span>`;
+            row.innerHTML = `<span class="sug-icon">🎵</span><span style="flex:1;">${song.title}<span class="sug-sub">• ${song.artist}</span></span><span style="font-size:9px; color:var(--accent-s); border:1px solid var(--accent-s); padding:2px 6px; border-radius:3px;">PLAY</span>`;
+            row.addEventListener("click", () => {
+              hideSearchSuggestions();
+              PlayerStore.play(song);
+            });
+            trendingSuggestionsList.appendChild(row);
+          });
+
+          // Matched artists
+          matchedArtists.forEach(artist => {
+            const row = document.createElement("div");
+            row.className = "suggestion-item";
+            row.innerHTML = `<span class="sug-icon">🔥</span><span style="flex:1;">${artist}</span>`;
+            row.addEventListener("click", () => {
+              globalSongSearchInput.value = artist;
+              SearchHistoryManager.addQuery(artist);
+              hideSearchSuggestions();
+              clearSearchInputBtn.classList.add("visible");
+              performSearch(artist, true);
+            });
+            trendingSuggestionsList.appendChild(row);
+          });
+
+          // While user is actively searching/typing, move songSuggestionsSection to TOP!
+          if (recentSearchesSection && songSuggestionsSection && searchSuggestionsDropdown) {
+            searchSuggestionsDropdown.insertBefore(songSuggestionsSection, recentSearchesSection);
+          }
+        } else {
+          // Empty query: Show curated popular songs & trending artists
+          if (suggestionsHeaderTitle) suggestionsHeaderTitle.textContent = "🔥 SUGGESTED SONGS & ARTISTS";
+
+          // Put recentSearchesSection back on top when not typing
+          if (recentSearchesSection && songSuggestionsSection && searchSuggestionsDropdown) {
+            searchSuggestionsDropdown.insertBefore(recentSearchesSection, songSuggestionsSection);
+          }
+
+          // Curated top songs
+          (POPULAR_STARTER_HITS || []).slice(0, 3).forEach(song => {
+            const row = document.createElement("div");
+            row.className = "suggestion-item";
+            row.innerHTML = `<span class="sug-icon">🎵</span><span style="flex:1;">${song.title}<span class="sug-sub">• ${song.artist}</span></span><span style="font-size:9px; color:var(--accent-s); border:1px solid var(--accent-s); padding:2px 6px; border-radius:3px;">PLAY</span>`;
+            row.addEventListener("click", () => {
+              hideSearchSuggestions();
+              PlayerStore.play(song);
+            });
+            trendingSuggestionsList.appendChild(row);
+          });
+
+          // Trending artists
+          trendingArtists.slice(0, 6).forEach(item => {
+            const row = document.createElement("div");
+            row.className = "suggestion-item";
+            row.innerHTML = `<span class="sug-icon">🔥</span><span style="flex:1;">${item}</span>`;
             row.addEventListener("click", () => {
               globalSongSearchInput.value = item;
+              SearchHistoryManager.addQuery(item);
               hideSearchSuggestions();
               clearSearchInputBtn.classList.add("visible");
               performSearch(item, true);
             });
-            recentSearchesList.appendChild(row);
+            trendingSuggestionsList.appendChild(row);
           });
         }
-
-        const trendings = [
-          "Coldplay", "Taylor Swift", "Arijit Singh", "Anirudh",
-          "The Weeknd", "BTS", "Synthwave 80s", "Bad Bunny", "Lofi Chill"
-        ];
-        trendingSuggestionsList.innerHTML = "";
-        trendings.forEach(item => {
-          const row = document.createElement("div");
-          row.className = "suggestion-item";
-          row.innerHTML = `<span class="sug-icon">🔥</span><span style="flex:1;">${item}</span>`;
-          row.addEventListener("click", () => {
-            globalSongSearchInput.value = item;
-            hideSearchSuggestions();
-            clearSearchInputBtn.classList.add("visible");
-            performSearch(item, true);
-          });
-          trendingSuggestionsList.appendChild(row);
-        });
       }
 
       function showSearchSuggestions() {
         if (!searchSuggestionsDropdown) return;
-        renderSearchSuggestions();
+        renderSearchSuggestions(globalSongSearchInput ? globalSongSearchInput.value : "");
         searchSuggestionsDropdown.classList.add("open");
       }
 
@@ -4496,14 +4677,19 @@
           showSearchSuggestions();
         });
         globalSongSearchInput.addEventListener("input", (e) => {
+          const val = e.target.value;
           if (clearSearchInputBtn) {
-            clearSearchInputBtn.classList.toggle("visible", e.target.value.trim().length > 0);
+            clearSearchInputBtn.classList.toggle("visible", val.trim().length > 0);
+          }
+          // Live autocomplete & song suggestions while typing
+          renderSearchSuggestions(val);
+          if (searchSuggestionsDropdown && !searchSuggestionsDropdown.classList.contains("open")) {
+            searchSuggestionsDropdown.classList.add("open");
           }
           clearTimeout(searchDebounceTimer);
           searchDebounceTimer = setTimeout(() => {
-            if (e.target.value.trim().length >= 3) {
-              SearchHistoryManager.addQuery(e.target.value);
-              performSearch(e.target.value, true);
+            if (val.trim().length >= 3) {
+              performSearch(val, true);
             }
           }, 400);
         });
@@ -4527,7 +4713,7 @@
           clearRecentSearchesBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             SearchHistoryManager.clearHistory();
-            renderSearchSuggestions();
+            renderSearchSuggestions(globalSongSearchInput ? globalSongSearchInput.value : "");
             showToastHud("RECENT SEARCHES CLEARED");
           });
         }
