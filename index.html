@@ -390,9 +390,21 @@
       gap: 10px;
       min-width: 0;
       width: 100%;
+      align-items: stretch;
     }
     .deck-top-grid > * {
       min-width: 0;
+    }
+
+    .player-console-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px;
+      height: 100%;
+      box-sizing: border-box;
+      justify-content: space-between;
+      min-height: 420px;
     }
 
     /* CRT Monitor Screen */
@@ -400,11 +412,14 @@
       background: var(--bg-screen);
       border: 3px solid var(--border-dark);
       box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9), var(--crt-bloom);
-      padding: 8px 12px;
+      padding: 10px 14px;
       position: relative;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      flex: 1;
+      justify-content: space-between;
+      min-height: 270px;
     }
 
     .now-playing-meta {
@@ -512,46 +527,53 @@
       width: 100%;
     }
 
-    /* Pixel Cassette Tape */
+    /* Pixel Cassette Tape (Expanded Hi-Fi Deck) */
     .pixel-tape {
-      width: 120px;
-      height: 72px;
+      width: 190px;
+      height: 100px;
       background: #232533;
-      border: 2px solid #000;
-      border-radius: 4px;
+      border: 3px solid #000;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 4px;
-      margin: 0 auto;
+      padding: 5px 8px;
+      margin: 4px auto;
+      position: relative;
+      transition: transform 0.2s ease;
     }
     body[data-theme="walkman"] .pixel-tape,
     body[data-theme="gameboy"] .pixel-tape { background: #162436; border-color: #ff5722; }
 
     .tape-label {
-      width: 104px;
-      height: 30px;
+      width: 170px;
+      height: 44px;
       background: var(--accent-p);
       border: 2px solid #000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      border-radius: 2px;
+      padding: 2px 6px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
     }
     .tape-spools {
-      width: 68px;
-      height: 16px;
+      width: 96px;
+      height: 22px;
       background: #111;
       border: 1px solid #000;
-      border-radius: 8px;
+      border-radius: 11px;
       display: flex;
       align-items: center;
       justify-content: space-around;
+      margin-top: 2px;
     }
     .tape-wheel {
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       background: #ffffff;
       border: 2px solid #000;
       border-radius: 50%;
@@ -560,7 +582,7 @@
     .tape-wheel::after {
       content: '';
       position: absolute;
-      inset: 2px;
+      inset: 3px;
       background: #000;
       border-radius: 50%;
     }
@@ -580,7 +602,7 @@
       display: flex;
       align-items: flex-end;
       gap: 2px;
-      height: 48px;
+      height: 58px;
       background: #000000;
       border: 2px solid var(--border-dark);
       padding: 2px 4px;
@@ -635,16 +657,121 @@
       color: var(--text-bright);
     }
 
-    /* Master Buttons Row */
+    /* Master Buttons Row (Expanded Edge-to-Edge Console) */
     .master-controls-bar {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      padding: 8px 12px;
+      margin-top: 2px;
+    }
+
+    .ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctrl-group-left {
+      flex: 1;
+      min-width: 0;
+      max-width: 250px;
+    }
+
+    .deck-track-art {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-dark);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #000;
+    }
+
+    .deck-track-details {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .deck-track-title {
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: var(--font-pixel);
+      line-height: 1.2;
+    }
+
+    .deck-track-artist {
+      font-size: 9px;
+      color: var(--text-artist);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: var(--font-sans);
+    }
+
+    .ctrl-group-center {
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      background: var(--bg-bezel);
-      border: 2px solid var(--border-dark);
-      padding: 8px;
+      flex-shrink: 0;
+    }
+
+    .play-pause-master-btn {
+      padding: 9px 20px !important;
+      font-size: 11px !important;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 10px rgba(255, 0, 85, 0.4), var(--pixel-shadow);
+      transition: all 0.15s ease;
+    }
+
+    .play-pause-master-btn:hover {
+      box-shadow: 0 0 16px var(--accent-p), var(--pixel-shadow);
+      transform: translateY(-1px);
+    }
+
+    .ctrl-group-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+      max-width: 250px;
+    }
+
+    .deck-volume-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-dark);
+      padding: 4px 8px;
+      border-radius: 2px;
+    }
+
+    .deck-volume-slider {
+      accent-color: var(--accent-p);
+      cursor: pointer;
+      width: 75px;
+    }
+
+    .deck-volume-val {
+      font-family: var(--font-vt);
+      font-size: 14px;
+      color: var(--text-bright);
+      min-width: 28px;
+      text-align: right;
     }
 
     /* Side Rack */
@@ -1613,6 +1740,34 @@
       .crt-video-frame {
         height: 180px;
       }
+      .master-controls-bar {
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px;
+      }
+      .ctrl-group-left {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+      }
+      .ctrl-group-center {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .ctrl-group-right {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+      }
+      .pixel-tape {
+        width: 160px;
+        height: 85px;
+      }
+      .tape-label {
+        width: 140px;
+        height: 36px;
+      }
     }
 
     @media (min-width: 769px) {
@@ -1652,6 +1807,13 @@
       .master-controls-bar .pixel-btn {
         padding: 6px 7px;
         font-size: 8px;
+      }
+      .play-pause-master-btn {
+        padding: 7px 14px !important;
+        font-size: 9px !important;
+      }
+      .deck-track-details {
+        display: none;
       }
       .track-table-header {
         grid-template-columns: 22px 36px 1fr 58px;
@@ -1920,7 +2082,7 @@
     <div class="deck-top-grid">
 
       <!-- Left Console: Now Playing & Audio Controls -->
-      <section class="pixel-box" style="display:flex; flex-direction:column; gap:8px; padding:10px;">
+      <section class="pixel-box player-console-box">
         
         <!-- CRT Monitor Screen -->
         <div class="crt-screen-box">
@@ -1955,15 +2117,15 @@
               <!-- Cassette Tape -->
               <div id="cassetteTapeElement" class="pixel-tape">
                 <div class="tape-label">
-                  <span style="font-size:7px; color:#fff; font-weight:bold;">SIDE A • HI-FI</span>
+                  <span id="cassetteTapeLabelText" style="font-size:7px; color:#fff; font-weight:bold; letter-spacing:0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px;">SIDE A • HI-FI STEREO</span>
                   <div class="tape-spools">
                     <div class="tape-wheel"></div>
                     <div class="tape-wheel"></div>
                   </div>
                 </div>
-                <div style="font-size:6px; color:#777; width:100%; display:flex; justify-content:space-between; padding:0 4px;">
-                  <span>TYPE-I</span>
-                  <span>DSP ACTIVE</span>
+                <div style="font-size:6px; color:#888; width:100%; display:flex; justify-content:space-between; padding:0 6px;">
+                  <span>TYPE-II CHROME</span>
+                  <span>DOLBY NR ACTIVE</span>
                 </div>
               </div>
 
@@ -1995,43 +2157,59 @@
 
         </div>
 
-        <!-- Master Playback Control Bar -->
+        <!-- Master Playback Control Bar (Full-Width Edge-to-Edge Deck) -->
         <div class="master-controls-bar">
-          <button id="shuffleBtn" class="pixel-btn pixel-btn-sm" title="Shuffle">
-            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M11 1l3 3-3 3V5H9L6 9H2V7h3l3-4h3V1zM2 11h4l1-1.33L8.33 11 7 13H2v-2zm9-2h2v2l3-3-3-3v2h-2v2z"/></svg>
-            <span>SHUF</span>
-          </button>
-
-          <button id="prevBtn" class="pixel-btn" title="Previous Track">
-            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 2h2v12H2V2zm3 6l9-6v12L5 8z"/></svg>
-          </button>
-
-          <button id="rwdBtn" class="pixel-btn pixel-btn-sm" title="Rewind 10s">-10S</button>
-
-          <button id="playPauseBtn" class="pixel-btn pixel-btn-accent" style="padding:8px 18px; font-size:11px;" title="Play / Pause">
-            <svg id="playIconSvg" class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
-            <span id="playBtnText">PLAY</span>
-          </button>
-
-          <button id="fwdBtn" class="pixel-btn pixel-btn-sm" title="Forward 10s">+10S</button>
-
-          <button id="nextBtn" class="pixel-btn" title="Next Track">
-            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M12 2h2v12h-2V2zM2 14V2l9 6-9 6z"/></svg>
-          </button>
-
-          <button id="repeatBtn" class="pixel-btn pixel-btn-sm" title="Repeat Mode">
-            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M4 3h8v2H4v2L1 4.5 4 2v1zm8 10H4v-2h8V9l3 2.5-3 2.5v-1z"/></svg>
-            <span id="repeatBtnLabel">REP: OFF</span>
-          </button>
-
-          <div style="display:flex; align-items:center; gap:6px; font-size:9px; margin-left:6px;">
-            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 5v6h3l4 4V1L5 5H2zm9 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            <input id="volumeSliderInput" type="range" min="0" max="100" value="90" style="accent-color:var(--accent-p); cursor:pointer; width:65px;" />
+          <!-- Left Wing: Active Track Info Preview -->
+          <div class="ctrl-group ctrl-group-left">
+            <img id="playerDeckThumb" class="deck-track-art" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=100&q=80" alt="Artwork" />
+            <div class="deck-track-details">
+              <span id="playerDeckTrackTitle" class="deck-track-title">SELECT A TRACK</span>
+              <span id="playerDeckTrackArtist" class="deck-track-artist">PIXEL DECK HI-FI</span>
+            </div>
           </div>
 
-          <button id="likeActiveBtn" class="pixel-btn pixel-btn-sm" title="Save to Liked">
-            <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M8 14s-6-4.35-6-8a4 4 0 017-2.6A4 4 0 0114 6c0 3.65-6 8-6 8z"/></svg>
-          </button>
+          <!-- Center Wing: Primary Transport Buttons -->
+          <div class="ctrl-group ctrl-group-center">
+            <button id="shuffleBtn" class="pixel-btn pixel-btn-sm" title="Shuffle">
+              <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M11 1l3 3-3 3V5H9L6 9H2V7h3l3-4h3V1zM2 11h4l1-1.33L8.33 11 7 13H2v-2zm9-2h2v2l3-3-3-3v2h-2v2z"/></svg>
+              <span>SHUF</span>
+            </button>
+
+            <button id="prevBtn" class="pixel-btn" title="Previous Track">
+              <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 2h2v12H2V2zm3 6l9-6v12L5 8z"/></svg>
+            </button>
+
+            <button id="rwdBtn" class="pixel-btn pixel-btn-sm" title="Rewind 10s">-10S</button>
+
+            <button id="playPauseBtn" class="pixel-btn pixel-btn-accent play-pause-master-btn" title="Play / Pause">
+              <svg id="playIconSvg" class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
+              <span id="playBtnText">PLAY</span>
+            </button>
+
+            <button id="fwdBtn" class="pixel-btn pixel-btn-sm" title="Forward 10s">+10S</button>
+
+            <button id="nextBtn" class="pixel-btn" title="Next Track">
+              <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M12 2h2v12h-2V2zM2 14V2l9 6-9 6z"/></svg>
+            </button>
+
+            <button id="repeatBtn" class="pixel-btn pixel-btn-sm" title="Repeat Mode">
+              <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M4 3h8v2H4v2L1 4.5 4 2v1zm8 10H4v-2h8V9l3 2.5-3 2.5v-1z"/></svg>
+              <span id="repeatBtnLabel">REP: OFF</span>
+            </button>
+          </div>
+
+          <!-- Right Wing: Master Volume & Utility Actions -->
+          <div class="ctrl-group ctrl-group-right">
+            <button id="likeActiveBtn" class="pixel-btn pixel-btn-sm" title="Save to Liked">
+              <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M8 14s-6-4.35-6-8a4 4 0 017-2.6A4 4 0 0114 6c0 3.65-6 8-6 8z"/></svg>
+            </button>
+
+            <div class="deck-volume-box">
+              <svg class="pixel-icon-svg" viewBox="0 0 16 16"><path d="M2 5v6h3l4 4V1L5 5H2zm9 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              <input id="volumeSliderInput" type="range" min="0" max="100" value="90" class="deck-volume-slider" title="Master Volume" />
+              <span id="volumePercentReadout" class="deck-volume-val">90%</span>
+            </div>
+          </div>
         </div>
 
       </section>
@@ -3290,6 +3468,11 @@
       const liveStatusMsg = document.getElementById("liveStatusMsg");
       const liveDeckClock = document.getElementById("liveDeckClock");
       const sleepTimerReadout = document.getElementById("sleepTimerReadout");
+      const playerDeckThumb = document.getElementById("playerDeckThumb");
+      const playerDeckTrackTitle = document.getElementById("playerDeckTrackTitle");
+      const playerDeckTrackArtist = document.getElementById("playerDeckTrackArtist");
+      const volumePercentReadout = document.getElementById("volumePercentReadout");
+      const cassetteTapeLabelText = document.getElementById("cassetteTapeLabelText");
       const viewListModeBtn = document.getElementById("viewListModeBtn");
       const viewGridModeBtn = document.getElementById("viewGridModeBtn");
       const catalogStatusLine = document.getElementById("catalogStatusLine");
@@ -3573,6 +3756,10 @@
           playBtnText.textContent = "PLAY";
           playIconSvg.innerHTML = '<path d="M3 2l11 6-11 6V2z"/>';
           cassetteTapeElement.classList.remove("tape-playing");
+          if (cassetteTapeLabelText) cassetteTapeLabelText.textContent = "SIDE A • HI-FI STEREO";
+          if (playerDeckThumb) playerDeckThumb.src = DEFAULT_ARTWORK;
+          if (playerDeckTrackTitle) playerDeckTrackTitle.textContent = "SELECT A TRACK";
+          if (playerDeckTrackArtist) playerDeckTrackArtist.textContent = "PIXEL DECK HI-FI";
           if (miniPlayerBar) miniPlayerBar.classList.add("hidden");
           return;
         }
@@ -3580,6 +3767,10 @@
         marqueeTrackTitle.textContent = `▶ ${song.title.toUpperCase()} • ARTIST: ${song.artist.toUpperCase()} • ${(song.album || "OFFICIAL RELEASE").toUpperCase()}`;
         artistSubText.textContent = song.artist.toUpperCase();
         genreBadgeText.textContent = (song.album || "OFFICIAL RELEASE").toUpperCase();
+        if (cassetteTapeLabelText) cassetteTapeLabelText.textContent = (song.title + " • " + song.artist).toUpperCase();
+        if (playerDeckThumb) playerDeckThumb.src = song.artwork || DEFAULT_ARTWORK;
+        if (playerDeckTrackTitle) playerDeckTrackTitle.textContent = song.title.toUpperCase();
+        if (playerDeckTrackArtist) playerDeckTrackArtist.textContent = song.artist.toUpperCase();
         
         if (song.provider === "youtube") {
           sourceLabelBadge.textContent = "ENGINE: YOUTUBE OFFICIAL MASTER";
@@ -4612,7 +4803,9 @@
         });
 
         volumeSliderInput.addEventListener("input", (e) => {
-          PlayerStore.setVolume(parseInt(e.target.value, 10));
+          const val = parseInt(e.target.value, 10);
+          PlayerStore.setVolume(val);
+          if (volumePercentReadout) volumePercentReadout.textContent = `${val}%`;
         });
 
         likeActiveBtn.addEventListener("click", () => {
