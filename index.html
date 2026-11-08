@@ -87,31 +87,43 @@
       --crt-bloom: 0 0 10px rgba(56, 189, 248, 0.25);
     }
 
-    /* THEME 2: VAPORWAVE 1995 */
+    /* THEME 2: VAPORWAVE 1995 (AESTHETIC SUNSET) */
     body[data-theme="vaporwave"] {
-      --bg-body: #008080;
-      --bg-deck: #c0c0c0;
-      --bg-bezel: #d4d0c8;
-      --bg-screen: #000080;
-      --bg-panel: #dfdfdf;
-      --bg-row: #ffffff;
-      --bg-row-alt: #f4f4f4;
-      --bg-row-hover: #e0f0ff;
-      --bg-row-active: #cce5ff;
-      --text-main: #111111;
-      --text-dim: #444444;
-      --text-bright: #000080;
-      --text-artist: #c40062;
-      --accent-p: #e6007a;
-      --accent-s: #000080;
-      --accent-y: #800080;
-      --accent-g: #008000;
-      --border-dark: #404040;
-      --border-light: #ffffff;
-      --border-glow: rgba(0, 0, 128, 0.25);
-      --pixel-shadow: 2px 2px 0px #404040;
-      --scanline-opacity: 0.10;
-      --crt-bloom: none;
+      --bg-body: #190533;
+      --bg-deck: #2b124c;
+      --bg-bezel: #3d1b6a;
+      --bg-screen: #0d0221;
+      --bg-panel: #260f45;
+      --bg-row: #32135a;
+      --bg-row-alt: #290e4c;
+      --bg-row-hover: #4e2287;
+      --bg-row-active: rgba(255, 113, 206, 0.28);
+      --text-main: #fbf5ff;
+      --text-dim: #cca8e9;
+      --text-bright: #01cdfe;
+      --text-artist: #ff71ce;
+      --accent-p: #ff71ce;
+      --accent-s: #01cdfe;
+      --accent-y: #fffb96;
+      --accent-g: #05ffa1;
+      --border-dark: #0a0118;
+      --border-light: #6a34a8;
+      --border-glow: rgba(255, 113, 206, 0.45);
+      --pixel-shadow: 2px 2px 0px #0a0118;
+      --scanline-opacity: 0.16;
+      --crt-bloom: 0 0 12px rgba(1, 205, 254, 0.35);
+    }
+
+    body[data-theme="vaporwave"] .pixel-tape {
+      background: #2b124c;
+      border-color: #ff71ce;
+    }
+
+    body[data-theme="vaporwave"] .pixel-input,
+    body[data-theme="vaporwave"] .pixel-select {
+      background: #140428;
+      color: #fbf5ff;
+      border-color: #6a34a8;
     }
 
     /* THEME 3: SYNTHWAVE SUNSET 86 */
@@ -125,20 +137,27 @@
       --bg-row-alt: #220e3f;
       --bg-row-hover: #3a1a66;
       --bg-row-active: rgba(255, 0, 127, 0.22);
-      --text-main: #ffe6f7;
-      --text-dim: #b388cd;
-      --text-bright: #ff3399;
-      --text-artist: #ffb833;
+      --text-main: #ffffff;
+      --text-dim: #d1b8eb;
+      --text-bright: #00f0ff;
+      --text-artist: #ffc233;
       --accent-p: #ff007f;
       --accent-s: #00f0ff;
-      --accent-y: #ffb833;
+      --accent-y: #ffc233;
       --accent-g: #00ffaa;
       --border-dark: #000000;
-      --border-light: #5a248f;
+      --border-light: #6d2ea8;
       --border-glow: rgba(255, 0, 127, 0.4);
       --pixel-shadow: 2px 2px 0px #000000;
       --scanline-opacity: 0.22;
       --crt-bloom: 0 0 12px rgba(255, 0, 127, 0.35);
+    }
+
+    body[data-theme="synthwave"] .pixel-input,
+    body[data-theme="synthwave"] .pixel-select {
+      background: #15062c;
+      color: #ffffff;
+      border-color: #ff007f;
     }
 
     /* THEME 4: NES CLASSIC 8-BIT */
@@ -638,7 +657,7 @@
     }
 
     .side-queue-box {
-      max-height: 200px;
+      max-height: 220px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -649,29 +668,156 @@
       min-width: 0;
     }
 
+    .queue-tab-toggles, .mobile-queue-tab-toggles {
+      display: flex;
+      gap: 4px;
+      width: 100%;
+    }
+    .queue-tab-btn {
+      flex: 1;
+      padding: 4px 6px;
+      font-size: 8px;
+      font-family: var(--font-pixel);
+      background: var(--bg-panel);
+      color: var(--text-dim);
+      border: 1px solid var(--border-dark);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.1s;
+    }
+    .queue-tab-btn:hover {
+      background: var(--bg-row-hover);
+      color: var(--text-main);
+    }
+    .queue-tab-btn.active {
+      background: var(--accent-s);
+      color: #000000;
+      font-weight: bold;
+      border-color: var(--border-light);
+    }
+
+    .queue-now-playing-box {
+      background: var(--bg-bezel);
+      border: 1px solid var(--accent-s);
+      padding: 6px;
+      margin-bottom: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .queue-section-label {
+      font-size: 7px;
+      color: var(--accent-s);
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .soundwave-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+      width: 12px;
+      flex-shrink: 0;
+    }
+    .soundwave-bars span {
+      width: 2px;
+      background: var(--accent-s);
+      border-radius: 1px;
+      animation: soundwaveAnim 0.8s ease-in-out infinite alternate;
+    }
+    .soundwave-bars span:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .soundwave-bars span:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+    .soundwave-bars span:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+    @keyframes soundwaveAnim {
+      0% { height: 25%; }
+      100% { height: 100%; }
+    }
+
     .queue-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 6px;
-      padding: 6px 6px;
+      padding: 5px 6px;
       background: var(--bg-row);
       border: 1px solid var(--border-dark);
       cursor: pointer;
       font-size: 8px;
       min-width: 0;
+      transition: background 0.1s ease;
     }
     .queue-row:hover { background: var(--bg-row-hover); }
-    .queue-row.active { border-color: var(--accent-s); background: var(--bg-row-active); color: var(--text-bright); }
-    .queue-row span {
+    .queue-row.active {
+      border-color: var(--accent-s);
+      background: var(--bg-row-active);
+      color: var(--text-bright);
+    }
+    .queue-row-thumb {
+      width: 26px;
+      height: 26px;
+      object-fit: cover;
+      border: 1px solid var(--border-dark);
+      flex-shrink: 0;
+      background: #000;
+    }
+    .queue-row-info {
+      flex: 1;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .queue-row-title {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      flex: 1;
+      color: var(--text-main);
+    }
+    .queue-row.active .queue-row-title {
+      color: var(--text-bright);
+    }
+    .queue-row-artist {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      color: var(--text-artist);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .queue-row-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .queue-btn-reorder {
+      padding: 2px 4px;
+      font-size: 8px;
+      line-height: 1;
+      background: var(--bg-panel);
+      color: var(--text-dim);
+      border: 1px solid var(--border-dark);
+      cursor: pointer;
+    }
+    .queue-btn-reorder:hover {
+      background: var(--accent-s);
+      color: #000;
     }
     .queue-row .btn-del-q {
       flex-shrink: 0;
+      padding: 2px 4px;
+      font-size: 8px;
+      line-height: 1;
+    }
+    .queue-row .btn-del-q:hover {
+      background: var(--accent-p);
+      color: #fff;
     }
 
     /* Mobile Bottom Sheet / Drawer for Queue */
@@ -709,14 +855,20 @@
     }
     .drawer-header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 8px;
       padding: 10px 14px;
       background: var(--bg-bezel);
       border-bottom: 2px solid var(--border-dark);
       font-family: var(--font-pixel);
       font-size: 10px;
       color: var(--text-bright);
+    }
+    .drawer-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
     }
     .drawer-queue-list {
       overflow-y: auto;
@@ -745,6 +897,11 @@
       color: var(--text-dim);
       cursor: pointer;
       white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .nav-tab-item:hover {
+      background: var(--bg-row-hover);
+      color: var(--text-main);
     }
     .nav-tab-item.active {
       background: var(--accent-s);
@@ -752,48 +909,181 @@
       font-weight: bold;
     }
 
-    /* Search Action Strip */
+    /* Enhanced Search Bar & Autocomplete Strip (Spotify / JioSaavn Style) */
     .search-action-strip {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       background: var(--bg-panel);
       border: 2px solid var(--border-dark);
-      padding: 8px;
+      padding: 10px;
       min-width: 0;
       max-width: 100%;
-      overflow: hidden;
+      position: relative;
     }
     .search-input-group {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       min-width: 0;
       max-width: 100%;
+      position: relative;
+    }
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+    }
+    .search-lens-icon {
+      position: absolute;
+      left: 10px;
+      width: 14px;
+      height: 14px;
+      fill: var(--text-dim);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .search-input-wrapper .pixel-input {
+      padding-left: 32px;
+      padding-right: 32px;
+      width: 100%;
+      background: var(--bg-screen);
+      color: var(--text-main);
+      font-size: 13px;
+      border: 2px solid var(--border-dark);
+      box-shadow: inset 1px 1px 0px #000000;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input-wrapper .pixel-input:focus {
+      border-color: var(--accent-s);
+      box-shadow: inset 1px 1px 0px #000000, 0 0 8px var(--border-glow);
+    }
+    .search-clear-btn {
+      position: absolute;
+      right: 8px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--bg-deck);
+      border: 1px solid var(--border-light);
+      color: var(--text-dim);
+      font-size: 11px;
+      line-height: 1;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      padding: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .search-clear-btn:hover {
+      background: var(--accent-p);
+      color: #ffffff;
+      border-color: var(--accent-p);
+    }
+    .search-clear-btn.visible {
+      display: flex;
     }
 
+    /* Autocomplete / Suggestions Dropdown */
+    .search-suggestions-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-deck);
+      border: 2px solid var(--accent-s);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.8), var(--pixel-shadow);
+      z-index: 100;
+      margin-top: 4px;
+      display: none;
+      flex-direction: column;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .search-suggestions-dropdown.open {
+      display: flex;
+    }
+    .suggestion-section-title {
+      font-size: 8px;
+      letter-spacing: 0.5px;
+      padding: 6px 10px 4px;
+      color: var(--text-dim);
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .suggestion-item {
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-main);
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-dark);
+      transition: background 0.1s;
+    }
+    .suggestion-item:hover {
+      background: var(--bg-row-hover);
+      color: var(--accent-s);
+    }
+    .suggestion-item .sug-icon {
+      font-size: 11px;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    /* Filter Chips ("Suggestions Down There") */
     .genre-filter-chips {
       display: flex;
       overflow-x: auto;
       white-space: nowrap;
-      gap: 4px;
-      padding-bottom: 4px;
+      gap: 6px;
+      padding: 2px 2px 6px;
       -webkit-overflow-scrolling: touch;
       min-width: 0;
       max-width: 100%;
       width: 100%;
     }
+    .genre-filter-chips::-webkit-scrollbar {
+      height: 4px;
+    }
+    .genre-filter-chips::-webkit-scrollbar-track {
+      background: var(--bg-deck);
+    }
+    .genre-filter-chips::-webkit-scrollbar-thumb {
+      background: var(--border-light);
+    }
     .filter-chip {
-      font-size: 8px;
-      padding: 5px 8px;
+      font-size: 9px;
+      padding: 5px 10px;
       background: var(--bg-row);
-      border: 1px solid var(--border-dark);
-      color: var(--text-dim);
+      border: 1px solid var(--border-light);
+      color: var(--text-main);
       cursor: pointer;
       flex-shrink: 0;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
     }
-    .filter-chip:hover, .filter-chip.active {
+    .filter-chip:hover {
+      background: var(--bg-row-hover);
+      border-color: var(--accent-s);
+      color: var(--text-bright);
+    }
+    .filter-chip.active {
       background: var(--accent-p);
       color: #ffffff;
+      border-color: var(--accent-y);
+      box-shadow: 0 0 6px var(--border-glow);
     }
 
     /* View Mode Bar */
@@ -821,7 +1111,7 @@
     }
     .track-table-header {
       display: grid;
-      grid-template-columns: 36px 44px 1fr 160px 60px 80px;
+      grid-template-columns: 36px 44px 1fr 140px 55px 125px;
       gap: 8px;
       padding: 6px 8px;
       font-size: 8px;
@@ -832,7 +1122,7 @@
     }
     .track-row-item {
       display: grid;
-      grid-template-columns: 36px 44px 1fr 160px 60px 80px;
+      grid-template-columns: 36px 44px 1fr 140px 55px 125px;
       gap: 8px;
       align-items: center;
       padding: 6px 8px;
@@ -908,7 +1198,7 @@
     .row-actions-group {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       justify-content: flex-end;
     }
 
@@ -931,6 +1221,254 @@
     .grid-card-item.playing {
       border-color: var(--accent-s);
       background: var(--bg-row-active);
+    }
+
+    /* Custom Albums & Mixtapes Styles (Spotify / JioSaavn Playlists) */
+    .albums-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .album-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+    .album-card-item {
+      background: var(--bg-row);
+      border: 2px solid var(--border-dark);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .album-card-item:hover {
+      border-color: var(--accent-s);
+      background: var(--bg-row-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--pixel-shadow);
+    }
+    .album-cover-box {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dark);
+      overflow: hidden;
+      position: relative;
+    }
+    .album-cover-collage {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1px;
+      background: var(--border-dark);
+    }
+    .album-cover-collage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .album-cover-single {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .album-cover-empty {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 28px;
+      background: rgba(0,0,0,0.2);
+    }
+    .album-card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+    .album-card-title {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .album-card-sub {
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+    .album-card-actions {
+      display: flex;
+      gap: 4px;
+      margin-top: auto;
+    }
+
+    /* Album Detail View Banner */
+    .album-detail-banner {
+      display: flex;
+      gap: 14px;
+      padding: 12px;
+      background: var(--bg-bezel);
+      border: 2px solid var(--border-dark);
+      margin-bottom: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .album-banner-art {
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--border-dark);
+      flex-shrink: 0;
+      background: var(--bg-panel);
+    }
+    .album-banner-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Universal Modal & Popups (Add to Album / Song Menu) */
+    .pixel-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(2px);
+      z-index: 10005;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .pixel-modal-backdrop.open {
+      display: flex;
+    }
+    .pixel-modal-box {
+      background: var(--bg-deck);
+      border: 3px solid var(--accent-s);
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.9), var(--pixel-shadow);
+      max-width: 440px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalPop 0.15s ease-out;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .pixel-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg-bezel);
+      border-bottom: 2px solid var(--border-dark);
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--text-bright);
+    }
+    .pixel-modal-body {
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-track-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dark);
+    }
+    .modal-track-art {
+      width: 36px;
+      height: 36px;
+      object-fit: cover;
+      border: 1px solid var(--border-dark);
+    }
+    .album-picker-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .album-picker-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--bg-row);
+      border: 1px solid var(--border-dark);
+      cursor: pointer;
+      font-size: 11px;
+      font-family: var(--font-sans);
+      color: var(--text-main);
+      transition: background 0.1s;
+    }
+    .album-picker-row:hover {
+      background: var(--bg-row-hover);
+      border-color: var(--accent-s);
+    }
+
+    /* Mobile Context Action Sheet */
+    .mobile-action-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-deck);
+      border-top: 3px solid var(--accent-s);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.9);
+      z-index: 10006;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(110%);
+      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    .mobile-action-sheet.open {
+      transform: translateY(0);
+    }
+    .sheet-action-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-dark);
+      font-size: 13px;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .sheet-action-item:hover, .sheet-action-item:active {
+      background: var(--bg-row-hover);
+      color: var(--accent-s);
     }
 
     /* Radio Station Card */
@@ -1417,9 +1955,13 @@
         
         <!-- Queue Box -->
         <div class="pixel-box" style="padding:8px;">
-          <div class="rack-header">
-            <span>💾 PLAY QUEUE</span>
+          <div class="rack-header" style="margin-bottom:6px;">
+            <span id="queueHeaderLabel">💾 PLAY QUEUE</span>
             <button id="clearQueueActionBtn" class="pixel-btn pixel-btn-sm">CLEAR</button>
+          </div>
+          <div class="queue-tab-toggles" style="margin-bottom:6px;">
+            <button id="queueTabUpcomingBtn" class="queue-tab-btn active">UP NEXT (<span id="queueUpcomingCountBadge">0</span>)</button>
+            <button id="queueTabRecentBtn" class="queue-tab-btn">RECENT (<span id="queueHistoryCountBadge">0</span>)</button>
           </div>
           <div id="queueRowsContainer" class="side-queue-box">
             <!-- Dynamically populated queue items -->
@@ -1462,19 +2004,26 @@
     <div id="drawerBackdrop" class="drawer-backdrop"></div>
     <div id="mobileQueueDrawer" class="mobile-queue-drawer">
       <div class="drawer-header">
-        <span>💾 PLAY QUEUE</span>
-        <div style="display:flex; gap:6px;">
-          <button id="clearQueueMobileBtn" class="pixel-btn pixel-btn-sm">CLEAR</button>
-          <button id="closeQueueDrawerBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">✕</button>
+        <div class="drawer-header-top">
+          <span id="mobileQueueHeaderLabel">💾 PLAY QUEUE</span>
+          <div style="display:flex; gap:6px;">
+            <button id="clearQueueMobileBtn" class="pixel-btn pixel-btn-sm">CLEAR</button>
+            <button id="closeQueueDrawerBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">✕</button>
+          </div>
+        </div>
+        <div class="mobile-queue-tab-toggles">
+          <button id="mobileQueueTabUpcomingBtn" class="queue-tab-btn active">UP NEXT (<span id="mobileQueueUpcomingCountBadge">0</span>)</button>
+          <button id="mobileQueueTabRecentBtn" class="queue-tab-btn">RECENT (<span id="mobileQueueHistoryCountBadge">0</span>)</button>
         </div>
       </div>
       <div id="mobileQueueList" class="drawer-queue-list"></div>
     </div>
 
-    <!-- Navigation Bar: Trending, Search, Recently Played, 24/7 Radio, Liked Hits, Local MP3 -->
+    <!-- Navigation Bar: Trending, Search, Albums, Recently Played, 24/7 Radio, Liked Hits, Local MP3 -->
     <nav class="deck-nav-bar">
       <button class="nav-tab-item active" data-tab="trending">⚡ TOP HITS</button>
       <button class="nav-tab-item" data-tab="search">🔍 SEARCH ALL SONGS</button>
+      <button class="nav-tab-item" data-tab="albums">💿 MY ALBUMS</button>
       <button class="nav-tab-item" data-tab="recent">🕒 RECENTLY PLAYED</button>
       <button class="nav-tab-item" data-tab="radio">📻 24/7 RETRO RADIO</button>
       <button class="nav-tab-item" data-tab="liked">❤️ LIKED SONGS</button>
@@ -1484,8 +2033,25 @@
     <!-- Search Bar & Multi-Lingual Genre Filter Chips -->
     <div id="searchBarSection" class="search-action-strip">
       <div class="search-input-group">
-        <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="Search any song, artist, language (Coldplay, Taylor Swift, Arijit Singh, Anirudh, BTS, Bad Bunny)..." />
+        <div class="search-input-wrapper">
+          <svg class="search-lens-icon" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+          <input id="globalSongSearchInput" type="text" class="pixel-input" placeholder="Search any song, artist, album, language (Taylor Swift, Coldplay, Arijit Singh, BTS)..." autocomplete="off" />
+          <button id="clearSearchInputBtn" class="search-clear-btn" type="button" title="Clear search" aria-label="Clear search">✕</button>
+        </div>
         <button id="executeSearchBtn" class="pixel-btn pixel-btn-cyan" style="font-size:10px; padding:0 16px;">SEARCH</button>
+
+        <!-- Search Suggestions / Autocomplete Dropdown -->
+        <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown">
+          <div class="suggestion-section-title">
+            <span>🕒 RECENT SEARCHES</span>
+            <button id="clearRecentSearchesBtn" class="pixel-btn pixel-btn-sm" style="font-size:7px; padding:1px 5px;">CLEAR</button>
+          </div>
+          <div id="recentSearchesList"></div>
+          <div class="suggestion-section-title">
+            <span>🔥 TRENDING SUGGESTIONS</span>
+          </div>
+          <div id="trendingSuggestionsList"></div>
+        </div>
       </div>
 
       <div class="genre-filter-chips">
@@ -1572,6 +2138,81 @@
 
   <!-- Toast Notification HUD -->
   <div id="pixel-toast-hud">NOTIFICATION</div>
+
+  <!-- Universal Add to Album / Playlist Modal -->
+  <div id="addToAlbumModal" class="pixel-modal-backdrop">
+    <div class="pixel-modal-box">
+      <div class="pixel-modal-header">
+        <span>📁 ADD TO ALBUM / PLAYLIST</span>
+        <button id="closeAddToAlbumModalBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">✕</button>
+      </div>
+      <div class="pixel-modal-body">
+        <!-- Selected Track Preview -->
+        <div id="modalTrackPreview" class="modal-track-preview">
+          <img id="modalTrackArt" src="" class="modal-track-art" alt="Track Art" />
+          <div style="min-width:0; flex:1; display:flex; flex-direction:column; gap:2px;">
+            <div id="modalTrackTitle" style="font-weight:bold; font-size:12px; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">TITLE</div>
+            <div id="modalTrackArtist" style="font-size:10px; color:var(--text-artist); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">ARTIST</div>
+          </div>
+        </div>
+
+        <!-- Create & Add Inline Form -->
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:8px; color:var(--text-dim); letter-spacing:0.5px;">CREATE NEW ALBUM & ADD:</label>
+          <div style="display:flex; gap:6px;">
+            <input id="quickAlbumNameInput" type="text" class="pixel-input" placeholder="New album name..." style="flex:1;" />
+            <button id="quickCreateAlbumBtn" class="pixel-btn pixel-btn-cyan" style="font-size:9px; padding:0 12px; white-space:nowrap;">+ ADD</button>
+          </div>
+        </div>
+
+        <!-- Existing Albums List -->
+        <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+          <label style="font-size:8px; color:var(--text-dim); letter-spacing:0.5px;">OR CHOOSE EXISTING ALBUM:</label>
+          <div id="albumPickerList" class="album-picker-list">
+            <!-- Dynamically populated album rows -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create / Rename Album Modal -->
+  <div id="albumEditModal" class="pixel-modal-backdrop">
+    <div class="pixel-modal-box" style="max-width:380px;">
+      <div class="pixel-modal-header">
+        <span id="albumEditModalTitle">CREATE NEW ALBUM</span>
+        <button id="closeAlbumEditModalBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">✕</button>
+      </div>
+      <div class="pixel-modal-body">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:8px; color:var(--text-dim);">ALBUM NAME:</label>
+          <input id="albumEditNameInput" type="text" class="pixel-input" placeholder="e.g. Synthwave Sunset, Chill Beats..." />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:6px;">
+          <button id="cancelAlbumEditBtn" class="pixel-btn pixel-btn-sm">CANCEL</button>
+          <button id="saveAlbumEditBtn" class="pixel-btn pixel-btn-sm pixel-btn-cyan">SAVE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Track Options Bottom Sheet -->
+  <div id="mobileActionBackdrop" class="drawer-backdrop"></div>
+  <div id="mobileActionSheet" class="mobile-action-sheet">
+    <div style="padding:12px 16px; background:var(--bg-bezel); border-bottom:2px solid var(--border-dark); display:flex; align-items:center; gap:10px;">
+      <img id="sheetTrackArt" src="" style="width:36px; height:36px; object-fit:cover; border:1px solid var(--border-dark);" alt="Track" />
+      <div style="flex:1; min-width:0;">
+        <div id="sheetTrackTitle" style="font-size:12px; font-weight:bold; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">TITLE</div>
+        <div id="sheetTrackArtist" style="font-size:10px; color:var(--text-artist); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">ARTIST</div>
+      </div>
+      <button id="closeMobileActionSheetBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">✕</button>
+    </div>
+    <div class="sheet-action-item" id="sheetPlayNowBtn">▶ PLAY NOW</div>
+    <div class="sheet-action-item" id="sheetPlayNextBtn">⏭ PLAY NEXT IN QUEUE</div>
+    <div class="sheet-action-item" id="sheetAddToQueueBtn">➕ ADD TO END OF QUEUE</div>
+    <div class="sheet-action-item" id="sheetAddToAlbumBtn">📁 ADD TO ALBUM / PLAYLIST</div>
+    <div class="sheet-action-item" id="sheetLikeBtn">❤️ LIKE / SAVE TRACK</div>
+  </div>
 
   <!-- Direct Native HTML5 Audio Player (for Local MP3s & 24/7 Retro Radios) -->
   <audio id="coreAudioPlayer" preload="auto"></audio>
@@ -1803,6 +2444,141 @@
       };
 
       // ==========================================
+      // 1.5. ALBUM & PLAYLIST STORE (USER MIXTAPES & COLLECTIONS)
+      // ==========================================
+      const AlbumStore = {
+        STORAGE_KEY: "PIXEL_DECK_USER_ALBUMS",
+
+        getAlbums() {
+          try {
+            const data = localStorage.getItem(this.STORAGE_KEY);
+            if (data) {
+              const parsed = JSON.parse(data);
+              if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+            }
+          } catch (_) {}
+
+          // Default initial curated starter mixtape
+          const defaultAlbums = [
+            {
+              id: "album_starter_retro",
+              name: "📼 Retro Synth & Pop Mix",
+              description: "Curated 80s & synthwave favorites",
+              createdAt: Date.now(),
+              tracks: POPULAR_STARTER_HITS.slice(0, 3)
+            }
+          ];
+          this.saveAlbums(defaultAlbums);
+          return defaultAlbums;
+        },
+
+        saveAlbums(albums) {
+          try {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(albums));
+          } catch (_) {}
+        },
+
+        createAlbum(name, description = "") {
+          const albums = this.getAlbums();
+          const cleanName = (name || "").trim() || "My New Album";
+          const newAlbum = {
+            id: "album_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+            name: cleanName,
+            description: description.trim(),
+            createdAt: Date.now(),
+            tracks: []
+          };
+          albums.unshift(newAlbum);
+          this.saveAlbums(albums);
+          showToastHud(`ALBUM "${cleanName.toUpperCase()}" CREATED`);
+          return newAlbum;
+        },
+
+        deleteAlbum(id) {
+          let albums = this.getAlbums();
+          albums = albums.filter(a => a.id !== id);
+          this.saveAlbums(albums);
+          showToastHud("ALBUM DELETED");
+        },
+
+        renameAlbum(id, newName) {
+          const cleanName = (newName || "").trim();
+          if (!cleanName) return;
+          const albums = this.getAlbums();
+          const alb = albums.find(a => a.id === id);
+          if (alb) {
+            alb.name = cleanName;
+            alb.updatedAt = Date.now();
+            this.saveAlbums(albums);
+            showToastHud(`ALBUM RENAMED TO "${cleanName.toUpperCase()}"`);
+          }
+        },
+
+        addSong(albumId, song) {
+          if (!song || !song.id) return false;
+          const albums = this.getAlbums();
+          const alb = albums.find(a => a.id === albumId);
+          if (!alb) return false;
+          if (alb.tracks.some(t => t.id === song.id || (song.providerTrackId && t.providerTrackId === song.providerTrackId))) {
+            showToastHud(`ALREADY IN "${alb.name.toUpperCase()}"`);
+            return false;
+          }
+          alb.tracks.push(song);
+          alb.updatedAt = Date.now();
+          this.saveAlbums(albums);
+          showToastHud(`ADDED TO "${alb.name.toUpperCase()}"`);
+          return true;
+        },
+
+        removeSong(albumId, songId) {
+          const albums = this.getAlbums();
+          const alb = albums.find(a => a.id === albumId);
+          if (!alb) return;
+          alb.tracks = alb.tracks.filter(t => t.id !== songId);
+          alb.updatedAt = Date.now();
+          this.saveAlbums(albums);
+          showToastHud(`REMOVED FROM "${alb.name.toUpperCase()}"`);
+        },
+
+        getAlbum(id) {
+          return this.getAlbums().find(a => a.id === id) || null;
+        }
+      };
+
+      // ==========================================
+      // 1.6. SEARCH HISTORY & SUGGESTIONS MANAGER
+      // ==========================================
+      const SearchHistoryManager = {
+        STORAGE_KEY: "PIXEL_DECK_SEARCH_HISTORY",
+
+        getHistory() {
+          try {
+            return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || "[]");
+          } catch (_) {
+            return [];
+          }
+        },
+
+        addQuery(q) {
+          if (!q || !q.trim()) return;
+          const clean = q.trim();
+          let history = this.getHistory();
+          history = history.filter(item => item.toLowerCase() !== clean.toLowerCase());
+          history.unshift(clean);
+          if (history.length > 8) history = history.slice(0, 8);
+          try {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
+          } catch (_) {}
+        },
+
+        clearHistory() {
+          try {
+            localStorage.removeItem(this.STORAGE_KEY);
+          } catch (_) {}
+        }
+      };
+
+      // ==========================================
       // 2. RECENTLY PLAYED MANAGER (VERIFIED LISTENING THRESHOLD)
       // ==========================================
       const RecentlyPlayedManager = {
@@ -1832,6 +2608,7 @@
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(history));
 
             if (activeTab === "recent") renderRecentlyPlayedTab();
+            renderQueuePanel();
           } catch (_) {}
         },
 
@@ -1839,6 +2616,7 @@
           try {
             localStorage.removeItem(this.STORAGE_KEY);
             if (activeTab === "recent") renderRecentlyPlayedTab();
+            renderQueuePanel();
           } catch (_) {}
         }
       };
@@ -2276,14 +3054,54 @@
           renderTimelineProgress(this.currentTime, this.duration);
         },
 
+        playNextSong(song) {
+          if (!song) return;
+          if (!this.currentSong) {
+            this.play(song);
+            return;
+          }
+          // Deduplicate if already in queue
+          const existingIdx = this.queue.findIndex(t => t.id === song.id);
+          if (existingIdx !== -1) {
+            if (existingIdx === this.currentIndex) return;
+            this.queue.splice(existingIdx, 1);
+            if (existingIdx < this.currentIndex) this.currentIndex--;
+          }
+          // Insert right after current song
+          const targetIdx = this.currentIndex + 1;
+          this.queue.splice(targetIdx, 0, song);
+          renderQueuePanel();
+          showToastHud(`PLAYING NEXT: "${song.title.toUpperCase()}"`);
+        },
+
         addToQueue(song) {
+          if (!song) return;
+          if (!this.currentSong) {
+            this.play(song);
+            return;
+          }
           this.queue.push(song);
           renderQueuePanel();
-          showToastHud("ADDED TO PLAY QUEUE");
+          showToastHud(`ADDED TO QUEUE: "${song.title.toUpperCase()}"`);
+        },
+
+        moveQueueItem(fromIdx, toIdx) {
+          if (fromIdx < 0 || fromIdx >= this.queue.length || toIdx < 0 || toIdx >= this.queue.length) return;
+          const [moved] = this.queue.splice(fromIdx, 1);
+          this.queue.splice(toIdx, 0, moved);
+          if (this.currentIndex === fromIdx) {
+            this.currentIndex = toIdx;
+          } else if (fromIdx < this.currentIndex && toIdx >= this.currentIndex) {
+            this.currentIndex--;
+          } else if (fromIdx > this.currentIndex && toIdx <= this.currentIndex) {
+            this.currentIndex++;
+          }
+          renderQueuePanel();
         },
 
         removeFromQueue(idx) {
           if (idx < 0 || idx >= this.queue.length) return;
+          const removed = this.queue[idx];
           this.queue.splice(idx, 1);
           if (idx === this.currentIndex) {
             if (this.queue.length > 0) {
@@ -2298,13 +3116,14 @@
             this.currentIndex--;
           }
           renderQueuePanel();
+          if (removed) showToastHud(`REMOVED: "${removed.title.toUpperCase()}"`);
         },
 
         clearQueue() {
           this.queue = this.currentSong ? [this.currentSong] : [];
           this.currentIndex = 0;
           renderQueuePanel();
-          showToastHud("QUEUE CLEARED");
+          showToastHud("UPCOMING QUEUE CLEARED");
         }
       };
 
@@ -2319,6 +3138,11 @@
       let currentSearchPage = 1;
       let sfxEnabled = true;
       let crtEnabled = true;
+      let queueActiveTab = "upcoming"; // "upcoming" | "recent"
+      let activeAlbumView = "list"; // "list" | albumId
+      let selectedTrackForAlbum = null;
+      let selectedTrackForSheet = null;
+      let editingAlbumId = null;
 
       // Equalizer Spectrum levels (16 bands)
       const eqLevels = new Float32Array(16);
@@ -2370,6 +3194,56 @@
       const loadMoreContainer = document.getElementById("loadMoreContainer");
       const loadMoreBtn = document.getElementById("loadMoreBtn");
       const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+      // Enhanced Search & Suggestions DOM Elements
+      const clearSearchInputBtn = document.getElementById("clearSearchInputBtn");
+      const searchSuggestionsDropdown = document.getElementById("searchSuggestionsDropdown");
+      const recentSearchesList = document.getElementById("recentSearchesList");
+      const clearRecentSearchesBtn = document.getElementById("clearRecentSearchesBtn");
+      const trendingSuggestionsList = document.getElementById("trendingSuggestionsList");
+
+      // Enhanced Queue DOM Elements
+      const queueTabUpcomingBtn = document.getElementById("queueTabUpcomingBtn");
+      const queueTabRecentBtn = document.getElementById("queueTabRecentBtn");
+      const queueUpcomingCountBadge = document.getElementById("queueUpcomingCountBadge");
+      const queueHistoryCountBadge = document.getElementById("queueHistoryCountBadge");
+      const queueHeaderLabel = document.getElementById("queueHeaderLabel");
+      const mobileQueueTabUpcomingBtn = document.getElementById("mobileQueueTabUpcomingBtn");
+      const mobileQueueTabRecentBtn = document.getElementById("mobileQueueTabRecentBtn");
+      const mobileQueueUpcomingCountBadge = document.getElementById("mobileQueueUpcomingCountBadge");
+      const mobileQueueHistoryCountBadge = document.getElementById("mobileQueueHistoryCountBadge");
+      const mobileQueueHeaderLabel = document.getElementById("mobileQueueHeaderLabel");
+
+      // Add to Album Modal DOM Elements
+      const addToAlbumModal = document.getElementById("addToAlbumModal");
+      const closeAddToAlbumModalBtn = document.getElementById("closeAddToAlbumModalBtn");
+      const modalTrackArt = document.getElementById("modalTrackArt");
+      const modalTrackTitle = document.getElementById("modalTrackTitle");
+      const modalTrackArtist = document.getElementById("modalTrackArtist");
+      const quickAlbumNameInput = document.getElementById("quickAlbumNameInput");
+      const quickCreateAlbumBtn = document.getElementById("quickCreateAlbumBtn");
+      const albumPickerList = document.getElementById("albumPickerList");
+
+      // Album Edit Modal DOM Elements
+      const albumEditModal = document.getElementById("albumEditModal");
+      const albumEditModalTitle = document.getElementById("albumEditModalTitle");
+      const albumEditNameInput = document.getElementById("albumEditNameInput");
+      const closeAlbumEditModalBtn = document.getElementById("closeAlbumEditModalBtn");
+      const cancelAlbumEditBtn = document.getElementById("cancelAlbumEditBtn");
+      const saveAlbumEditBtn = document.getElementById("saveAlbumEditBtn");
+
+      // Mobile Track Action Sheet DOM Elements
+      const mobileActionBackdrop = document.getElementById("mobileActionBackdrop");
+      const mobileActionSheet = document.getElementById("mobileActionSheet");
+      const sheetTrackArt = document.getElementById("sheetTrackArt");
+      const sheetTrackTitle = document.getElementById("sheetTrackTitle");
+      const sheetTrackArtist = document.getElementById("sheetTrackArtist");
+      const closeMobileActionSheetBtn = document.getElementById("closeMobileActionSheetBtn");
+      const sheetPlayNowBtn = document.getElementById("sheetPlayNowBtn");
+      const sheetPlayNextBtn = document.getElementById("sheetPlayNextBtn");
+      const sheetAddToQueueBtn = document.getElementById("sheetAddToQueueBtn");
+      const sheetAddToAlbumBtn = document.getElementById("sheetAddToAlbumBtn");
+      const sheetLikeBtn = document.getElementById("sheetLikeBtn");
 
       // Mobile Queue Drawer Elements
       const mobileQueueToggleBtn = document.getElementById("mobileQueueToggleBtn");
@@ -2700,12 +3574,17 @@
       // ==========================================
       // TRACKLIST / GRID RENDERING
       // ==========================================
-      function renderTrackList(tracks) {
+      function renderTrackList(tracks, isAlbumView = false, currentAlbumId = null) {
         trackListWrapper.innerHTML = "";
         trackListWrapper.className = viewMode === "list" ? "tracks-table-view" : "tracks-grid-view";
+        renderTracksInto(tracks, trackListWrapper, isAlbumView, currentAlbumId);
+      }
 
-        if (tracks.length === 0) {
-          trackListWrapper.innerHTML = `
+      function renderTracksInto(tracks, container, isAlbumView = false, currentAlbumId = null) {
+        container.innerHTML = "";
+
+        if (!tracks || tracks.length === 0) {
+          container.innerHTML = `
             <div style="padding:32px 16px; text-align:center; color:var(--text-dim);">
               NO TRACKS IN THIS SECTION.
             </div>
@@ -2724,7 +3603,7 @@
             <span>TIME</span>
             <span>ACTIONS</span>
           `;
-          trackListWrapper.appendChild(header);
+          container.appendChild(header);
         }
 
         tracks.forEach((track, idx) => {
@@ -2734,9 +3613,15 @@
             row.dataset.id = track.id;
             if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) row.classList.add("playing");
 
+            const isLiked = likedTracks.some(t => t.id === track.id);
+
             row.innerHTML = `
-              <div class="row-index">${idx + 1}</div>
-              <img src="${track.artwork}" class="row-art-thumb" alt="${track.title}" loading="lazy" onerror="this.src='${DEFAULT_ARTWORK}'" />
+              <div class="row-index">
+                ${PlayerStore.currentSong && PlayerStore.currentSong.id === track.id 
+                  ? '<div class="soundwave-bars"><span></span><span></span><span></span></div>' 
+                  : (idx + 1)}
+              </div>
+              <img src="${track.artwork || DEFAULT_ARTWORK}" class="row-art-thumb" alt="${track.title}" loading="lazy" onerror="this.src='${DEFAULT_ARTWORK}'" />
               <div class="row-main-info">
                 <span class="row-title-text" title="${track.title}">${track.title}</span>
                 <span class="row-artist-text">${track.artist}</span>
@@ -2744,13 +3629,20 @@
               <div class="row-album-text">${track.album || "Official Release"}</div>
               <div class="row-duration-text">${track.durationFormatted || "03:30"}</div>
               <div class="row-actions-group">
-                <button class="pixel-btn pixel-btn-sm btn-like-row" title="Like">♥</button>
-                <button class="pixel-btn pixel-btn-sm btn-queue-row" title="Add to Queue">+</button>
+                <button class="pixel-btn pixel-btn-sm btn-like-row" title="${isLiked ? 'Unlike' : 'Like'}" style="${isLiked ? 'color:var(--accent-p);' : ''}">♥</button>
+                <button class="pixel-btn pixel-btn-sm btn-playnext-row" title="Play Next in Queue">⏭</button>
+                <button class="pixel-btn pixel-btn-sm btn-queue-row" title="Add to End of Queue">+</button>
+                ${isAlbumView ? `
+                  <button class="pixel-btn pixel-btn-sm btn-remove-album-row" title="Remove from this Album" style="color:var(--accent-p);">✕</button>
+                ` : `
+                  <button class="pixel-btn pixel-btn-sm btn-album-row" title="Add to Album / Playlist">📁</button>
+                `}
+                <button class="pixel-btn pixel-btn-sm btn-more-row mobile-only-btn" title="More Options">⋯</button>
               </div>
             `;
 
             row.addEventListener("click", (e) => {
-              if (e.target.closest(".btn-like-row") || e.target.closest(".btn-queue-row")) return;
+              if (e.target.closest(".row-actions-group")) return;
               trigger8BitClick(600);
               const newQueue = [track, ...PlayerStore.queue.filter(t => t.id !== track.id)];
               PlayerStore.play(track, newQueue, 0);
@@ -2761,33 +3653,76 @@
               toggleLike(track);
             });
 
+            row.querySelector(".btn-playnext-row").addEventListener("click", (e) => {
+              e.stopPropagation();
+              trigger8BitClick(650);
+              PlayerStore.playNextSong(track);
+            });
+
             row.querySelector(".btn-queue-row").addEventListener("click", (e) => {
               e.stopPropagation();
+              trigger8BitClick(650);
               PlayerStore.addToQueue(track);
             });
 
-            trackListWrapper.appendChild(row);
+            if (isAlbumView) {
+              const removeBtn = row.querySelector(".btn-remove-album-row");
+              if (removeBtn) {
+                removeBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  AlbumStore.removeSong(currentAlbumId, track.id);
+                  renderAlbumsTab();
+                });
+              }
+            } else {
+              const albumBtn = row.querySelector(".btn-album-row");
+              if (albumBtn) {
+                albumBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  openAddToAlbumModal(track);
+                });
+              }
+            }
+
+            const moreBtn = row.querySelector(".btn-more-row");
+            if (moreBtn) {
+              moreBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                openMobileActionSheet(track);
+              });
+            }
+
+            container.appendChild(row);
           } else {
+            // GRID VIEW CARD
             const card = document.createElement("div");
             card.className = "grid-card-item";
             card.dataset.id = track.id;
             if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) card.classList.add("playing");
 
+            const isLiked = likedTracks.some(t => t.id === track.id);
+
             card.innerHTML = `
-              <img src="${track.artwork}" style="width:100%; height:110px; object-fit:cover; border:1px solid var(--border-dark);" alt="${track.title}" onerror="this.src='${DEFAULT_ARTWORK}'" />
-              <div style="font-size:12px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${track.title}</div>
+              <img src="${track.artwork || DEFAULT_ARTWORK}" style="width:100%; height:110px; object-fit:cover; border:1px solid var(--border-dark);" alt="${track.title}" onerror="this.src='${DEFAULT_ARTWORK}'" />
+              <div style="font-size:12px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-main);">${track.title}</div>
               <div style="font-size:11px; color:var(--text-artist); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${track.artist}</div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
                 <span style="font-size:8px; color:var(--text-dim);">${track.durationFormatted || "03:30"}</span>
                 <div style="display:flex; gap:2px;">
-                  <button class="pixel-btn pixel-btn-sm btn-like-row">♥</button>
-                  <button class="pixel-btn pixel-btn-sm btn-queue-row">+</button>
+                  <button class="pixel-btn pixel-btn-sm btn-like-row" title="Like" style="${isLiked ? 'color:var(--accent-p);' : ''}">♥</button>
+                  <button class="pixel-btn pixel-btn-sm btn-playnext-row" title="Play Next">⏭</button>
+                  <button class="pixel-btn pixel-btn-sm btn-queue-row" title="Add to Queue">+</button>
+                  ${isAlbumView ? `
+                    <button class="pixel-btn pixel-btn-sm btn-remove-album-row" title="Remove from Album">✕</button>
+                  ` : `
+                    <button class="pixel-btn pixel-btn-sm btn-album-row" title="Add to Album">📁</button>
+                  `}
                 </div>
               </div>
             `;
 
             card.addEventListener("click", (e) => {
-              if (e.target.closest(".btn-like-row") || e.target.closest(".btn-queue-row")) return;
+              if (e.target.closest(".btn-like-row") || e.target.closest(".btn-playnext-row") || e.target.closest(".btn-queue-row") || e.target.closest(".btn-album-row") || e.target.closest(".btn-remove-album-row")) return;
               trigger8BitClick(600);
               const newQueue = [track, ...PlayerStore.queue.filter(t => t.id !== track.id)];
               PlayerStore.play(track, newQueue, 0);
@@ -2798,12 +3733,36 @@
               toggleLike(track);
             });
 
+            card.querySelector(".btn-playnext-row").addEventListener("click", (e) => {
+              e.stopPropagation();
+              PlayerStore.playNextSong(track);
+            });
+
             card.querySelector(".btn-queue-row").addEventListener("click", (e) => {
               e.stopPropagation();
               PlayerStore.addToQueue(track);
             });
 
-            trackListWrapper.appendChild(card);
+            if (isAlbumView) {
+              const removeBtn = card.querySelector(".btn-remove-album-row");
+              if (removeBtn) {
+                removeBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  AlbumStore.removeSong(currentAlbumId, track.id);
+                  renderAlbumsTab();
+                });
+              }
+            } else {
+              const albumBtn = card.querySelector(".btn-album-row");
+              if (albumBtn) {
+                albumBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  openAddToAlbumModal(track);
+                });
+              }
+            }
+
+            container.appendChild(card);
           }
         });
       }
@@ -2851,6 +3810,175 @@
           `;
         } else {
           renderTrackList(history);
+        }
+      }
+
+      // ==========================================
+      // ALBUMS / PLAYLISTS TAB CONTROLLER
+      // ==========================================
+      function renderAlbumsTab() {
+        const albums = AlbumStore.getAlbums();
+        loadMoreContainer.style.display = "none";
+        clearHistoryBtn.style.display = "none";
+
+        if (activeAlbumView === "list") {
+          catalogStatusLine.textContent = `MY ALBUMS & MIXTAPES (${albums.length} ALBUMS)`;
+          trackListWrapper.className = "tracks-table-view";
+          trackListWrapper.innerHTML = `
+            <div class="albums-section-header">
+              <div>
+                <span style="font-size:11px; font-weight:bold; color:var(--text-bright);">YOUR ALBUMS & MIXTAPES</span>
+                <span style="font-size:9px; color:var(--text-dim); margin-left:6px;">(${albums.length} ALBUMS)</span>
+              </div>
+              <button id="createNewAlbumActionBtn" class="pixel-btn pixel-btn-cyan" style="font-size:9px; padding:4px 10px;">+ CREATE ALBUM</button>
+            </div>
+            <div class="album-cards-grid" id="albumCardsGrid"></div>
+          `;
+
+          const createBtn = document.getElementById("createNewAlbumActionBtn");
+          if (createBtn) createBtn.addEventListener("click", () => openCreateAlbumModal());
+
+          const grid = document.getElementById("albumCardsGrid");
+          albums.forEach(album => {
+            const card = document.createElement("div");
+            card.className = "album-card-item";
+
+            let coverHtml = "";
+            if (album.tracks.length >= 4) {
+              coverHtml = `
+                <div class="album-cover-collage">
+                  <img src="${album.tracks[0].artwork || DEFAULT_ARTWORK}" alt="" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                  <img src="${album.tracks[1].artwork || DEFAULT_ARTWORK}" alt="" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                  <img src="${album.tracks[2].artwork || DEFAULT_ARTWORK}" alt="" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                  <img src="${album.tracks[3].artwork || DEFAULT_ARTWORK}" alt="" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                </div>
+              `;
+            } else if (album.tracks.length > 0) {
+              coverHtml = `<img src="${album.tracks[0].artwork || DEFAULT_ARTWORK}" class="album-cover-single" alt="" onerror="this.src='${DEFAULT_ARTWORK}'" />`;
+            } else {
+              coverHtml = `<div class="album-cover-empty">📼<span style="font-size:8px; margin-top:4px;">EMPTY MIXTAPE</span></div>`;
+            }
+
+            card.innerHTML = `
+              <div class="album-cover-box">${coverHtml}</div>
+              <div class="album-card-meta">
+                <span class="album-card-title" title="${album.name}">${album.name}</span>
+                <span class="album-card-sub">${album.tracks.length} TRACKS</span>
+              </div>
+              <div class="album-card-actions">
+                <button class="pixel-btn pixel-btn-sm pixel-btn-cyan btn-album-play" style="flex:1;">▶ PLAY</button>
+                <button class="pixel-btn pixel-btn-sm btn-album-rename" title="Rename">✏️</button>
+                <button class="pixel-btn pixel-btn-sm btn-album-del" title="Delete">🗑️</button>
+              </div>
+            `;
+
+            card.addEventListener("click", (e) => {
+              if (e.target.closest(".album-card-actions")) return;
+              trigger8BitClick(600);
+              activeAlbumView = album.id;
+              renderAlbumsTab();
+            });
+
+            card.querySelector(".btn-album-play").addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (album.tracks.length === 0) {
+                showToastHud("ALBUM IS EMPTY. ADD SONGS FIRST.");
+                return;
+              }
+              trigger8BitClick(700);
+              PlayerStore.play(album.tracks[0], [...album.tracks], 0);
+            });
+
+            card.querySelector(".btn-album-rename").addEventListener("click", (e) => {
+              e.stopPropagation();
+              openCreateAlbumModal(album.id);
+            });
+
+            card.querySelector(".btn-album-del").addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (confirm(`Delete album "${album.name}"?`)) {
+                AlbumStore.deleteAlbum(album.id);
+                renderAlbumsTab();
+              }
+            });
+
+            grid.appendChild(card);
+          });
+        } else {
+          // DETAIL VIEW FOR A SPECIFIC ALBUM
+          const album = AlbumStore.getAlbum(activeAlbumView);
+          if (!album) {
+            activeAlbumView = "list";
+            renderAlbumsTab();
+            return;
+          }
+
+          catalogStatusLine.textContent = `ALBUM: ${album.name.toUpperCase()} (${album.tracks.length} TRACKS)`;
+          trackListWrapper.className = "tracks-table-view";
+
+          const totalSeconds = album.tracks.reduce((acc, t) => acc + (t.duration || 210), 0);
+          const formattedDuration = formatSecondsToTime(totalSeconds);
+
+          const banner = document.createElement("div");
+          banner.className = "album-detail-banner";
+          banner.innerHTML = `
+            <img src="${(album.tracks[0] && album.tracks[0].artwork) || DEFAULT_ARTWORK}" class="album-banner-art" alt="Album Art" onerror="this.src='${DEFAULT_ARTWORK}'" />
+            <div class="album-banner-info">
+              <button id="backToAlbumsBtn" class="pixel-btn pixel-btn-sm" style="align-self:flex-start; margin-bottom:4px;">← ALL ALBUMS</button>
+              <div style="font-family:var(--font-pixel); font-size:12px; color:var(--text-bright);">${album.name}</div>
+              <div style="font-size:10px; color:var(--text-dim);">${album.tracks.length} SONGS • ${formattedDuration} TOTAL TIME</div>
+              <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
+                <button id="playAllAlbumBtn" class="pixel-btn pixel-btn-sm pixel-btn-cyan" ${album.tracks.length === 0 ? "disabled style='opacity:0.4;'" : ""}>▶ PLAY ALL</button>
+                <button id="shuffleAlbumBtn" class="pixel-btn pixel-btn-sm" ${album.tracks.length === 0 ? "disabled style='opacity:0.4;'" : ""}>🔀 SHUFFLE</button>
+                <button id="renameAlbumBtn" class="pixel-btn pixel-btn-sm">✏️ RENAME</button>
+                <button id="deleteAlbumBtn" class="pixel-btn pixel-btn-sm pixel-btn-accent">🗑️ DELETE</button>
+              </div>
+            </div>
+          `;
+
+          banner.querySelector("#backToAlbumsBtn").addEventListener("click", () => {
+            activeAlbumView = "list";
+            renderAlbumsTab();
+          });
+
+          banner.querySelector("#playAllAlbumBtn").addEventListener("click", () => {
+            if (album.tracks.length === 0) return;
+            PlayerStore.play(album.tracks[0], [...album.tracks], 0);
+          });
+
+          banner.querySelector("#shuffleAlbumBtn").addEventListener("click", () => {
+            if (album.tracks.length === 0) return;
+            const shuffled = [...album.tracks].sort(() => Math.random() - 0.5);
+            PlayerStore.play(shuffled[0], shuffled, 0);
+          });
+
+          banner.querySelector("#renameAlbumBtn").addEventListener("click", () => openCreateAlbumModal(album.id));
+
+          banner.querySelector("#deleteAlbumBtn").addEventListener("click", () => {
+            if (confirm(`Delete album "${album.name}"?`)) {
+              AlbumStore.deleteAlbum(album.id);
+              activeAlbumView = "list";
+              renderAlbumsTab();
+            }
+          });
+
+          trackListWrapper.innerHTML = "";
+          trackListWrapper.appendChild(banner);
+
+          if (album.tracks.length === 0) {
+            const emptyMsg = document.createElement("div");
+            emptyMsg.style.cssText = "padding:32px 16px; text-align:center; color:var(--text-dim);";
+            emptyMsg.innerHTML = `
+              THIS ALBUM HAS NO SONGS YET.<br>
+              SEARCH OR BROWSE SONGS AND CLICK <strong>[📁]</strong> TO ADD SONGS TO THIS ALBUM.
+            `;
+            trackListWrapper.appendChild(emptyMsg);
+          } else {
+            const tracksContainer = document.createElement("div");
+            tracksContainer.className = viewMode === "list" ? "tracks-table-view" : "tracks-grid-view";
+            trackListWrapper.appendChild(tracksContainer);
+            renderTracksInto(album.tracks, tracksContainer, true, album.id);
+          }
         }
       }
 
@@ -2919,46 +4047,298 @@
         }
       }
 
+      // ==========================================
+      // ENHANCED QUEUE & HISTORY CONTROLLER
+      // ==========================================
       function renderQueuePanel() {
-        // Sync count badge
-        mobileQueueCountBadge.textContent = PlayerStore.queue.length;
+        const upcomingTracks = PlayerStore.queue.slice(PlayerStore.currentIndex + 1);
+        const historyTracks = RecentlyPlayedManager.getHistory();
 
-        // Render both Desktop Side Queue and Mobile Drawer Queue
+        if (queueUpcomingCountBadge) queueUpcomingCountBadge.textContent = upcomingTracks.length;
+        if (queueHistoryCountBadge) queueHistoryCountBadge.textContent = historyTracks.length;
+        if (mobileQueueUpcomingCountBadge) mobileQueueUpcomingCountBadge.textContent = upcomingTracks.length;
+        if (mobileQueueHistoryCountBadge) mobileQueueHistoryCountBadge.textContent = historyTracks.length;
+        if (mobileQueueCountBadge) mobileQueueCountBadge.textContent = queueActiveTab === "upcoming" ? upcomingTracks.length : historyTracks.length;
+
+        if (queueTabUpcomingBtn) queueTabUpcomingBtn.classList.toggle("active", queueActiveTab === "upcoming");
+        if (queueTabRecentBtn) queueTabRecentBtn.classList.toggle("active", queueActiveTab === "recent");
+        if (mobileQueueTabUpcomingBtn) mobileQueueTabUpcomingBtn.classList.toggle("active", queueActiveTab === "upcoming");
+        if (mobileQueueTabRecentBtn) mobileQueueTabRecentBtn.classList.toggle("active", queueActiveTab === "recent");
+
+        const headerLabel = queueActiveTab === "upcoming" ? "💾 UP NEXT QUEUE" : "🕒 RECENTLY PLAYED";
+        if (queueHeaderLabel) queueHeaderLabel.textContent = headerLabel;
+        if (mobileQueueHeaderLabel) mobileQueueHeaderLabel.textContent = headerLabel;
+
         const renderTo = (container) => {
+          if (!container) return;
           container.innerHTML = "";
-          if (PlayerStore.queue.length === 0) {
-            container.innerHTML = `<div style="padding:8px; font-size:8px; color:var(--text-dim);">QUEUE IS EMPTY.</div>`;
-            return;
+
+          if (queueActiveTab === "upcoming") {
+            // NOW PLAYING CARD
+            if (PlayerStore.currentSong) {
+              const curBox = document.createElement("div");
+              curBox.className = "queue-now-playing-box";
+              curBox.innerHTML = `
+                <div class="queue-section-label">
+                  <span>▶ NOW PLAYING</span>
+                  <div class="soundwave-bars"><span></span><span></span><span></span></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <img src="${PlayerStore.currentSong.artwork || DEFAULT_ARTWORK}" class="queue-row-thumb" alt="${PlayerStore.currentSong.title}" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                  <div class="queue-row-info">
+                    <span class="queue-row-title">${PlayerStore.currentSong.title}</span>
+                    <span class="queue-row-artist">${PlayerStore.currentSong.artist}</span>
+                  </div>
+                </div>
+              `;
+              container.appendChild(curBox);
+            }
+
+            // UPCOMING LIST
+            if (upcomingTracks.length === 0) {
+              const empty = document.createElement("div");
+              empty.style.cssText = "padding:14px 8px; font-size:8px; color:var(--text-dim); text-align:center;";
+              empty.textContent = "UPCOMING QUEUE IS EMPTY. ADD SONGS WITH [+] OR [PLAY NEXT].";
+              container.appendChild(empty);
+              return;
+            }
+
+            upcomingTracks.forEach((track, relIdx) => {
+              const actualIdx = PlayerStore.currentIndex + 1 + relIdx;
+              const row = document.createElement("div");
+              row.className = "queue-row";
+
+              row.innerHTML = `
+                <img src="${track.artwork || DEFAULT_ARTWORK}" class="queue-row-thumb" alt="${track.title}" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                <div class="queue-row-info">
+                  <span class="queue-row-title">${track.title}</span>
+                  <span class="queue-row-artist">${track.artist}</span>
+                </div>
+                <div class="queue-row-actions">
+                  <button class="queue-btn-reorder btn-move-up" title="Move Up" ${relIdx === 0 ? "disabled style='opacity:0.3; pointer-events:none;'" : ""}>▲</button>
+                  <button class="queue-btn-reorder btn-move-down" title="Move Down" ${relIdx === upcomingTracks.length - 1 ? "disabled style='opacity:0.3; pointer-events:none;'" : ""}>▼</button>
+                  <button class="pixel-btn pixel-btn-sm btn-del-q" title="Remove">✕</button>
+                </div>
+              `;
+
+              row.addEventListener("click", (e) => {
+                if (e.target.closest(".queue-row-actions")) return;
+                PlayerStore.play(track, null, actualIdx);
+              });
+
+              row.querySelector(".btn-move-up").addEventListener("click", (e) => {
+                e.stopPropagation();
+                PlayerStore.moveQueueItem(actualIdx, actualIdx - 1);
+              });
+
+              row.querySelector(".btn-move-down").addEventListener("click", (e) => {
+                e.stopPropagation();
+                PlayerStore.moveQueueItem(actualIdx, actualIdx + 1);
+              });
+
+              row.querySelector(".btn-del-q").addEventListener("click", (e) => {
+                e.stopPropagation();
+                PlayerStore.removeFromQueue(actualIdx);
+              });
+
+              container.appendChild(row);
+            });
+          } else {
+            // RECENTLY PLAYED TAB
+            if (historyTracks.length === 0) {
+              const empty = document.createElement("div");
+              empty.style.cssText = "padding:14px 8px; font-size:8px; color:var(--text-dim); text-align:center;";
+              empty.textContent = "NO PLAYBACK HISTORY YET. PLAY ANY TRACK TO BUILD RECENT HISTORY.";
+              container.appendChild(empty);
+              return;
+            }
+
+            historyTracks.forEach((track) => {
+              const row = document.createElement("div");
+              row.className = "queue-row";
+
+              row.innerHTML = `
+                <img src="${track.artwork || DEFAULT_ARTWORK}" class="queue-row-thumb" alt="${track.title}" onerror="this.src='${DEFAULT_ARTWORK}'" />
+                <div class="queue-row-info">
+                  <span class="queue-row-title">${track.title}</span>
+                  <span class="queue-row-artist">${track.artist}</span>
+                </div>
+                <div class="queue-row-actions">
+                  <button class="pixel-btn pixel-btn-sm btn-recent-play" title="Play Now">▶</button>
+                  <button class="pixel-btn pixel-btn-sm btn-recent-queue" title="Add to Queue">+</button>
+                  <button class="pixel-btn pixel-btn-sm btn-recent-album" title="Add to Album">📁</button>
+                </div>
+              `;
+
+              row.addEventListener("click", (e) => {
+                if (e.target.closest(".queue-row-actions")) return;
+                PlayerStore.play(track);
+              });
+
+              row.querySelector(".btn-recent-play").addEventListener("click", (e) => {
+                e.stopPropagation();
+                PlayerStore.play(track);
+              });
+
+              row.querySelector(".btn-recent-queue").addEventListener("click", (e) => {
+                e.stopPropagation();
+                PlayerStore.addToQueue(track);
+              });
+
+              row.querySelector(".btn-recent-album").addEventListener("click", (e) => {
+                e.stopPropagation();
+                openAddToAlbumModal(track);
+              });
+
+              container.appendChild(row);
+            });
           }
-
-          PlayerStore.queue.forEach((track, idx) => {
-            const row = document.createElement("div");
-            row.className = "queue-row";
-            if (PlayerStore.currentSong && PlayerStore.currentSong.id === track.id) row.classList.add("active");
-
-            row.innerHTML = `
-              <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
-                ${idx + 1}. ${track.title}
-              </span>
-              <button class="pixel-btn pixel-btn-sm btn-del-q" style="padding:2px 4px;">✕</button>
-            `;
-
-            row.addEventListener("click", (e) => {
-              if (e.target.classList.contains("btn-del-q")) return;
-              PlayerStore.play(track, null, idx);
-            });
-
-            row.querySelector(".btn-del-q").addEventListener("click", (e) => {
-              e.stopPropagation();
-              PlayerStore.removeFromQueue(idx);
-            });
-
-            container.appendChild(row);
-          });
         };
 
         renderTo(queueRowsContainer);
         renderTo(mobileQueueList);
+      }
+
+      // ==========================================
+      // SEARCH SUGGESTIONS CONTROLLER
+      // ==========================================
+      function renderSearchSuggestions() {
+        if (!recentSearchesList || !trendingSuggestionsList) return;
+        const history = SearchHistoryManager.getHistory();
+        recentSearchesList.innerHTML = "";
+        if (history.length === 0) {
+          recentSearchesList.innerHTML = `<div style="padding:6px 10px; font-size:10px; color:var(--text-dim);">No recent searches yet</div>`;
+        } else {
+          history.forEach(item => {
+            const row = document.createElement("div");
+            row.className = "suggestion-item";
+            row.innerHTML = `<span class="sug-icon">🕒</span><span style="flex:1;">${item}</span>`;
+            row.addEventListener("click", () => {
+              globalSongSearchInput.value = item;
+              hideSearchSuggestions();
+              clearSearchInputBtn.classList.add("visible");
+              performSearch(item, true);
+            });
+            recentSearchesList.appendChild(row);
+          });
+        }
+
+        const trendings = [
+          "Coldplay", "Taylor Swift", "Arijit Singh", "Anirudh",
+          "The Weeknd", "BTS", "Synthwave 80s", "Bad Bunny", "Lofi Chill"
+        ];
+        trendingSuggestionsList.innerHTML = "";
+        trendings.forEach(item => {
+          const row = document.createElement("div");
+          row.className = "suggestion-item";
+          row.innerHTML = `<span class="sug-icon">🔥</span><span style="flex:1;">${item}</span>`;
+          row.addEventListener("click", () => {
+            globalSongSearchInput.value = item;
+            hideSearchSuggestions();
+            clearSearchInputBtn.classList.add("visible");
+            performSearch(item, true);
+          });
+          trendingSuggestionsList.appendChild(row);
+        });
+      }
+
+      function showSearchSuggestions() {
+        if (!searchSuggestionsDropdown) return;
+        renderSearchSuggestions();
+        searchSuggestionsDropdown.classList.add("open");
+      }
+
+      function hideSearchSuggestions() {
+        if (!searchSuggestionsDropdown) return;
+        searchSuggestionsDropdown.classList.remove("open");
+      }
+
+      // ==========================================
+      // MODAL CONTROLLERS (ADD TO ALBUM & MOBILE ACTIONS)
+      // ==========================================
+      function openAddToAlbumModal(track) {
+        if (!track || !addToAlbumModal) return;
+        selectedTrackForAlbum = track;
+        if (modalTrackArt) modalTrackArt.src = track.artwork || DEFAULT_ARTWORK;
+        if (modalTrackTitle) modalTrackTitle.textContent = track.title;
+        if (modalTrackArtist) modalTrackArtist.textContent = track.artist;
+        if (quickAlbumNameInput) quickAlbumNameInput.value = "";
+
+        const albums = AlbumStore.getAlbums();
+        if (albumPickerList) {
+          albumPickerList.innerHTML = "";
+          if (albums.length === 0) {
+            albumPickerList.innerHTML = `<div style="padding:10px; font-size:10px; color:var(--text-dim); text-align:center;">No albums yet. Create one above!</div>`;
+          } else {
+            albums.forEach(alb => {
+              const row = document.createElement("div");
+              row.className = "album-picker-row";
+              const isAlreadyIn = alb.tracks.some(t => t.id === track.id || (track.providerTrackId && t.providerTrackId === track.providerTrackId));
+              row.innerHTML = `
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${alb.name}</div>
+                  <div style="font-size:9px; color:var(--text-dim);">${alb.tracks.length} tracks</div>
+                </div>
+                <button class="pixel-btn pixel-btn-sm ${isAlreadyIn ? '' : 'pixel-btn-cyan'}" ${isAlreadyIn ? 'disabled' : ''}>
+                  ${isAlreadyIn ? 'ADDED ✓' : '+ ADD'}
+                </button>
+              `;
+              row.addEventListener("click", () => {
+                if (isAlreadyIn) return;
+                AlbumStore.addSong(alb.id, track);
+                closeAddToAlbumModal();
+              });
+              albumPickerList.appendChild(row);
+            });
+          }
+        }
+
+        addToAlbumModal.classList.add("open");
+      }
+
+      function closeAddToAlbumModal() {
+        if (addToAlbumModal) addToAlbumModal.classList.remove("open");
+        selectedTrackForAlbum = null;
+      }
+
+      function openCreateAlbumModal(albumIdToEdit = null) {
+        if (!albumEditModal) return;
+        editingAlbumId = albumIdToEdit;
+        if (editingAlbumId) {
+          const alb = AlbumStore.getAlbum(editingAlbumId);
+          if (albumEditModalTitle) albumEditModalTitle.textContent = "RENAME ALBUM";
+          if (albumEditNameInput) albumEditNameInput.value = alb ? alb.name : "";
+        } else {
+          if (albumEditModalTitle) albumEditModalTitle.textContent = "CREATE NEW ALBUM";
+          if (albumEditNameInput) albumEditNameInput.value = "";
+        }
+        albumEditModal.classList.add("open");
+        setTimeout(() => { if (albumEditNameInput) albumEditNameInput.focus(); }, 60);
+      }
+
+      function closeCreateAlbumModal() {
+        if (albumEditModal) albumEditModal.classList.remove("open");
+        editingAlbumId = null;
+      }
+
+      function openMobileActionSheet(track) {
+        if (!track || !mobileActionSheet) return;
+        selectedTrackForSheet = track;
+        if (sheetTrackArt) sheetTrackArt.src = track.artwork || DEFAULT_ARTWORK;
+        if (sheetTrackTitle) sheetTrackTitle.textContent = track.title;
+        if (sheetTrackArtist) sheetTrackArtist.textContent = track.artist;
+
+        const isLiked = likedTracks.some(t => t.id === track.id);
+        if (sheetLikeBtn) sheetLikeBtn.textContent = isLiked ? "💔 REMOVE FROM LIKED" : "❤️ SAVE TO LIKED";
+
+        if (mobileActionBackdrop) mobileActionBackdrop.classList.add("open");
+        mobileActionSheet.classList.add("open");
+      }
+
+      function closeMobileActionSheet() {
+        if (mobileActionBackdrop) mobileActionBackdrop.classList.remove("open");
+        if (mobileActionSheet) mobileActionSheet.classList.remove("open");
+        selectedTrackForSheet = null;
       }
 
       function toggleLike(track) {
@@ -3026,13 +4406,43 @@
           if (PlayerStore.currentSong) toggleLike(PlayerStore.currentSong);
         });
 
-        clearQueueActionBtn.addEventListener("click", () => {
-          PlayerStore.clearQueue();
-        });
+        // Clear Queue Trigger
+        const handleClearQueueClick = () => {
+          if (queueActiveTab === "upcoming") {
+            PlayerStore.clearQueue();
+          } else {
+            RecentlyPlayedManager.clearHistory();
+            showToastHud("RECENT HISTORY CLEARED");
+          }
+        };
+        clearQueueActionBtn.addEventListener("click", handleClearQueueClick);
+        clearQueueMobileBtn.addEventListener("click", handleClearQueueClick);
 
-        clearQueueMobileBtn.addEventListener("click", () => {
-          PlayerStore.clearQueue();
-        });
+        // Queue Tab Toggles (Up Next vs Recent)
+        if (queueTabUpcomingBtn) {
+          queueTabUpcomingBtn.addEventListener("click", () => {
+            queueActiveTab = "upcoming";
+            renderQueuePanel();
+          });
+        }
+        if (queueTabRecentBtn) {
+          queueTabRecentBtn.addEventListener("click", () => {
+            queueActiveTab = "recent";
+            renderQueuePanel();
+          });
+        }
+        if (mobileQueueTabUpcomingBtn) {
+          mobileQueueTabUpcomingBtn.addEventListener("click", () => {
+            queueActiveTab = "upcoming";
+            renderQueuePanel();
+          });
+        }
+        if (mobileQueueTabRecentBtn) {
+          mobileQueueTabRecentBtn.addEventListener("click", () => {
+            queueActiveTab = "recent";
+            renderQueuePanel();
+          });
+        }
 
         // Mobile Queue Drawer Toggle
         mobileQueueToggleBtn.addEventListener("click", () => {
@@ -3069,18 +4479,63 @@
           });
         });
 
-        // Search Trigger & Debounce
-        executeSearchBtn.addEventListener("click", () => performSearch(globalSongSearchInput.value, true));
+        // Search Trigger, Suggestions & Clear 'X'
+        executeSearchBtn.addEventListener("click", () => {
+          SearchHistoryManager.addQuery(globalSongSearchInput.value);
+          hideSearchSuggestions();
+          performSearch(globalSongSearchInput.value, true);
+        });
         globalSongSearchInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") performSearch(globalSongSearchInput.value, true);
+          if (e.key === "Enter") {
+            SearchHistoryManager.addQuery(globalSongSearchInput.value);
+            hideSearchSuggestions();
+            performSearch(globalSongSearchInput.value, true);
+          }
+        });
+        globalSongSearchInput.addEventListener("focus", () => {
+          showSearchSuggestions();
         });
         globalSongSearchInput.addEventListener("input", (e) => {
+          if (clearSearchInputBtn) {
+            clearSearchInputBtn.classList.toggle("visible", e.target.value.trim().length > 0);
+          }
           clearTimeout(searchDebounceTimer);
           searchDebounceTimer = setTimeout(() => {
             if (e.target.value.trim().length >= 3) {
+              SearchHistoryManager.addQuery(e.target.value);
               performSearch(e.target.value, true);
             }
           }, 400);
+        });
+
+        if (clearSearchInputBtn) {
+          clearSearchInputBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            globalSongSearchInput.value = "";
+            clearSearchInputBtn.classList.remove("visible");
+            hideSearchSuggestions();
+            globalSongSearchInput.focus();
+            if (activeTab === "search") {
+              currentSearchResults = [];
+              catalogStatusLine.textContent = "SEARCH CLEARED. ENTER A SONG OR ARTIST TO SEARCH.";
+              renderTrackList([]);
+            }
+          });
+        }
+
+        if (clearRecentSearchesBtn) {
+          clearRecentSearchesBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            SearchHistoryManager.clearHistory();
+            renderSearchSuggestions();
+            showToastHud("RECENT SEARCHES CLEARED");
+          });
+        }
+
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest("#searchBarSection")) {
+            hideSearchSuggestions();
+          }
         });
 
         // Load More Pagination Trigger
@@ -3104,11 +4559,14 @@
             document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
             chip.classList.add("active");
             globalSongSearchInput.value = chip.dataset.query;
+            if (clearSearchInputBtn) clearSearchInputBtn.classList.add("visible");
+            SearchHistoryManager.addQuery(chip.dataset.query);
+            hideSearchSuggestions();
             performSearch(chip.dataset.query, true);
           });
         });
 
-        // Nav Tabs
+        // Navigation Tabs
         document.querySelectorAll(".nav-tab-item").forEach(tab => {
           tab.addEventListener("click", () => {
             trigger8BitClick(600);
@@ -3130,6 +4588,8 @@
               } else {
                 performSearch(globalSongSearchInput.value || "Coldplay", true);
               }
+            } else if (activeTab === "albums") {
+              renderAlbumsTab();
             } else if (activeTab === "recent") {
               renderRecentlyPlayedTab();
             } else if (activeTab === "radio") {
@@ -3141,6 +4601,129 @@
               renderLocalFilesTab();
             }
           });
+        });
+
+        // Add to Album Modal Listeners
+        if (closeAddToAlbumModalBtn) closeAddToAlbumModalBtn.addEventListener("click", closeAddToAlbumModal);
+        if (addToAlbumModal) {
+          addToAlbumModal.addEventListener("click", (e) => {
+            if (e.target === addToAlbumModal) closeAddToAlbumModal();
+          });
+        }
+        if (quickCreateAlbumBtn) {
+          quickCreateAlbumBtn.addEventListener("click", () => {
+            const name = (quickAlbumNameInput ? quickAlbumNameInput.value : "").trim();
+            if (!name) return;
+            const newAlb = AlbumStore.createAlbum(name);
+            if (selectedTrackForAlbum) {
+              AlbumStore.addSong(newAlb.id, selectedTrackForAlbum);
+            }
+            closeAddToAlbumModal();
+            if (activeTab === "albums") renderAlbumsTab();
+          });
+        }
+        if (quickAlbumNameInput) {
+          quickAlbumNameInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && quickCreateAlbumBtn) quickCreateAlbumBtn.click();
+          });
+        }
+
+        // Album Edit Modal Listeners
+        if (closeAlbumEditModalBtn) closeAlbumEditModalBtn.addEventListener("click", closeCreateAlbumModal);
+        if (cancelAlbumEditBtn) cancelAlbumEditBtn.addEventListener("click", closeCreateAlbumModal);
+        if (albumEditModal) {
+          albumEditModal.addEventListener("click", (e) => {
+            if (e.target === albumEditModal) closeCreateAlbumModal();
+          });
+        }
+        if (saveAlbumEditBtn) {
+          saveAlbumEditBtn.addEventListener("click", () => {
+            const name = (albumEditNameInput ? albumEditNameInput.value : "").trim();
+            if (!name) return;
+            if (editingAlbumId) {
+              AlbumStore.renameAlbum(editingAlbumId, name);
+            } else {
+              AlbumStore.createAlbum(name);
+            }
+            closeCreateAlbumModal();
+            if (activeTab === "albums") renderAlbumsTab();
+          });
+        }
+        if (albumEditNameInput) {
+          albumEditNameInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && saveAlbumEditBtn) saveAlbumEditBtn.click();
+          });
+        }
+
+        // Mobile Action Sheet Listeners
+        if (closeMobileActionSheetBtn) closeMobileActionSheetBtn.addEventListener("click", closeMobileActionSheet);
+        if (mobileActionBackdrop) mobileActionBackdrop.addEventListener("click", closeMobileActionSheet);
+        if (sheetPlayNowBtn) {
+          sheetPlayNowBtn.addEventListener("click", () => {
+            if (selectedTrackForSheet) PlayerStore.play(selectedTrackForSheet);
+            closeMobileActionSheet();
+          });
+        }
+        if (sheetPlayNextBtn) {
+          sheetPlayNextBtn.addEventListener("click", () => {
+            if (selectedTrackForSheet) PlayerStore.playNextSong(selectedTrackForSheet);
+            closeMobileActionSheet();
+          });
+        }
+        if (sheetAddToQueueBtn) {
+          sheetAddToQueueBtn.addEventListener("click", () => {
+            if (selectedTrackForSheet) PlayerStore.addToQueue(selectedTrackForSheet);
+            closeMobileActionSheet();
+          });
+        }
+        if (sheetAddToAlbumBtn) {
+          sheetAddToAlbumBtn.addEventListener("click", () => {
+            const track = selectedTrackForSheet;
+            closeMobileActionSheet();
+            setTimeout(() => openAddToAlbumModal(track), 100);
+          });
+        }
+        if (sheetLikeBtn) {
+          sheetLikeBtn.addEventListener("click", () => {
+            if (selectedTrackForSheet) toggleLike(selectedTrackForSheet);
+            closeMobileActionSheet();
+          });
+        }
+
+        // Universal Keyboard Shortcuts (Spotify-Style)
+        document.addEventListener("keydown", (e) => {
+          const tag = (e.target.tagName || "").toLowerCase();
+          if (tag === "input" || tag === "textarea" || tag === "select") {
+            if (e.key === "Escape") {
+              hideSearchSuggestions();
+              closeAddToAlbumModal();
+              closeCreateAlbumModal();
+              closeMobileActionSheet();
+            }
+            return;
+          }
+
+          if (e.key === " " || e.code === "Space") {
+            e.preventDefault();
+            PlayerStore.togglePlay();
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            PlayerStore.seek(PlayerStore.currentTime + 10);
+          } else if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            PlayerStore.seek(PlayerStore.currentTime - 10);
+          } else if ((e.key === "N" || e.key === "n") && e.shiftKey) {
+            e.preventDefault();
+            PlayerStore.playNext();
+          } else if ((e.key === "P" || e.key === "p") && e.shiftKey) {
+            e.preventDefault();
+            PlayerStore.playPrevious();
+          } else if (e.key === "Escape") {
+            hideSearchSuggestions();
+            closeAddToAlbumModal();
+            closeCreateAlbumModal();
+            closeMobileActionSheet();
+          }
         });
 
         // View Mode Toggle
@@ -3265,6 +4848,7 @@
         else if (activeTab === "radio") renderRadioTab();
         else if (activeTab === "trending") renderTrackList(POPULAR_STARTER_HITS);
         else if (activeTab === "search") renderTrackList(currentSearchResults);
+        else if (activeTab === "albums") renderAlbumsTab();
       }
 
       function configureSleepTimer(min) {
